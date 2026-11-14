@@ -86,12 +86,19 @@ final class MonitorModel: ObservableObject {
     private var preferredHardwareSampleRate: Double = 48_000
     private var monitoringMode: AVAudioSession.Mode = .measurement
     private var diagnosticModeOverride: AVAudioSession.Mode?
+    private var diagnosticExclusiveAudio = false
+    private var diagnosticColdSession = false
+    private var diagnosticAutomaticAudio = false
+    private var appliedBufferRequest: Double = 1
+    private var diagnosticRunID = ""
     @Published private(set) var selectedModeLabel = "自動"
     @Published private(set) var modePreference = AudioModePreference.load() {
         didSet { UserDefaults.standard.set(modePreference.rawValue, forKey: "audioModePreference") }
     }
     private var modeMeasurements: [ModeLatencyMeasurement] = []
     private var modeCache: [String: [ModeLatencyMeasurement]] = [:]
+    private var bufferMeasurements: [BufferPreferenceMeasurement] = []
+    private var minimumObservedFrames: Double?
     private let spectrumAnalyzer = SpectrumAnalyzer()
     private var spectrumVisible = false
     private var diagnosticEqualizer = false
@@ -103,6 +110,13 @@ final class MonitorModel: ObservableObject {
         didRunDiagnostic = true
         diagnosticHeadphones = arguments.contains("--validate-headphones")
         diagnosticAccessoryMic = arguments.contains("--validate-accessory-mic")
+        diagnosticExclusiveAudio = arguments.contains("--exclusive-audio")
+        diagnosticColdSession = arguments.contains("--cold-session")
+        diagnosticAutomaticAudio = arguments.contains("--automatic-mode")
+        if arguments.contains("--adopt-automatic-mode") { modePreference = .automatic }
+        diagnosticRunID = arguments.first(where: { $0.hasPrefix("--diagnostic-id=") }).map { String($0.dropFirst("--diagnostic-id=".count).prefix(64)) } ?? ""
+        let diagnosticSeconds = arguments.first(where: { $0.hasPrefix("--diagnostic-seconds=") })
+            .flatMap { Double($0.dropFirst("--diagnostic-seconds=".count)) }.map { min(120, max(0, $0)) } ?? 45
         if let argument = arguments.first(where: { $0.hasPrefix("--sample-rate=") }),
            let rate = Double(argument.split(separator: "=").last ?? ""), [44_100, 48_000, 96_000].contains(rate) {
             preferredHardwareSampleRate = rate
@@ -115,9 +129,19 @@ final class MonitorModel: ObservableObject {
         }
         speakerEnabled = !diagnosticHeadphones
         start()
+        if !diagnosticRunID.isEmpty {
+            Task { [weak self] in
+                while true {
+                    try? await Task.sleep(for: .seconds(5))
+                    guard let self, isRunning || isStarting else { return }
+                    if isRunning { captureCounters(); writeDiagnostics() }
+                }
+            }
+        }
+        guard diagnosticSeconds > 0 else { return }
         Task { [weak self] in
-            try? await Task.sleep(for: .seconds(45))
-            self?.stop(message: "45秒の実機音声診断が完了しました")
+            try? await Task.sleep(for: .seconds(diagnosticSeconds))
+            self?.stop(message: "実機音声診断が完了しました")
         }
         #endif
     }
@@ -327,7 +351,7 @@ final class MonitorModel: ObservableObject {
         }
     }
 
-    func start(resetTuning: Bool = true) {
+    func start(resetTuning: Bool = true, reprobeMinimum: Bool = false) {
         guard !isStarting && !isRunning else { return }
         if resetTuning {
             tuner = BufferTuner()
@@ -336,6 +360,7 @@ final class MonitorModel: ObservableObject {
             renderedFrameOffset = 0; missedQuantumOffset = 0
             maximumInputPeak = 0; maximumOutputPeak = 0
             backgroundFrames = 0; backgroundSeconds = 0
+            bufferMeasurements = []; minimumObservedFrames = nil
         }
         refreshRoute()
         guard canStart || diagnosticHeadphones else { status = "イヤホンの接続・確認が必要です"; return }
@@ -350,13 +375,20 @@ final class MonitorModel: ObservableObject {
             }
             do {
                 configuring = true
-                if resetTuning && diagnosticModeOverride == nil { monitoringMode = modePreference.sessionMode }
+                if reprobeMinimum { modeCache.removeAll() }
+                let preference: AudioModePreference = diagnosticAutomaticAudio ? .automatic : modePreference
+                if (resetTuning || reprobeMinimum) && diagnosticModeOverride == nil { monitoringMode = preference.sessionMode }
                 try configureSession()
                 try await Task.sleep(for: .milliseconds(250))
                 guard token == generation, !Task.isCancelled else { return }
                 try validateActiveRoute()
-                if resetTuning && diagnosticModeOverride == nil && modePreference == .automatic { try await chooseLatencyMode(token: token) }
+                let probeBuffers = (resetTuning || reprobeMinimum) && diagnosticFrameOverride == nil && !inBackground
+                if (resetTuning || reprobeMinimum) && diagnosticModeOverride == nil && preference == .automatic && !probeBuffers { try await chooseLatencyMode(token: token) }
                 selectedModeLabel = monitoringMode == .measurement ? "測定" : "標準"
+                if probeBuffers {
+                    try await chooseBufferPreference(token: token)
+                    selectedModeLabel = monitoringMode == .measurement ? "測定" : "標準"
+                }
                 guard !inBackground || backgroundEnabled else { stop(); return }
                 try audio.prepare(withSampleRate: session.sampleRate)
                 // Read the route again after AudioUnit initialization, before opening the gate.
@@ -376,7 +408,8 @@ final class MonitorModel: ObservableObject {
                 }
                 if !inBackground { startMeter() }
                 startSpectrumIfNeeded()
-                tuner.didStart(now: ProcessInfo.processInfo.systemUptime, actualFrames: session.ioBufferDuration * session.sampleRate)
+                tuner.didStart(now: ProcessInfo.processInfo.systemUptime, actualFrames: session.ioBufferDuration * session.sampleRate,
+                    minimumObservedFrames: minimumObservedFrames)
                 startTuning()
                 status = "モニター中"
                 updateNowPlaying()
@@ -455,11 +488,14 @@ final class MonitorModel: ObservableObject {
     }
 
     private func configureSession() throws {
+        if diagnosticColdSession { try session.setActive(false) }
         // Keep monitoring alongside games/music; the OS negotiates the shared hardware buffer.
-        try session.setCategory(.playAndRecord, mode: monitoringMode, options: [.mixWithOthers, .allowBluetoothHFP, .allowBluetoothA2DP])
+        var options: AVAudioSession.CategoryOptions = [.allowBluetoothHFP, .allowBluetoothA2DP]
+        if !diagnosticExclusiveAudio { options.insert(.mixWithOthers) }
+        try session.setCategory(.playAndRecord, mode: monitoringMode, options: options)
         try session.setPrefersInterruptionOnRouteDisconnect(true)
         try? session.setPreferredSampleRate(preferredHardwareSampleRate)
-        // A one-sample request lets each OS/route clamp to its own minimum.
+        // Preferences are hints; the foreground probe checks actual callback sizes.
         try requestBuffer(sampleRate: preferredHardwareSampleRate)
         try session.setActive(true)
         let ports = session.availableInputs ?? []
@@ -480,11 +516,83 @@ final class MonitorModel: ObservableObject {
         try requestBuffer(sampleRate: session.sampleRate)
     }
 
+    private func chooseBufferPreference(token: Int) async throws {
+        status = "最小I/Oを確認中…"
+        let previousRequest = requestedFrames
+        let previousMode = monitoringMode
+        let automatic = (diagnosticAutomaticAudio || modePreference == .automatic) && diagnosticModeOverride == nil
+        let modes = automatic ? [AVAudioSession.Mode.default, .measurement] : [monitoringMode]
+        bufferMeasurements = []
+        for mode in modes {
+        monitoringMode = mode
+        for request in BufferPreferenceSelector.requests {
+            guard token == generation, !Task.isCancelled, !inBackground else { throw CancellationError() }
+            audio.stop()
+            // Set preferences while inactive so an accepted-but-ignored request is not mistaken for a floor.
+            try session.setActive(false)
+            requestedFrames = request
+            do {
+                try configureSession()
+                try await Task.sleep(for: .milliseconds(100))
+                guard token == generation, !Task.isCancelled else { throw CancellationError() }
+                try validateActiveRoute()
+                try audio.prepare(withSampleRate: session.sampleRate)
+                audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
+                audio.gain = 0 // The saved gain and EQ are untouched throughout probing.
+                try audio.start()
+                try await Task.sleep(for: .milliseconds(100))
+                guard token == generation, !Task.isCancelled else { throw CancellationError() }
+                try validateActiveRoute()
+                // Our session changes can post a late safety-gate notification. Reopen only after validating this exact route.
+                try audio.start()
+                let initialMisses = audio.missedQuanta, initialFrames = audio.renderedFrames
+                let observationStart = ProcessInfo.processInfo.systemUptime
+                let observationSeconds = max(0.16, 8 * max(session.ioBufferDuration, Double(audio.currentQuantum) / session.sampleRate))
+                try await Task.sleep(for: .seconds(observationSeconds))
+                guard token == generation, !Task.isCancelled else { throw CancellationError() }
+                try validateActiveRoute()
+                let measurement = BufferPreferenceMeasurement(requestedFrames: request,
+                    actualFrames: audio.currentQuantum, sampleRate: session.sampleRate,
+                    ioBufferDuration: session.ioBufferDuration, inputLatency: session.inputLatency,
+                    outputLatency: session.outputLatency, missedQuanta: audio.missedQuanta &- initialMisses,
+                    renderedFrames: audio.renderedFrames &- initialFrames, renderError: audio.renderError, mode: monitoringMode.rawValue,
+                    observationDuration: ProcessInfo.processInfo.systemUptime - observationStart)
+                bufferMeasurements.append(measurement)
+                if measurement.isStable && measurement.matchesRequest {
+                    // Smaller candidates have already been tested. Larger requests cannot beat this accepted stable quantum.
+                    audio.stop()
+                    break
+                }
+            } catch is CancellationError { throw CancellationError() }
+            catch { logger.info("Buffer preference unavailable: \(request)") }
+            audio.stop()
+        }
+        }
+        let best = BufferPreferenceSelector.best(bufferMeasurements)
+        requestedFrames = best?.requestedFrames ?? previousRequest
+        monitoringMode = best.map { AVAudioSession.Mode(rawValue: $0.mode) } ?? previousMode
+        modeMeasurements = modes.compactMap { mode in
+            guard let choice = BufferPreferenceSelector.best(bufferMeasurements.filter { $0.mode == mode.rawValue }) else { return nil }
+            return ModeLatencyMeasurement(mode: mode.rawValue, inputLatency: choice.inputLatency,
+                outputLatency: choice.outputLatency, ioBufferDuration: choice.ioBufferDuration,
+                sampleRate: choice.sampleRate, quantum: choice.actualFrames)
+        }
+        minimumObservedFrames = bufferMeasurements.filter { $0.mode == monitoringMode.rawValue && $0.actualFrames > 0 && $0.renderedFrames > 0 && $0.sampleRate > 0 }
+            .map { max(Double($0.actualFrames), $0.ioBufferDuration * $0.sampleRate) }.min()
+        try session.setActive(false)
+        try configureSession()
+        try await Task.sleep(for: .milliseconds(100))
+        guard token == generation, !Task.isCancelled else { throw CancellationError() }
+        try validateActiveRoute()
+        tuningNote = "自動 · 実コールバックを比較して\(Int(requestedFrames))フレームを要求"
+    }
+
     private func requestBuffer(sampleRate: Double) throws {
         var lastError: Error?
         for frames in [requestedFrames, 16, 32, 64, 128, 256, 512, 1024, 2048] where frames >= requestedFrames {
             do {
                 try session.setPreferredIOBufferDuration(frames / max(sampleRate, 8_000))
+                appliedBufferRequest = frames
                 return
             } catch { lastError = error }
         }
@@ -501,11 +609,12 @@ final class MonitorModel: ObservableObject {
                 guard error == 0 || error == kAudioUnitErr_CannotDoInCurrentContext else {
                     stop(message: "音声処理が停止しました（\(error)）。接続を確認してください。"); return
                 }
-                let actual = max(Double(audio.minimumQuantum), session.ioBufferDuration * session.sampleRate)
+                let actual = max(Double(audio.currentQuantum), session.ioBufferDuration * session.sampleRate)
                 if let next = tuner.evaluate(now: ProcessInfo.processInfo.systemUptime,
                     actualFrames: actual, sampleRate: session.sampleRate,
-                    misses: audio.missedQuanta, transientFailure: error != 0) {
-                    retune(to: next)
+                    misses: audio.missedQuanta, transientFailure: error != 0, allowMinimumReprobe: !inBackground) {
+                    let reprobe = (next == requestedFrames || next == 1) && !inBackground && diagnosticFrameOverride == nil
+                    retune(to: next, reprobeMinimum: reprobe)
                     return
                 } else if error != 0 {
                     stop(message: "この接続では安定した音声入力を確保できませんでした"); return
@@ -514,7 +623,7 @@ final class MonitorModel: ObservableObject {
         }
     }
 
-    private func retune(to frames: Double) {
+    private func retune(to frames: Double, reprobeMinimum: Bool = false) {
         audio.closeGate()
         audio.analysisEnabled = false; spectrumAnalyzer.stop()
         captureCounters(); writeDiagnostics()
@@ -527,7 +636,7 @@ final class MonitorModel: ObservableObject {
         requestedFrames = frames
         tuningNote = "自動調整 · \(Int(frames))フレームを要求"
         // Keep the audio session active, including while in the background.
-        start(resetTuning: false)
+        start(resetTuning: false, reprobeMinimum: reprobeMinimum)
     }
 
     func stop(message: String = "モニターを停止しました") {
@@ -559,6 +668,10 @@ final class MonitorModel: ObservableObject {
 
     private func fail(_ error: Error) {
         stop(message: "開始できませんでした：\(error.localizedDescription)")
+        writeDiagnostics()
+        #if DEBUG
+        print("MicRelay diagnostic failure: \(error)")
+        #endif
     }
 
     private func routeChanged(reason: UInt, previousIDs: [String]) {
@@ -599,7 +712,7 @@ final class MonitorModel: ObservableObject {
     func refreshRoute() {
         outputs = session.currentRoute.outputs.map { OutputPort(uid: $0.uid, type: $0.portType, name: $0.portName) }
         // Confirmation is valid only while this exact output remains connected.
-        confirmedOutputs.formIntersection(Set(outputs.map(\.uid)))
+        if !configuring { confirmedOutputs.formIntersection(Set(outputs.map(\.uid))) }
         activeInput = session.currentRoute.inputs.map(\.portName).joined(separator: "、")
         if activeInput.isEmpty { activeInput = "未使用" }
         var choices = [MicrophoneChoice(id: "builtin", name: "本体マイク", detail: "このiPhone / iPadのマイク", icon: "iphone")]
@@ -669,10 +782,24 @@ final class MonitorModel: ObservableObject {
     private func writeDiagnostics() {
         #if DEBUG
         let values: [String: Any] = [
+            "status": status, "isRunning": isRunning, "isStarting": isStarting,
             "timestamp": ISO8601DateFormatter().string(from: Date()),
             "sampleRate": sampleRate, "ioBufferDuration": bufferDuration,
             "requestedSampleRate": preferredHardwareSampleRate, "mode": session.mode.rawValue,
             "categoryOptions": session.categoryOptions.rawValue,
+            "preferredIOBufferDuration": session.preferredIOBufferDuration,
+            "appliedBufferRequest": appliedBufferRequest,
+            "inputChannels": session.inputNumberOfChannels, "outputChannels": session.outputNumberOfChannels,
+            "diagnosticExclusiveAudio": diagnosticExclusiveAudio, "diagnosticColdSession": diagnosticColdSession,
+            "diagnosticRunID": diagnosticRunID,
+            "diagnosticAutomaticAudio": diagnosticAutomaticAudio,
+            "currentQuantum": audio.currentQuantum,
+            "bufferCandidates": bufferMeasurements.map { ["requestedFrames": $0.requestedFrames,
+                "mode": $0.mode,
+                "observationDuration": $0.observationDuration,
+                "actualFrames": $0.actualFrames, "sampleRate": $0.sampleRate, "ioBufferDuration": $0.ioBufferDuration,
+                "inputLatency": $0.inputLatency, "outputLatency": $0.outputLatency, "missedQuanta": $0.missedQuanta,
+                "renderedFrames": $0.renderedFrames, "renderError": $0.renderError, "stable": $0.isStable] as [String: Any] },
             "gain": gain,
             "gainLimit": gainLimit,
             "equalizerEnabled": equalizer.enabled, "spectrumFrames": spectrumFrameCount,

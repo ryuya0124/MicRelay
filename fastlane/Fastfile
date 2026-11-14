@@ -136,7 +136,7 @@ platform :ios do
 end
 
 platform :ios do
-  desc "Submit build 3 to Beta App Review and distribute through external TestFlight group main; never submit App Store review"
+  desc "Submit build 4 to Beta App Review and distribute through external TestFlight group main; never submit App Store review"
   lane :distribute_main do
     key = connect_key
     contact_path = ENV.fetch("BETA_REVIEW_CONTACT_JSON", File.join(RELEASE_DIRECTORY, "review-contact.json"))
@@ -147,7 +147,7 @@ platform :ios do
     contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
     upload_to_testflight(
       api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
-      app_version: "1.0.0", build_number: "3", app_platform: "ios", distribute_only: true,
+      app_version: "1.0.0", build_number: "4", app_platform: "ios", distribute_only: true,
       distribute_external: true, groups: ["main"], submit_beta_review: true,
       skip_submission: false, notify_external_testers: false,
       beta_app_review_info: contact,

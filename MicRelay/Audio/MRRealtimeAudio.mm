@@ -38,6 +38,7 @@ struct RealtimeState {
     UInt32 consecutiveMisses = 0;
     std::atomic<uint64_t> misses{0};
     std::atomic<uint32_t> minQuantum{UINT32_MAX}, maxQuantum{0};
+    std::atomic<uint32_t> currentQuantum{0};
     std::atomic<uint64_t> callbacks{0};
     std::atomic<bool> eqEnabled{false}, analysisEnabled{false};
     std::atomic<uint64_t> eqSequence{0};
@@ -76,6 +77,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
                        const AudioTimeStamp *time, UInt32 bus, UInt32 count, AudioBufferList *output) {
     auto &s = *static_cast<RealtimeState *>(context);
     s.callbacks.fetch_add(1, std::memory_order_relaxed);
+    s.currentQuantum.store(count, std::memory_order_relaxed);
     s.minQuantum.store(std::min(count, s.minQuantum.load(std::memory_order_relaxed)), std::memory_order_relaxed);
     s.maxQuantum.store(std::max(count, s.maxQuantum.load(std::memory_order_relaxed)), std::memory_order_relaxed);
     if (!output || !s.open.load(std::memory_order_acquire)) {
@@ -216,7 +218,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     _state.waveCount = 0; _state.wavePeak = 0;
     _state.consecutiveMisses = 0;
     _state.misses.store(0);
-    _state.callbacks.store(0); _state.minQuantum.store(UINT32_MAX); _state.maxQuantum.store(0);
+    _state.callbacks.store(0); _state.minQuantum.store(UINT32_MAX); _state.maxQuantum.store(0); _state.currentQuantum.store(0);
     for (auto &sample : _state.wave) sample.store(0);
     AURenderCallbackStruct callback = {render, &_state};
     if ([self fail:AudioUnitSetProperty(_state.unit, kAudioUnitProperty_SetRenderCallback,
@@ -251,6 +253,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 - (uint64_t)missedQuanta { return _state.misses.load(); }
 - (uint32_t)minimumQuantum { const auto value = _state.minQuantum.load(); return value == UINT32_MAX ? 0 : value; }
 - (uint32_t)maximumQuantum { return _state.maxQuantum.load(); }
+- (uint32_t)currentQuantum { return _state.currentQuantum.load(); }
 - (uint64_t)callbackCount { return _state.callbacks.load(); }
 - (void)publishEqualizer {
     _state.eqSequence.fetch_add(1, std::memory_order_acq_rel);

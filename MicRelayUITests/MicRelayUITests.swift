@@ -23,7 +23,7 @@ final class MicRelayUITests: XCTestCase {
 
     func testLiveMicrophoneAndBackground() throws {
         let app = XCUIApplication()
-        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--expand-diagnostics"]
+        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--expand-diagnostics", "--automatic-mode"]
         addUIInterruptionMonitor(withDescription: "Microphone permission") { alert in
             for title in ["許可", "Allow", "OK"] where alert.buttons[title].exists {
                 alert.buttons[title].tap(); return true
@@ -90,11 +90,16 @@ final class MicRelayUITests: XCTestCase {
 
     func testRealInputSpectrum() {
         let app = XCUIApplication()
-        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--show-equalizer"]
+        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--show-equalizer", "--automatic-mode"]
         app.launch()
         let plot = app.otherElements["frequencySpectrum"]
         XCTAssertTrue(plot.waitForExistence(timeout: 15))
-        Thread.sleep(forTimeInterval: 5)
+        expectation(for: NSPredicate { _, _ in
+            let value = plot.value as? String ?? ""
+            let count = value.components(separatedBy: "、").first?.filter { "0123456789".contains($0) } ?? ""
+            return (Int(count) ?? 0) > 10
+        }, evaluatedWith: plot)
+        waitForExpectations(timeout: 18)
         let value = plot.value as? String ?? ""
         let count = value.components(separatedBy: "、").first?.filter { "0123456789".contains($0) } ?? ""
         XCTAssertGreaterThan(Int(count) ?? 0, 10)
@@ -103,7 +108,12 @@ final class MicRelayUITests: XCTestCase {
         app.launchArguments.append("--validate-eq")
         app.launch()
         XCTAssertTrue(plot.waitForExistence(timeout: 15))
-        Thread.sleep(forTimeInterval: 5)
+        expectation(for: NSPredicate { _, _ in
+            let value = plot.value as? String ?? ""
+            let text = value.components(separatedBy: "、").first { $0.hasPrefix("差分") } ?? ""
+            return (Int(text.filter { "0123456789".contains($0) }) ?? 0) > 3
+        }, evaluatedWith: plot)
+        waitForExpectations(timeout: 18)
         let filteredValue = plot.value as? String ?? ""
         let differenceText = filteredValue.components(separatedBy: "、").first { $0.hasPrefix("差分") } ?? ""
         XCTAssertGreaterThan(Int(differenceText.filter { "0123456789".contains($0) }) ?? 0, 3)
@@ -116,7 +126,7 @@ final class MicRelayUITests: XCTestCase {
         for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer", "--validate-eq"]), ("store-03-gain", ["--show-gain-settings"])] {
             app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--store-capture"] + extra
             app.launch()
-            Thread.sleep(forTimeInterval: 4)
+            Thread.sleep(forTimeInterval: 10)
             screenshot(name)
             app.terminate()
         }
