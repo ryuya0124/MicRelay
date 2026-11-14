@@ -1,0 +1,2 @@
+app_identifier("net.ryuya-dev.MicRelay")
+team_id(ENV.fetch("APPLE_TEAM_ID", "FZ35ZF3CZV"))

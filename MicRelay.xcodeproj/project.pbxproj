@@ -1,0 +1,651 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782ECECA29FCAC581171B62D /* SettingsBackup.swift */; };
+		1FE225C839BBA1A66ECD2214 /* MicRelayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */; };
+		3D999BABDFCF22FB69D2FB9B /* MicRelayUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495E9CFDF1A45FF88A0AEA24 /* MicRelayUITests.swift */; };
+		430D478ECAB64EC972C0D2A0 /* OutputSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */; };
+		4DEAE71C919DB09A6EEEB179 /* SettingsBackupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */; };
+		51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */; };
+		5251976D04C2918CA0A49961 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */; };
+		572EDB2468E3A9283F80CDA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C735ADF1A37C633D8A927E64 /* Assets.xcassets */; };
+		5A8FB1D73E6648FB98A3D258 /* BufferTuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13536138464F07466D76E0D /* BufferTuner.swift */; };
+		6C3A200AC5BEA2BBA8FAF08C /* OutputSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */; };
+		837F8E44FC90FAF6296AA909 /* MonitorPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */; };
+		83B6D8AF6C03BE0D33639BAA /* SettingsBackupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */; };
+		9BE9862503FC774C469ADD32 /* EqualizerDSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */; };
+		A09CB65CF0D2ED0B6EF72223 /* LatencyModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */; };
+		A94D7DC24F61A268A858DA8E /* MonitorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */; };
+		A963391724D82F8061432C5B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = AB4AB63514CAEA45221EA6CF /* LICENSE */; };
+		ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9272F8683052DEC295B606 /* SpectrumTests.swift */; };
+		BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */; };
+		BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048B12B882B5CAFCAA660AA /* MonitorView.swift */; };
+		D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */; };
+		D4FD2EC0054610714F6F8772 /* MRRealtimeAudio.mm in Sources */ = {isa = PBXBuildFile; fileRef = A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */; };
+		D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D14E373F9952C1EF310111 /* BufferTunerTests.swift */; };
+		D7499245142469AB60ADD50C /* AudioModePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780AF3899DA7721B617ABE3 /* AudioModePreference.swift */; };
+		E2569C05BCFE10AF95DEB770 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 93DA98C9699BF09F544CEF62 /* PrivacyInfo.xcprivacy */; };
+		E50088294D8C507892BDABE1 /* MonitorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA213495E52FBFD468662CA6 /* MonitorModel.swift */; };
+		E5AD825A7DF3EF925A319670 /* EqualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1B67D88328C490111931D3C /* EqualizerView.swift */; };
+		E6BB94CE605A289A4C0BF060 /* ThirdPartyLicense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */; };
+		E729398FDC4222D1DCFA4A2D /* EqualizerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBD46E9BA194D4E3C39D701 /* EqualizerSettings.swift */; };
+		F520A8AE3D1C73F5DC20026C /* LatencyModeSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4E9C4883BEB088D7E71E4681 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4B9BD2AA9D2F34E5F81F6AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B40E67E86B0E92A5DBFB2ECB;
+			remoteInfo = MicRelay;
+		};
+		88DD07BDDCBE365C1FC3DAD2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E4B9BD2AA9D2F34E5F81F6AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B40E67E86B0E92A5DBFB2ECB;
+			remoteInfo = MicRelay;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		09D14E373F9952C1EF310111 /* BufferTunerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferTunerTests.swift; sourceTree = "<group>"; };
+		0B5FCA5DE29A76AD989241B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0DE8F83909758BA654D0C8A9 /* MicRelay-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MicRelay-Bridging-Header.h"; sourceTree = "<group>"; };
+		1CBD46E9BA194D4E3C39D701 /* EqualizerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerSettings.swift; sourceTree = "<group>"; };
+		2EEE309F551FE97448404D23 /* MicRelayTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MicRelayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSafety.swift; sourceTree = "<group>"; };
+		3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelector.swift; sourceTree = "<group>"; };
+		4048B12B882B5CAFCAA660AA /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
+		495E9CFDF1A45FF88A0AEA24 /* MicRelayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicRelayUITests.swift; sourceTree = "<group>"; };
+		4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ThirdPartyLicenses.json; sourceTree = "<group>"; };
+		51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupView.swift; sourceTree = "<group>"; };
+		750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPreferencesTests.swift; sourceTree = "<group>"; };
+		782ECECA29FCAC581171B62D /* SettingsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackup.swift; sourceTree = "<group>"; };
+		7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseView.swift; sourceTree = "<group>"; };
+		88CBA9C00107199AADFA8F34 /* MicRelayUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MicRelayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumAnalyzer.swift; sourceTree = "<group>"; };
+		92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupTests.swift; sourceTree = "<group>"; };
+		93DA98C9699BF09F544CEF62 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		9780AF3899DA7721B617ABE3 /* AudioModePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModePreference.swift; sourceTree = "<group>"; };
+		98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyLicense.swift; sourceTree = "<group>"; };
+		9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicRelayApp.swift; sourceTree = "<group>"; };
+		A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MRRealtimeAudio.mm; sourceTree = "<group>"; };
+		A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPreferences.swift; sourceTree = "<group>"; };
+		A4A20D08C6E2F1B36821987C /* MREqualizerDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MREqualizerDSP.hpp; sourceTree = "<group>"; };
+		AB4AB63514CAEA45221EA6CF /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
+		B1B67D88328C490111931D3C /* EqualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerView.swift; sourceTree = "<group>"; };
+		B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRRealtimeAudio.h; sourceTree = "<group>"; };
+		B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelectorTests.swift; sourceTree = "<group>"; };
+		BAEAEF20AAA107377CB57217 /* MicRelay.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MicRelay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C735ADF1A37C633D8A927E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EqualizerDSPTests.mm; sourceTree = "<group>"; };
+		D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GainSettingsView.swift; sourceTree = "<group>"; };
+		D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSafetyTests.swift; sourceTree = "<group>"; };
+		DA213495E52FBFD468662CA6 /* MonitorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorModel.swift; sourceTree = "<group>"; };
+		F13536138464F07466D76E0D /* BufferTuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferTuner.swift; sourceTree = "<group>"; };
+		FD9272F8683052DEC295B606 /* SpectrumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1E9B03146DD48D8A09CD5B6B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		468977C07F06B8B914AAD556 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				9780AF3899DA7721B617ABE3 /* AudioModePreference.swift */,
+				F13536138464F07466D76E0D /* BufferTuner.swift */,
+				1CBD46E9BA194D4E3C39D701 /* EqualizerSettings.swift */,
+				3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */,
+				0DE8F83909758BA654D0C8A9 /* MicRelay-Bridging-Header.h */,
+				DA213495E52FBFD468662CA6 /* MonitorModel.swift */,
+				A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */,
+				A4A20D08C6E2F1B36821987C /* MREqualizerDSP.hpp */,
+				B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */,
+				A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */,
+				2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */,
+				782ECECA29FCAC581171B62D /* SettingsBackup.swift */,
+				8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		85D41CE219C63AA5CD111151 /* MicRelayUITests */ = {
+			isa = PBXGroup;
+			children = (
+				495E9CFDF1A45FF88A0AEA24 /* MicRelayUITests.swift */,
+			);
+			path = MicRelayUITests;
+			sourceTree = "<group>";
+		};
+		A8F08F7AEE1DBEFCBA112C85 /* MicRelay */ = {
+			isa = PBXGroup;
+			children = (
+				C735ADF1A37C633D8A927E64 /* Assets.xcassets */,
+				0B5FCA5DE29A76AD989241B9 /* Info.plist */,
+				9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */,
+				93DA98C9699BF09F544CEF62 /* PrivacyInfo.xcprivacy */,
+				468977C07F06B8B914AAD556 /* Audio */,
+				1E9B03146DD48D8A09CD5B6B /* Resources */,
+				D215F5E3E67CCEAC6A82BC6E /* Views */,
+			);
+			path = MicRelay;
+			sourceTree = "<group>";
+		};
+		D164A0C30BD93952502D1D0B = {
+			isa = PBXGroup;
+			children = (
+				AB4AB63514CAEA45221EA6CF /* LICENSE */,
+				A8F08F7AEE1DBEFCBA112C85 /* MicRelay */,
+				F409F7D9D643A7DAD0874BAA /* MicRelayTests */,
+				85D41CE219C63AA5CD111151 /* MicRelayUITests */,
+				E36E63864A4708F55400CE86 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D215F5E3E67CCEAC6A82BC6E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1B67D88328C490111931D3C /* EqualizerView.swift */,
+				D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */,
+				7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */,
+				4048B12B882B5CAFCAA660AA /* MonitorView.swift */,
+				51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */,
+				98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E36E63864A4708F55400CE86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BAEAEF20AAA107377CB57217 /* MicRelay.app */,
+				2EEE309F551FE97448404D23 /* MicRelayTests.xctest */,
+				88CBA9C00107199AADFA8F34 /* MicRelayUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F409F7D9D643A7DAD0874BAA /* MicRelayTests */ = {
+			isa = PBXGroup;
+			children = (
+				09D14E373F9952C1EF310111 /* BufferTunerTests.swift */,
+				CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */,
+				B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */,
+				750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */,
+				D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */,
+				92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */,
+				FD9272F8683052DEC295B606 /* SpectrumTests.swift */,
+			);
+			path = MicRelayTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		09B77A756A5DC13333320D57 /* MicRelayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0C67C86BE17CE792DD0F89F4 /* Build configuration list for PBXNativeTarget "MicRelayTests" */;
+			buildPhases = (
+				F556C2B94C9377192A4853A7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7E80663EBA989110B8F57194 /* PBXTargetDependency */,
+			);
+			name = MicRelayTests;
+			packageProductDependencies = (
+			);
+			productName = MicRelayTests;
+			productReference = 2EEE309F551FE97448404D23 /* MicRelayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5D26DC0192BBBF67FD92359F /* MicRelayUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FAEE0FA1956A45DD7717A3ED /* Build configuration list for PBXNativeTarget "MicRelayUITests" */;
+			buildPhases = (
+				F71281C12B73E4F23D370BFD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46A2D779362F8B36A286E9CE /* PBXTargetDependency */,
+			);
+			name = MicRelayUITests;
+			packageProductDependencies = (
+			);
+			productName = MicRelayUITests;
+			productReference = 88CBA9C00107199AADFA8F34 /* MicRelayUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		B40E67E86B0E92A5DBFB2ECB /* MicRelay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E4220B1093C8B27B24812CCC /* Build configuration list for PBXNativeTarget "MicRelay" */;
+			buildPhases = (
+				68F2BA98E5D8908AFD59A34F /* Sources */,
+				69A956609AC0F12C6866B421 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MicRelay;
+			packageProductDependencies = (
+			);
+			productName = MicRelay;
+			productReference = BAEAEF20AAA107377CB57217 /* MicRelay.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E4B9BD2AA9D2F34E5F81F6AA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					09B77A756A5DC13333320D57 = {
+						DevelopmentTeam = FZ35ZF3CZV;
+						ProvisioningStyle = Automatic;
+					};
+					5D26DC0192BBBF67FD92359F = {
+						DevelopmentTeam = FZ35ZF3CZV;
+						ProvisioningStyle = Automatic;
+						TestTargetID = B40E67E86B0E92A5DBFB2ECB;
+					};
+					B40E67E86B0E92A5DBFB2ECB = {
+						DevelopmentTeam = FZ35ZF3CZV;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9084834C543D3EC6545AFF91 /* Build configuration list for PBXProject "MicRelay" */;
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				ja,
+			);
+			mainGroup = D164A0C30BD93952502D1D0B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E36E63864A4708F55400CE86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B40E67E86B0E92A5DBFB2ECB /* MicRelay */,
+				09B77A756A5DC13333320D57 /* MicRelayTests */,
+				5D26DC0192BBBF67FD92359F /* MicRelayUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		69A956609AC0F12C6866B421 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				572EDB2468E3A9283F80CDA8 /* Assets.xcassets in Resources */,
+				A963391724D82F8061432C5B /* LICENSE in Resources */,
+				E2569C05BCFE10AF95DEB770 /* PrivacyInfo.xcprivacy in Resources */,
+				D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		68F2BA98E5D8908AFD59A34F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7499245142469AB60ADD50C /* AudioModePreference.swift in Sources */,
+				5A8FB1D73E6648FB98A3D258 /* BufferTuner.swift in Sources */,
+				E729398FDC4222D1DCFA4A2D /* EqualizerSettings.swift in Sources */,
+				E5AD825A7DF3EF925A319670 /* EqualizerView.swift in Sources */,
+				BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */,
+				A09CB65CF0D2ED0B6EF72223 /* LatencyModeSelector.swift in Sources */,
+				5251976D04C2918CA0A49961 /* LicenseView.swift in Sources */,
+				D4FD2EC0054610714F6F8772 /* MRRealtimeAudio.mm in Sources */,
+				1FE225C839BBA1A66ECD2214 /* MicRelayApp.swift in Sources */,
+				E50088294D8C507892BDABE1 /* MonitorModel.swift in Sources */,
+				A94D7DC24F61A268A858DA8E /* MonitorPreferences.swift in Sources */,
+				BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */,
+				6C3A200AC5BEA2BBA8FAF08C /* OutputSafety.swift in Sources */,
+				180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */,
+				4DEAE71C919DB09A6EEEB179 /* SettingsBackupView.swift in Sources */,
+				51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */,
+				E6BB94CE605A289A4C0BF060 /* ThirdPartyLicense.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F556C2B94C9377192A4853A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */,
+				9BE9862503FC774C469ADD32 /* EqualizerDSPTests.mm in Sources */,
+				F520A8AE3D1C73F5DC20026C /* LatencyModeSelectorTests.swift in Sources */,
+				837F8E44FC90FAF6296AA909 /* MonitorPreferencesTests.swift in Sources */,
+				430D478ECAB64EC972C0D2A0 /* OutputSafetyTests.swift in Sources */,
+				83B6D8AF6C03BE0D33639BAA /* SettingsBackupTests.swift in Sources */,
+				ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F71281C12B73E4F23D370BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D999BABDFCF22FB69D2FB9B /* MicRelayUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		46A2D779362F8B36A286E9CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B40E67E86B0E92A5DBFB2ECB /* MicRelay */;
+			targetProxy = 88DD07BDDCBE365C1FC3DAD2 /* PBXContainerItemProxy */;
+		};
+		7E80663EBA989110B8F57194 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B40E67E86B0E92A5DBFB2ECB /* MicRelay */;
+			targetProxy = 4E9C4883BEB088D7E71E4681 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		10ED78B2BD7AB60B09642341 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
+				INFOPLIST_FILE = MicRelay/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelay";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "MicRelay/Audio/MicRelay-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		285F20790683A802A62089BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelayUITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MicRelay;
+			};
+			name = Release;
+		};
+		6D900A4201CA99274832D7BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = FZ35ZF3CZV;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8C65419F634162E4A9A57948 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelayTests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MicRelay.app/MicRelay";
+			};
+			name = Release;
+		};
+		B06F99119585F7EB56D5894D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelayTests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MicRelay.app/MicRelay";
+			};
+			name = Debug;
+		};
+		D19C832AFD23D97500FA65FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = FZ35ZF3CZV;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		E38CE5CB216F2EAFEA62D9AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelayUITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MicRelay;
+			};
+			name = Debug;
+		};
+		EBD048B304F591B840785B25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 2;
+				INFOPLIST_FILE = MicRelay/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.ryuya-dev.MicRelay";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "MicRelay/Audio/MicRelay-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0C67C86BE17CE792DD0F89F4 /* Build configuration list for PBXNativeTarget "MicRelayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B06F99119585F7EB56D5894D /* Debug */,
+				8C65419F634162E4A9A57948 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9084834C543D3EC6545AFF91 /* Build configuration list for PBXProject "MicRelay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6D900A4201CA99274832D7BF /* Debug */,
+				D19C832AFD23D97500FA65FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E4220B1093C8B27B24812CCC /* Build configuration list for PBXNativeTarget "MicRelay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EBD048B304F591B840785B25 /* Debug */,
+				10ED78B2BD7AB60B09642341 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FAEE0FA1956A45DD7717A3ED /* Build configuration list for PBXNativeTarget "MicRelayUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E38CE5CB216F2EAFEA62D9AC /* Debug */,
+				285F20790683A802A62089BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E4B9BD2AA9D2F34E5F81F6AA /* Project object */;
+}

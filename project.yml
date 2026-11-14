@@ -1,0 +1,66 @@
+name: MicRelay
+options:
+  developmentLanguage: ja
+  bundleIdPrefix: net.ryuya-dev
+  deploymentTarget:
+    iOS: '18.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    DEVELOPMENT_TEAM: FZ35ZF3CZV
+    CODE_SIGN_STYLE: Automatic
+    CLANG_CXX_LANGUAGE_STANDARD: c++20
+    GCC_OPTIMIZATION_LEVEL: '3'
+targets:
+  MicRelay:
+    type: application
+    platform: iOS
+    sources:
+      - MicRelay
+      - path: LICENSE
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: net.ryuya-dev.MicRelay
+        TARGETED_DEVICE_FAMILY: '1,2'
+        SWIFT_OBJC_BRIDGING_HEADER: MicRelay/Audio/MicRelay-Bridging-Header.h
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        MARKETING_VERSION: '1.0.0'
+        CURRENT_PROJECT_VERSION: '2'
+    info:
+      path: MicRelay/Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleDisplayName: MicRelay
+        ITSAppUsesNonExemptEncryption: false
+        NSHumanReadableCopyright: Copyright © 2026 ryuya
+        NSMicrophoneUsageDescription: マイクの音を、この端末に接続したイヤホンでリアルタイムに聞くために使用します。音声は保存・送信しません。
+        UIBackgroundModes: [audio]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+  MicRelayTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [MicRelayTests]
+    dependencies: [{target: MicRelay}]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+  MicRelayUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [MicRelayUITests]
+    dependencies: [{target: MicRelay}]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  MicRelay:
+    build:
+      targets:
+        MicRelay: all
+    test:
+      targets: [MicRelayTests, MicRelayUITests]

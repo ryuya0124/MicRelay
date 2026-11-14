@@ -1,0 +1,174 @@
+require "json"
+require "openssl"
+require "base64"
+require "open3"
+require "shellwords"
+require "fileutils"
+
+default_platform(:ios)
+
+APP_IDENTIFIER = "net.ryuya-dev.MicRelay"
+PROJECT_ROOT = File.expand_path("..", __dir__)
+RELEASE_DIRECTORY = File.join(PROJECT_ROOT, "artifacts", "release")
+PROFILE_NAME = "MicRelay App Store"
+
+platform :ios do
+  private_lane :connect_key do
+    app_store_connect_api_key(
+      key_id: ENV.fetch("APP_STORE_CONNECT_API_KEY_ID"),
+      issuer_id: ENV.fetch("APP_STORE_CONNECT_API_ISSUER_ID"),
+      key_filepath: ENV.fetch("APP_STORE_CONNECT_API_KEY_PATH"),
+      in_house: false,
+      duration: 1200
+    )
+  end
+
+  desc "Register the Bundle ID without changing other apps or certificates"
+  lane :register_bundle do
+    connect_key
+    bundle = Spaceship::ConnectAPI::BundleId.find(APP_IDENTIFIER)
+    bundle ||= Spaceship::ConnectAPI::BundleId.create(
+      name: "MicRelay", platform: "IOS", identifier: APP_IDENTIFIER
+    )
+    UI.success("Bundle ID: #{bundle.identifier} (#{bundle.id})")
+  end
+
+  desc "Register the Bundle ID and verify the App Store Connect draft; never submit for review"
+  lane :register do
+    register_bundle
+    app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+    UI.user_error!("Create MicRelay once at https://appstoreconnect.apple.com/apps using Bundle ID #{APP_IDENTIFIER}, primary locale ja, SKU MICRELAY-IOS; Apple's API does not allow apps CREATE") unless app
+    UI.success("App Store Connect: #{app.id} / #{app.bundle_id}")
+  end
+
+  desc "Create/download this app's App Store profile using an existing local distribution identity"
+  lane :signing do
+    register_bundle
+    key = connect_key
+    identities, result = Open3.capture2("security", "find-identity", "-v", "-p", "codesigning")
+    UI.user_error!("Could not read local code signing identities") unless result.success?
+    requested_id = ENV["APPLE_DISTRIBUTION_CERTIFICATE_ID"]
+    certificates = Spaceship::ConnectAPI::Certificate.all(filter: { certificateType: "DISTRIBUTION,IOS_DISTRIBUTION" })
+    certificate = certificates.find do |candidate|
+      next false if requested_id && candidate.id != requested_id
+      x509 = OpenSSL::X509::Certificate.new(Base64.decode64(candidate.certificate_content))
+      identities.include?(OpenSSL::Digest::SHA1.hexdigest(x509.to_der).upcase) && x509.not_after > Time.now
+    end
+    UI.user_error!("An existing Apple Distribution certificate and its private key must be available in Keychain") unless certificate
+    FileUtils.mkdir_p(RELEASE_DIRECTORY)
+    sigh(
+      api_key: key, app_identifier: APP_IDENTIFIER,
+      team_id: ENV.fetch("APPLE_TEAM_ID", "FZ35ZF3CZV"), cert_id: certificate.id,
+      provisioning_name: PROFILE_NAME, ignore_profiles_with_different_name: true,
+      output_path: RELEASE_DIRECTORY, filename: "MicRelay_AppStore.mobileprovision",
+      force: false
+    )
+    File.write(File.join(RELEASE_DIRECTORY, "signing.json"), JSON.pretty_generate({
+      bundle_id: APP_IDENTIFIER, certificate_id: certificate.id, profile_name: PROFILE_NAME
+    }))
+  end
+
+  desc "Build an Apple Distribution signed Release IPA locally"
+  lane :archive do
+    signing
+    sh("cd #{Shellwords.escape(PROJECT_ROOT)} && bundle exec ruby scripts/generate_licenses.rb")
+    sh("cd #{Shellwords.escape(PROJECT_ROOT)} && xcodegen generate")
+    build_app(
+      project: File.join(PROJECT_ROOT, "MicRelay.xcodeproj"), scheme: "MicRelay",
+      configuration: "Release", clean: true, export_method: "app-store",
+      archive_path: File.join(RELEASE_DIRECTORY, "MicRelay.xcarchive"),
+      derived_data_path: File.join(PROJECT_ROOT, "build", "release"),
+      output_directory: RELEASE_DIRECTORY, output_name: "MicRelay.ipa",
+      skip_profile_detection: true,
+      xcargs: [
+        "DEVELOPMENT_TEAM=#{ENV.fetch('APPLE_TEAM_ID', 'FZ35ZF3CZV')}",
+        "CODE_SIGN_STYLE=Manual", "CODE_SIGN_IDENTITY='Apple Distribution'",
+        "PROVISIONING_PROFILE_SPECIFIER='#{PROFILE_NAME}'"
+      ].join(" "),
+      export_options: {
+        signingStyle: "manual", teamID: ENV.fetch("APPLE_TEAM_ID", "FZ35ZF3CZV"),
+        signingCertificate: "Apple Distribution",
+        provisioningProfiles: { APP_IDENTIFIER => PROFILE_NAME },
+        manageAppVersionAndBuildNumber: false, uploadSymbols: true
+      }
+    )
+  end
+
+  desc "Upload the signed IPA only; no App Review, Beta App Review, tester distribution, or release"
+  lane :upload_only do
+    key = connect_key
+    app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+    UI.user_error!("Run register first") unless app
+    upload_to_testflight(
+      api_key: key, app_identifier: APP_IDENTIFIER, apple_id: app.id,
+      ipa: File.join(RELEASE_DIRECTORY, "MicRelay.ipa"),
+      skip_submission: true, distribute_external: false, notify_external_testers: false,
+      skip_waiting_for_build_processing: false
+    )
+    status
+  end
+
+  desc "Read current app, build processing, version, and review submission states"
+  lane :status do
+    connect_key
+    app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+    UI.user_error!("App Store Connect record is missing") unless app
+    versions = app.get_app_store_versions(filter: { platform: "IOS" })
+    builds = Spaceship::ConnectAPI::Build.all(app_id: app.id, includes: "preReleaseVersion")
+    reviews = app.get_review_submissions
+    report = {
+      bundle_id: app.bundle_id, app_id: app.id, name: app.name,
+      versions: versions.map { |v| { id: v.id, version: v.version_string, state: v.app_store_state } },
+      builds: builds.map { |b| { id: b.id, number: b.version, processing_state: b.processing_state } },
+      review_submissions: reviews.map { |r| { id: r.id, state: r.state } }
+    }
+    FileUtils.mkdir_p(RELEASE_DIRECTORY)
+    File.write(File.join(RELEASE_DIRECTORY, "appstore-status.json"), JSON.pretty_generate(report))
+    UI.message(JSON.pretty_generate(report))
+  end
+
+  desc "Register, sign, archive and upload; stop before any review or distribution"
+  lane :prepare do
+    register
+    archive
+    upload_only
+  end
+end
+
+platform :ios do
+  desc "Submit build 2 to Beta App Review and distribute through external TestFlight group main; never submit App Store review"
+  lane :distribute_main do
+    key = connect_key
+    contact_path = ENV.fetch("BETA_REVIEW_CONTACT_JSON", File.join(RELEASE_DIRECTORY, "review-contact.json"))
+    contact = JSON.parse(File.read(contact_path), symbolize_names: true)
+    required = [:contact_first_name, :contact_last_name, :contact_phone, :contact_email]
+    UI.user_error!("Complete Beta App Review contact is required") unless required.all? { |field| !contact[field].to_s.empty? }
+    contact[:demo_account_required] = false
+    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
+    upload_to_testflight(
+      api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
+      app_version: "1.0.0", build_number: "2", distribute_only: true,
+      distribute_external: true, groups: ["main"], submit_beta_review: true,
+      skip_submission: false, notify_external_testers: false,
+      beta_app_review_info: contact,
+      localized_app_info: { "ja" => {
+        description: File.read(File.join(PROJECT_ROOT, "store/metadata/ja/description.txt")),
+        feedback_email: contact[:contact_email], marketing_url: "https://github.com/ryuya0124/MicRelay",
+        privacy_policy_url: "https://github.com/ryuya0124/MicRelay/blob/main/docs/PRIVACY.md"
+      } },
+      changelog: "初回テスト版。マイクの選択、イヤホン出力、ゲイン保存、6バンドEQと周波数表示、背景継続、音声モード選択、設定バックアップ・復元を確認してください。遅延は端末・接続機器により異なります。"
+    )
+    app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
+    group = app.get_beta_groups.find { |g| g.name == "main" && !g.is_internal_group }
+    UI.user_error!("External main group is missing") unless group
+    group.update(attributes: {publicLinkEnabled: true, publicLinkLimitEnabled: false}) unless group.public_link_enabled
+    group = app.get_beta_groups.find { |g| g.id == group.id }
+    File.write(File.join(RELEASE_DIRECTORY, "testflight-main.json"), JSON.pretty_generate({
+      group: group.name, external: !group.is_internal_group, public_link: group.public_link,
+      public_link_enabled: group.public_link_enabled,
+      builds: group.fetch_builds.map { |b| {id:b.id, number:b.version, beta_state:b.build_beta_detail&.external_build_state,
+        review_state:b.beta_app_review_submission&.beta_review_state} }
+    }))
+    status
+  end
+end
