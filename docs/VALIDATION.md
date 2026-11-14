@@ -56,7 +56,11 @@ Bluetooth機器、マイク付きイヤホン、別のUSBインターフェイ�
 
 コンパイル済みの日本語・英語・マイク権限文、差し込み値、日米独仏の小数点・大きな上限値の往復、入力末尾の不正文字の拒否をSwiftのユニットテストで確認。翻訳交換ツールは標準Pythonの6テストで、形式指定の不一致・空欄・古い原文を拒否し、言語追加を反映することを確認した。
 
+iPhone 17の全ユニットテストの最終記録は `artifacts/iPhone17-LocalizationUnits.xcresult`。GitHub Actionsの [Localization](https://github.com/ryuya0124/MicRelay/actions/runs/43626769294) も成功。
+
 英語ストア画像は実機iPhone 17とiPad・Duoシミュレーターで各3枚を撮影。モニター停止状態の実画面を使用し、周波数データや音声値を描き足していない。App Store Connectへの登録状態は下記の配布状態で別途記録する。
+
+App Store Connectの英語（米国・`en-US`）に説明・サブタイトル・キーワード・英語サポート/プライバシーURLを登録。iPhone・iPad・Duoの各3枚、計9枚はApple側の `COMPLETE` を確認した。確認時点でApp Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出は0件。
 
 ## 配布状態（ビルド3時点）
 

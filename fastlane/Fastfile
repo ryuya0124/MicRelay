@@ -151,12 +151,20 @@ platform :ios do
       distribute_external: true, groups: ["main"], submit_beta_review: true,
       skip_submission: false, notify_external_testers: false,
       beta_app_review_info: contact,
-      localized_app_info: { "ja" => {
-        description: File.read(File.join(PROJECT_ROOT, "store/metadata/ja/description.txt")),
-        feedback_email: contact[:contact_email], marketing_url: "https://github.com/ryuya0124/MicRelay",
-        privacy_policy_url: "https://github.com/ryuya0124/MicRelay/blob/main/docs/PRIVACY.md"
-      } },
-      changelog: "初回テスト版。マイクの選択、イヤホン出力、ゲイン保存、6バンドEQと周波数表示、背景継続、音声モード選択、設定バックアップ・復元を確認してください。遅延は端末・接続機器により異なります。"
+      localized_app_info: Dir[File.join(PROJECT_ROOT, "store/metadata/*/description.txt")].sort.to_h { |path|
+        locale = File.basename(File.dirname(path))
+        docs = locale.start_with?("en") ? "docs/en" : "docs"
+        [locale, {
+          description: File.read(path), feedback_email: contact[:contact_email],
+          marketing_url: "https://github.com/ryuya0124/MicRelay",
+          privacy_policy_url: "https://github.com/ryuya0124/MicRelay/blob/main/#{docs}/PRIVACY.md"
+        }]
+      },
+      localized_build_info: {
+        "ja" => {whats_new: "実コールバックを比較するI/Oバッファ探索と、日本語・英語表示を追加しました。マイク選択、EQ、ゲイン保存、背景継続、設定バックアップ・復元を確認してください。"},
+        "en-US" => {whats_new: "Added I/O buffer negotiation using actual callbacks and Japanese/English localization. Please test microphone selection, EQ, saved gain, background monitoring, and settings backup and restore."}
+      }
+
     )
     app = Spaceship::ConnectAPI::App.find(APP_IDENTIFIER)
     group = app.get_beta_groups.find { |g| g.name == "main" && !g.is_internal_group }
