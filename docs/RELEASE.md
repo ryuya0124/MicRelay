@@ -76,6 +76,8 @@ bundle exec fastlane ios distribute_main
 ```sh
 bundle exec ruby scripts/store_metadata.rb metadata en-US
 bundle exec ruby scripts/store_metadata.rb screenshots en-US
+bundle exec ruby scripts/store_creative.rb header en-US
+bundle exec ruby scripts/store_creative.rb search en-US
 bundle exec ruby scripts/store_metadata.rb verify en-US
 ```
 

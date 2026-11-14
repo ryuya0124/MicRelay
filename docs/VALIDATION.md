@@ -62,6 +62,8 @@ iPhone 17の全ユニットテストの最終記録は `artifacts/iPhone17-Local
 
 App Store Connectの英語（米国・`en-US`）に説明・サブタイトル・キーワード・英語サポート/プライバシーURLを登録。iPhone・iPad・Duoの各3枚、計9枚はApple側の `COMPLETE` を確認した。確認時点でApp Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出は0件。
 
+英語のヘッダーと検索結果用画像も共通の自作アセットを配置し、両方の `placement_state: ACTIVE` を確認した。英語選択中のストア画面は非公開の `artifacts/appstore-English.jpg` に保存。
+
 ## 配布状態（ビルド3時点）
 
 公開MITソース：[ryuya0124/MicRelay](https://github.com/ryuya0124/MicRelay)。App Store ConnectはアプリID `6834848400`、Bundle ID `net.ryuya-dev.MicRelay`、1.0.0（ビルド3）。Apple Distribution署名を照合済み。初回アップロードの1.0（ビルド1）は外部グループに割り当てていない。画像生成の不具合があったビルド2はmainから除外し、レイヤー付きアイコンのビルド3へ差し替えた。

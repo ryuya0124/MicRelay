@@ -2,6 +2,8 @@
 # Copyright (c) 2026 ryuya
 # Apple API: https://developer.apple.com/documentation/appstoreconnectapi/uploading-and-managing-image-assets
 KIND = ARGV.fetch(0, 'header')
+LOCALE = ARGV.fetch(1, 'ja')
+abort 'Invalid locale' unless LOCALE.match?(/\A[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*\z/)
 PLACEMENT_TYPE = {'header'=>'PRODUCT_PAGE_HEADER_ASSET', 'search'=>'APP_STORE_SEARCH_RESULTS_ASSET'}.fetch(KIND)
 require 'spaceship'
 require 'dotenv'
@@ -29,7 +31,7 @@ end
 
 app = Spaceship::ConnectAPI::App.find('net.ryuya-dev.MicRelay')
 version = app.get_app_store_versions.find { |v| v.version_string == '1.0.0' && v.app_store_state == 'PREPARE_FOR_SUBMISSION' } or abort 'Editable draft missing'
-localization = version.get_app_store_version_localizations.find { |l| l.locale == 'ja' }
+localization = version.get_app_store_version_localizations.find { |l| l.locale == LOCALE } or abort 'Localization missing; register metadata first'
 library = request('get', "apps/#{app.id}/assetLibrary")['data']['id']
 reference = request('get', 'appAssetLibraryRefData')['data'][0]['attributes']
 policy = reference['features'].find { |f| f['featureId'] == 'APP_STORE_VERSIONS' }['placementPolicies'].find { |p| p['placementType'] == PLACEMENT_TYPE }
@@ -61,4 +63,4 @@ if !placement && !placements.empty?
   placements.each { |p| request('delete', "appAssetLibraryPlacements/#{p['id']}") }
 end
 placement ||= request('post', 'appAssetLibraryPlacements', data: {type:'appAssetLibraryPlacements', attributes: {placementType:PLACEMENT_TYPE, placementGroup:'DEFAULT_PROFILE'}, relationships: {image: {data: {type:'appAssetLibraryImages', id:image['id']}}, appStoreVersionLocalization: {data:{type:'appStoreVersionLocalizations', id:localization.id}}}})['data']
-puts JSON.pretty_generate({image_id:image['id'], image_state:image['attributes']['state'], placement_id:placement['id'], placement_state:placement['attributes']['state']})
+puts JSON.pretty_generate({locale:LOCALE, kind:KIND, image_id:image['id'], image_state:image['attributes']['state'], placement_id:placement['id'], placement_state:placement['attributes']['state']})
