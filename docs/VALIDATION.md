@@ -32,7 +32,7 @@
 
 FIIO KA13を接続したiPadで、1〜8フレームの要求成功時も以前の実バッファが残ることを確認。要求を小さくするだけでは下限を確認できないため、実コールバックと処理量を比較する探索へ変更した。本体マイク・EQ ONのまま16フレーム / 48 kHz（I/O 0.333 ms）で動作した。入出力のOS報告値は標準で1.292 / 0.292 ms、測定で0.292 / 16.792 msだった。ユーザーの変更前の外部測定約47 msに対する再測定は未完了。[条件・比較・EQの遅延](LATENCY.md)に記録。
 
-`artifacts/iPad-Latency4.xcresult` と `artifacts/iPhone17-Latency4.xcresult` で、ユニットと実マイク・背景継続・EQスペクトラム・ライセンス・安全な初期状態のUIテストが成功。512・1024・2048のフォールバック候補と観測処理量の検証を追加した版は `artifacts/iPhone17-Latency4-Final.xcresult` が成功。iPad実機での最終版の再確認は、端末ロックのため未完了。
+`artifacts/iPad-Latency4.xcresult` と `artifacts/iPhone17-Latency4.xcresult` で、ユニットと実マイク・背景継続・EQスペクトラム・ライセンス・安全な初期状態のUIテストが成功。512・1024・2048のフォールバック候補と観測処理量の検証を追加した版は `artifacts/iPhone17-Latency4-Final.xcresult` が成功。iPad実機の後続確認はビルド5の記録を参照。
 
 ## ゲーム併用
 
@@ -56,6 +56,8 @@ OSが `AVAudioSession.Port.HDMI` として報告する出力を、追加のイ�
 
 `artifacts/iPhone17-HDMI5.xcresult` でユニットテストと日英5画面・安全な初期状態のUIテストが成功。HDMI単独、接続先UIDが異なるHDMI、イヤホンとの混在、許可していない本体スピーカー・AirPlayとの混在を判定テストで確認した。日英の案内・マイク権限文・ストア説明も更新。HDMI機器は接続できないため、HDMI実機の音声出力・切断・遅延は未検証。
 
+iPad実機のロック解除後、`artifacts/iPad-HDMI5-Final.xcresult` で29ユニットテストと実マイク・バックグラウンド継続のUIテストが成功。FIIO KA13＋本体マイク＋保存済みEQ ONで、標準モード・48 kHz・実コールバック16フレーム / I/O 0.333 msを確認。追加の66秒間に3,135,664フレームを処理し、新たな欠落0・音声エラー0だった。保存済みゲイン・上限・EQの値を前後比較し、維持したことも確認した。これはHDMI試験や音響総遅延の測定ではない。
+
 ## 多言語表示
 
 日本語・英語の146項目（アプリ145、マイク権限説明1）をString Catalogで管理。iPad・Duoシミュレーターの `artifacts/iPad-Localization.xcresult` / `artifacts/Duo-Localization.xcresult` で、日英それぞれのメイン・EQ・ゲイン入力エラー・ライセンス・バックアップ画面が成功。iPhone 17実機の同じ5画面は `artifacts/iPhone17-LocalizationFinal.xcresult` が成功（ゲイン入力エラーのUI操作はシミュレーターで確認）。日英の画面キャプチャも保存して目視確認した。
@@ -77,6 +79,12 @@ App Store Connectの英語（米国・`en-US`）に説明・サブタイトル�
 ビルド3のBeta App Reviewを取り下げ、外部グループmainから除外。ビルド4だけをmainへ割り当て、Beta App Reviewへ提出した。確認時点は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。TestFlightの説明・テスト項目も `ja` / `en-US` の両方を読み戻して確認した。公開リンクは [main](https://testflight.apple.com/join/57HvuCWz) のままで、外部インストールは承認後に可能となる。
 
 App Store本体の下書きにもビルド4を選択。`PREPARE_FOR_SUBMISSION` / `MANUAL`、App Review提出0件をAPIで再確認した。英語ストア情報と画像は保存済みで、App Store本体の審査提出・公開は行っていない。非公開の確認記録は `artifacts/bilingual-release-final.json`。
+
+## 配布状態（ビルド5・HDMI対応）
+
+Apple Distribution署名を検証した1.0.0（ビルド5）をFastlaneでアップロードし、Apple側の `VALID` を確認。ビルド4のBeta App Reviewを取り下げてmainから外し、ビルド5だけを外部mainへ割り当て、Beta App Reviewに提出した。状態は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。日英の説明とテスト項目を確認した。
+
+App Store本体はビルド5を選択した `PREPARE_FOR_SUBMISSION` / `MANUAL` の下書きで、App Review提出0件。日英のストア説明・キーワードもHDMI対応へ更新。IPA SHA-256：`5648b599f8d769b61b37a831b53bf13c3e4f9f9012ac9623e873d967841c08a0`。非公開の確認記録は `artifacts/hdmi-release-final.json`、画面は `artifacts/testflight-main-build5.jpg`。
 
 ## 配布状態（ビルド3時点）
 
