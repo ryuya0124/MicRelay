@@ -147,7 +147,7 @@ platform :ios do
     contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
     upload_to_testflight(
       api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
-      app_version: "1.0.0", build_number: "2", distribute_only: true,
+      app_version: "1.0.0", build_number: "2", app_platform: "ios", distribute_only: true,
       distribute_external: true, groups: ["main"], submit_beta_review: true,
       skip_submission: false, notify_external_testers: false,
       beta_app_review_info: contact,
@@ -166,7 +166,7 @@ platform :ios do
     File.write(File.join(RELEASE_DIRECTORY, "testflight-main.json"), JSON.pretty_generate({
       group: group.name, external: !group.is_internal_group, public_link: group.public_link,
       public_link_enabled: group.public_link_enabled,
-      builds: group.fetch_builds.map { |b| {id:b.id, number:b.version, beta_state:b.build_beta_detail&.external_build_state,
+      builds: group.fetch_builds.map { |item| b = Spaceship::ConnectAPI::Build.get(build_id: item.id, includes: "buildBetaDetail,betaAppReviewSubmission,preReleaseVersion"); {id:b.id, number:b.version, beta_state:b.build_beta_detail&.external_build_state,
         review_state:b.beta_app_review_submission&.beta_review_state} }
     }))
     status

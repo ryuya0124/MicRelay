@@ -78,3 +78,5 @@ Debugビルドは停止時・バックグラウンド復帰時にアプリ内 `D
 - [高品質Bluetooth録音の遅延に関する注意](https://developer.apple.com/documentation/avfaudio/avaudiosession/categoryoptions-swift.struct/bluetoothhighqualityrecording)
 
 [サポート](docs/SUPPORT.md) / [プライバシーポリシー](docs/PRIVACY.md)
+
+外部TestFlight： [mainへ参加](https://testflight.apple.com/join/57HvuCWz)（初回Beta App Reviewの承認後にインストール可能）。

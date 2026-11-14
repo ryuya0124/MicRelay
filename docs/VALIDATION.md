@@ -36,8 +36,18 @@
 
 標準SwiftUIのFormを採用。広いiPadとDuo横向きでは2列、狭い幅は1列。専用iPhone DuoシミュレーターをDevice HubでClosed / Open / Partially Open / Rotate / Closedと操作し、画面幅だけの模擬試験とは別に確認。ライト・ダークに追従。ストア用には実機iPhone・iPadとネイティブDuoのキャプチャを使用。
 
-FastlaneでApple Distribution署名のReleaseアーカイブ・IPAを作成。Releaseでは数値診断ファイルの保存や自動検証の起動処理を含めない。
+FastlaneでApple Distribution署名のReleaseアーカイブ・IPAを作成。最終ゲイン初期値200%と旧設定の維持は `artifacts/iPad-Gain200.xcresult` の21ユニットテストが成功。
+
+Releaseでは数値診断ファイルの保存や自動検証の起動処理を含めない。
 
 ## 残る確認
 
 Bluetooth機器、マイク付きイヤホン、別のUSBインターフェイス、実機Duo、通話・アラーム・各種ゲームでの割り込み、長時間・高負荷運転、音響ループバックによる総遅延は未確認。ファイルピッカーのクラウドストレージごとの保存・復元は未確認（JSON形式の入出力・検証はテスト済み）。
+
+## 配布状態
+
+公開MITソース：[ryuya0124/MicRelay](https://github.com/ryuya0124/MicRelay)。App Store ConnectはアプリID `6834848400`、Bundle ID `net.ryuya-dev.MicRelay`、1.0.0（ビルド2）。Apple Distribution署名を照合済み。初回アップロードの1.0（ビルド1）は外部グループに割り当てていない。
+
+外部TestFlight [main](https://testflight.apple.com/join/57HvuCWz) へビルド2を割り当て、Beta App Reviewに提出。確認時点は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。App Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出なし、手動リリースのまま。
+
+ストアのiPhone3枚・iPad3枚・Duo2枚はApple側で `COMPLETE`。日本語説明・サブタイトル・キーワード・サポート/プライバシーURL・年齢区分申告・ユーティリティ/ミュージック分類・自作アイコンとヘッダー/検索用画像を登録。IPA SHA-256：`e3a40ca4fff6c539ad32e3ea8036ac7d53a7b5323d93f51c9927db65d1df0853`。
