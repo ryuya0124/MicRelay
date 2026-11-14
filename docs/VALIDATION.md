@@ -107,3 +107,9 @@ App Store本体はビルド5を選択した `PREPARE_FOR_SUBMISSION` / `MANUAL` 
 iPadシミュレーターで日英の帯域フィルター画面と、日英の風切り音低減ON/OFF・周波数調整・再ON後の値の維持を確認。記録は `artifacts/iPad-Wind6-UI.xcresult`（帯域2件成功）、`artifacts/iPad-Wind6-UI-Final.xcresult`（風切り音2件成功）。前者の風切り音UIテストはスイッチではなく行中央をタップして失敗したため、実際のスイッチ位置をタップするテストへ修正し、後者で成功した。日英156項目と翻訳交換ツール6テストも成功。
 
 ビルド6の実機確認はユーザーの「実機は後で」という指示に従い延期。新フィルターの実マイク音・風音・背景継続・音響総遅延は未検証。シミュレーターと決定的な信号処理テストの結果を、実機音声の確認済みという意味では使わない。
+
+## 配布状態（ビルド6・帯域フィルターと風切り音低減）
+
+Apple Distribution署名を検証した1.0.0（ビルド6）をFastlaneでアップロードし、Apple側の `VALID` を確認。ビルド5のBeta App Reviewを取り下げてmainから外し、ビルド6だけを外部mainへ割り当てた。状態は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。日英のBeta説明・テスト項目とストア説明・キーワードを読み戻して確認した。外部インストールはAppleのBeta承認後。
+
+App Store本体はビルド6を選択した `PREPARE_FOR_SUBMISSION` / `MANUAL` の下書きで、App Review提出0件。IPA SHA-256：`816a6bc977a141bf9548eee3ffd7213dcd02890d94b53991d09ae0d2897d8ff8`。非公開の確認記録は `artifacts/wind-release-final.json`、画面は `artifacts/testflight-main-build6.jpg`。実装コミット `02b600b` の [Localization CI](https://github.com/ryuya0124/MicRelay/actions/runs/43635470010) も成功。
