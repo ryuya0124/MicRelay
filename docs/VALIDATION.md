@@ -32,7 +32,7 @@
 
 FIIO KA13を接続したiPadで、1〜8フレームの要求成功時も以前の実バッファが残ることを確認。要求を小さくするだけでは下限を確認できないため、実コールバックと処理量を比較する探索へ変更した。本体マイク・EQ ONのまま16フレーム / 48 kHz（I/O 0.333 ms）で動作した。入出力のOS報告値は標準で1.292 / 0.292 ms、測定で0.292 / 16.792 msだった。ユーザーの変更前の外部測定約47 msに対する再測定は未完了。[条件・比較・EQの遅延](LATENCY.md)に記録。
 
-`artifacts/iPad-Latency4.xcresult` と `artifacts/iPhone17-Latency4.xcresult` で、ユニットと実マイク・背景継続・EQスペクトラム・ライセンス・安全な初期状態のUIテストが成功。512・1024・2048のフォールバック候補と観測処理量の検証を追加した版は `artifacts/iPhone17-Latency4-Final.xcresult` が成功し、iPadの最終確認は端末ロック解除待ち。
+`artifacts/iPad-Latency4.xcresult` と `artifacts/iPhone17-Latency4.xcresult` で、ユニットと実マイク・背景継続・EQスペクトラム・ライセンス・安全な初期状態のUIテストが成功。512・1024・2048のフォールバック候補と観測処理量の検証を追加した版は `artifacts/iPhone17-Latency4-Final.xcresult` が成功。iPad実機での最終版の再確認は、端末ロックのため未完了。
 
 ## ゲーム併用
 
@@ -63,6 +63,14 @@ iPhone 17の全ユニットテストの最終記録は `artifacts/iPhone17-Local
 App Store Connectの英語（米国・`en-US`）に説明・サブタイトル・キーワード・英語サポート/プライバシーURLを登録。iPhone・iPad・Duoの各3枚、計9枚はApple側の `COMPLETE` を確認した。確認時点でApp Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出は0件。
 
 英語のヘッダーと検索結果用画像も共通の自作アセットを配置し、両方の `placement_state: ACTIVE` を確認した。英語選択中のストア画面は非公開の `artifacts/appstore-English.jpg` に保存。
+
+## 配布状態（ビルド4・更新後）
+
+1.0.0（ビルド4）はApple Distribution署名を検証し、Fastlaneでアップロード。Apple側の `VALID` を確認した。IPAには日本語・英語の `.lproj` とローカライズ済み権限文を同梱。IPA SHA-256：`9a2e9a7ff4b14e0369c96ed3820f529f262dd58b924cec1022d7db7239a94432`。
+
+ビルド3のBeta App Reviewを取り下げ、外部グループmainから除外。ビルド4だけをmainへ割り当て、Beta App Reviewへ提出した。確認時点は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。TestFlightの説明・テスト項目も `ja` / `en-US` の両方を読み戻して確認した。公開リンクは [main](https://testflight.apple.com/join/57HvuCWz) のままで、外部インストールは承認後に可能となる。
+
+App Store本体の下書きにもビルド4を選択。`PREPARE_FOR_SUBMISSION` / `MANUAL`、App Review提出0件をAPIで再確認した。英語ストア情報と画像は保存済みで、App Store本体の審査提出・公開は行っていない。非公開の確認記録は `artifacts/bilingual-release-final.json`。
 
 ## 配布状態（ビルド3時点）
 
