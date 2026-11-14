@@ -42,9 +42,9 @@ enum BackupError: LocalizedError {
     case version, values, size
     var errorDescription: String? {
         switch self {
-        case .version: return "このバックアップ形式・バージョンには対応していません。"
-        case .values: return "設定値が正しくないため復元できません。"
-        case .size: return "バックアップファイルが大きすぎます。"
+        case .version: return String(localized: "backup.error.version", defaultValue: "このバックアップ形式・バージョンには対応していません。")
+        case .values: return String(localized: "backup.error.values", defaultValue: "設定値が正しくないため復元できません。")
+        case .size: return String(localized: "backup.error.size", defaultValue: "バックアップファイルが大きすぎます。")
         }
     }
 }

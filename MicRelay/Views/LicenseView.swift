@@ -26,10 +26,10 @@ struct LicenseView: View {
                 NavigationLink("MIT License · Copyright © 2026 ryuya") {
                     LicenseTextView(title: "MicRelay", text: license)
                 }
-                Link("GitHub ソースコード", destination: URL(string: "https://github.com/ryuya0124/MicRelay")!)
+                Link(String(localized: "licenses.github", defaultValue: "GitHub ソースコード"), destination: URL(string: "https://github.com/ryuya0124/MicRelay")!)
             }
-            Section("実行時のフレームワーク") {
-                Text("SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundationなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。")
+            Section(String(localized: "licenses.frameworks", defaultValue: "実行時のフレームワーク")) {
+                Text(String(localized: "licenses.frameworks_help", defaultValue: "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundationなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"))
                     .font(.footnote)
             }
             Section {
@@ -39,18 +39,18 @@ struct LicenseView: View {
                     } label: {
                         VStack(alignment: .leading, spacing: 5) {
                             Text(dependency.name + " " + dependency.version)
-                            Text(dependency.licenses.isEmpty ? "ライセンス本文参照" : dependency.licenses.joined(separator: " / "))
+                            Text(dependency.licenses.isEmpty ? String(localized: "licenses.see_text", defaultValue: "ライセンス本文参照") : dependency.licenses.joined(separator: " / "))
                                 .font(.caption).foregroundStyle(.secondary)
                         }
                     }
                 }
             } header: {
-                Text("開発・署名ツールの依存関係（\(dependencies.count)件）")
+                Text(String(localized: "licenses.dependencies", defaultValue: "開発・署名ツールの依存関係（\(dependencies.count)件）"))
             } footer: {
-                Text("Fastlane・Bundlerなどの開発用パッケージです。アプリの音声処理には組み込まれていません。各項目に著作権表記とライセンス本文を収録しています。")
+                Text(String(localized: "licenses.dependencies_help", defaultValue: "Fastlane・Bundlerなどの開発用パッケージです。アプリの音声処理には組み込まれていません。各項目に著作権表記とライセンス本文を収録しています。"))
             }
         }
-        .navigationTitle("ライセンス")
+        .navigationTitle(String(localized: "licenses.title", defaultValue: "ライセンス"))
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("licensesScreen")
         .navigationDestination(isPresented: $showsRequestedDependency) {

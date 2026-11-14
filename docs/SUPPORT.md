@@ -1,5 +1,7 @@
 # MicRelay サポート
 
+[English](en/SUPPORT.md)
+
 [使い方](../README.md) / [プライバシーポリシー](PRIVACY.md) / [ライセンス](../THIRD_PARTY_NOTICES.md)
 
 1. イヤホンを接続し「接続とマイクを更新」でマイクを許可します。

@@ -39,8 +39,28 @@ enum MonitorPreferences {
         value.isFinite ? min(limit, max(0, value)) : min(0.5, limit)
     }
 
-    static func percentLabel(_ gain: Double) -> String {
+    static func percentLabel(_ gain: Double, locale: Locale = .current) -> String {
         let percent = gain * 100
-        return String(format: percent >= 1_000_000 ? "%.4g%%" : "%.0f%%", percent)
+        return String(format: percent >= 1_000_000 ? "%.4g%%" : "%.0f%%", locale: locale, percent)
+    }
+
+    static func gainLimitInput(_ limit: Double, locale: Locale = .current) -> String {
+        String(format: "%.12g", locale: locale, limit * 100)
+    }
+
+    static func parseGainLimit(_ text: String, locale: Locale = .current) -> Double? {
+        let value = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        let formatter = NumberFormatter()
+        formatter.locale = locale
+        formatter.numberStyle = .decimal
+        formatter.isLenient = false
+        var parsed: AnyObject?
+        let length = (value as NSString).length
+        var range = NSRange(location: 0, length: length)
+        guard (try? formatter.getObjectValue(&parsed, for: value, range: &range)) != nil,
+              range.location == 0, range.length == length,
+              let number = (parsed as? NSNumber)?.doubleValue,
+              number.isFinite, number > 0 else { return nil }
+        return number
     }
 }

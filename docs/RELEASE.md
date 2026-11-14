@@ -70,3 +70,13 @@ bundle exec fastlane ios distribute_main
 ユーザーから外部TestFlight公開の指示を受けたため追加した別laneです。`artifacts/release/review-contact.json`（または `BETA_REVIEW_CONTACT_JSON`）から非公開の審査連絡先を読み、処理済みビルド4を外部グループ `main` に割り当て、Beta App Reviewへ提出します。mainは公開リンクを利用します。Appleの承認までは外部インストールできません。App Store本体の審査には提出しません。連絡先・署名・診断ファイルはコミットしません。
 
 ストアの日本語説明・サブタイトル・キーワードは `store/metadata/ja/`、実画面の画像は `store/screenshots/ja/`、自作ヘッダーは `store/header/` にあります。`scripts/store_metadata.rb metadata` は下書きメタデータのみ更新します。`screenshots` は画像をアップロード、`attach` は処理済みビルドを下書きへ選択します。いずれもApp Store Review提出は行いません。
+
+英語（米国）は `store/metadata/en-US/` と `store/screenshots/en-US/`、英語のサポートとプライバシー文書は `docs/en/` にあります。言語コードを第2引数に指定できます。
+
+```sh
+bundle exec ruby scripts/store_metadata.rb metadata en-US
+bundle exec ruby scripts/store_metadata.rb screenshots en-US
+bundle exec ruby scripts/store_metadata.rb verify en-US
+```
+
+英語スクリーンショットは `MicRelayUITests/testEnglishStoreScreenshots` で撮影し、`xcresulttool export attachments` の出力から `swift scripts/export-localized-screenshots.swift en-US <iphone|ipad|duo> <出力ディレクトリ>` で書き出せます。実画面を使用し、波形・スペクトラム・遅延値を合成しません。英語ローカライズの追加は、配信地域やApp Store本体の審査・公開を変更しません。

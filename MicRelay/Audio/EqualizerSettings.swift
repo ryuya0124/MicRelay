@@ -8,10 +8,10 @@ enum EqualizerFilter: Int, Codable, CaseIterable, Identifiable {
     var id: Int { rawValue }
     var title: String {
         switch self {
-        case .peak: return "増減"
-        case .notch: return "ノッチ（帯域除去）"
-        case .highPass: return "ローカット"
-        case .lowPass: return "ハイカット"
+        case .peak: return String(localized: "eq.gain", defaultValue: "増減")
+        case .notch: return String(localized: "eq.filter.notch", defaultValue: "ノッチ（帯域除去）")
+        case .highPass: return String(localized: "eq.filter.high_pass", defaultValue: "ローカット")
+        case .lowPass: return String(localized: "eq.filter.low_pass", defaultValue: "ハイカット")
         }
     }
 }

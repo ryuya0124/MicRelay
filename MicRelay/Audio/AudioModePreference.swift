@@ -5,7 +5,7 @@ enum AudioModePreference: String, Codable, CaseIterable, Identifiable {
     case automatic, standard, measurement
     var id: String { rawValue }
     var title: String {
-        switch self { case .automatic: return "自動"; case .standard: return "標準"; case .measurement: return "測定" }
+        switch self { case .automatic: return String(localized: "audio.mode.automatic", defaultValue: "自動"); case .standard: return String(localized: "audio.mode.standard", defaultValue: "標準"); case .measurement: return String(localized: "audio.mode.measurement", defaultValue: "測定") }
     }
     var sessionMode: AVAudioSession.Mode { self == .measurement ? .measurement : .default }
     static func load(in defaults: UserDefaults = .standard) -> Self {

@@ -7,8 +7,79 @@ import UIKit
 final class MicRelayUITests: XCTestCase {
     override func setUpWithError() throws { continueAfterFailure = false }
 
-    func testLaunchAndSafeDefault() {
+
+    private var japaneseArguments: [String] { ["-AppleLanguages", "(ja)", "-AppleLocale", "ja_JP"] }
+    private func japaneseApp() -> XCUIApplication {
         let app = XCUIApplication()
+        app.launchArguments = japaneseArguments
+        return app
+    }
+
+    func testEnglishLocalizationAcrossScreens() {
+        checkLocalizedScreens(language: "en", locale: "en_US", start: "Start monitoring", initial: "Connect headphones to get started",
+            equalizer: "Equalizer", bypass: "EQ OFF · Filters bypassed", gain: "Gain limit", save: "Save",
+            invalid: "Enter a valid number greater than zero.", licenses: "Licenses", backup: "Backup and restore", export: "Export settings")
+    }
+
+    func testJapaneseLocalizationAcrossScreens() {
+        checkLocalizedScreens(language: "ja", locale: "ja_JP", start: "モニターを開始", initial: "イヤホンを接続して始めましょう",
+            equalizer: "イコライザー", bypass: "EQ OFF · フィルターをバイパス", gain: "ゲイン上限", save: "保存",
+            invalid: "0より大きい有効な数値を入力してください。", licenses: "ライセンス", backup: "バックアップと復元", export: "設定を書き出す")
+    }
+
+    private func checkLocalizedScreens(language: String, locale: String, start: String, initial: String,
+        equalizer: String, bypass: String, gain: String, save: String, invalid: String, licenses: String, backup: String, export: String) {
+        let app = XCUIApplication()
+        let arguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale]
+        app.launchArguments = arguments
+        app.launch()
+        XCTAssertTrue(app.buttons["monitorToggle"].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.buttons["monitorToggle"].label, start)
+        XCTAssertEqual(app.staticTexts["monitorStatus"].label, initial)
+        screenshot("localization-\(language)-monitor")
+        app.terminate()
+
+        app.launchArguments = arguments + ["--show-equalizer"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[equalizer].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.staticTexts[bypass].exists)
+        screenshot("localization-\(language)-equalizer")
+        app.terminate()
+
+        app.launchArguments = arguments + ["--show-gain-settings"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[gain].waitForExistence(timeout: 10))
+        let input = app.textFields["gainLimitInput"]
+        XCTAssertTrue(input.waitForExistence(timeout: 5))
+        XCTAssertEqual(app.buttons["saveGainLimit"].label, save)
+        #if targetEnvironment(simulator)
+        input.tap()
+        let old = input.value as? String ?? ""
+        input.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: old.count) + "0")
+        app.buttons["saveGainLimit"].tap()
+        XCTAssertTrue(app.staticTexts[invalid].waitForExistence(timeout: 5))
+        screenshot("localization-\(language)-gain-error")
+        #else
+        screenshot("localization-\(language)-gain")
+        #endif
+        app.terminate()
+
+        app.launchArguments = arguments + ["--show-licenses"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[licenses].waitForExistence(timeout: 10))
+        screenshot("localization-\(language)-licenses")
+        app.terminate()
+
+        app.launchArguments = arguments + ["--show-backup"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[backup].waitForExistence(timeout: 10))
+        XCTAssertEqual(app.buttons["exportSettings"].label, export)
+        screenshot("localization-\(language)-backup")
+        app.terminate()
+    }
+
+    func testLaunchAndSafeDefault() {
+        let app = japaneseApp()
         app.launch()
         XCTAssertTrue(app.staticTexts["MicRelay"].waitForExistence(timeout: 10))
         XCTAssertTrue(app.buttons["monitorToggle"].exists)
@@ -22,8 +93,8 @@ final class MicRelayUITests: XCTestCase {
     }
 
     func testLiveMicrophoneAndBackground() throws {
-        let app = XCUIApplication()
-        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--expand-diagnostics", "--automatic-mode"]
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--expand-diagnostics", "--automatic-mode"]
         addUIInterruptionMonitor(withDescription: "Microphone permission") { alert in
             for title in ["許可", "Allow", "OK"] where alert.buttons[title].exists {
                 alert.buttons[title].tap(); return true
@@ -65,15 +136,15 @@ final class MicRelayUITests: XCTestCase {
     }
 
     func testDedicatedLicenseScreenAndDependencyText() {
-        let app = XCUIApplication()
-        app.launchArguments = ["--show-licenses"]
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + ["--show-licenses"]
         app.launch()
         XCTAssertTrue(app.navigationBars["ライセンス"].waitForExistence(timeout: 5))
         let dependency = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "CFPropertyList ")).firstMatch
         XCTAssertTrue(dependency.waitForExistence(timeout: 5))
         screenshot("04-dedicated-license-screen")
         app.terminate()
-        app.launchArguments = ["--show-licenses", "--show-dependency-license=CFPropertyList"]
+        app.launchArguments = japaneseArguments + ["--show-licenses", "--show-dependency-license=CFPropertyList"]
         app.launch()
         XCTAssertTrue(app.navigationBars["CFPropertyList"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts.containing(NSPredicate(format: "label CONTAINS %@", "Copyright")).firstMatch.exists)
@@ -89,8 +160,8 @@ final class MicRelayUITests: XCTestCase {
     }
 
     func testRealInputSpectrum() {
-        let app = XCUIApplication()
-        app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--show-equalizer", "--automatic-mode"]
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--show-equalizer", "--automatic-mode"]
         app.launch()
         let plot = app.otherElements["frequencySpectrum"]
         XCTAssertTrue(plot.waitForExistence(timeout: 15))
@@ -121,10 +192,22 @@ final class MicRelayUITests: XCTestCase {
         app.terminate()
     }
 
-    func testStoreScreenshots() {
+
+    func testEnglishStoreScreenshots() {
         let app = XCUIApplication()
+        for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer"]), ("store-03-gain", ["--show-gain-settings"])] {
+            app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "--store-capture"] + extra
+            app.launch()
+            XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 10))
+            screenshot(name)
+            app.terminate()
+        }
+    }
+
+    func testStoreScreenshots() {
+        let app = japaneseApp()
         for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer", "--validate-eq"]), ("store-03-gain", ["--show-gain-settings"])] {
-            app.launchArguments = [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--store-capture"] + extra
+            app.launchArguments = japaneseArguments + [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--store-capture"] + extra
             app.launch()
             Thread.sleep(forTimeInterval: 10)
             screenshot(name)

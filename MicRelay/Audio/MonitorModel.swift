@@ -19,10 +19,10 @@ struct MicrophoneChoice: Identifiable, Equatable {
 final class MonitorModel: ObservableObject {
     @Published private(set) var isRunning = false
     @Published private(set) var isStarting = false
-    @Published private(set) var status = "イヤホンを接続して始めましょう"
+    @Published private(set) var status = String(localized: "monitor.status.initial", defaultValue: "イヤホンを接続して始めましょう")
     @Published private(set) var microphones: [MicrophoneChoice] = []
     @Published private(set) var outputs: [OutputPort] = []
-    @Published private(set) var activeInput = "未使用"
+    @Published private(set) var activeInput = String(localized: "microphone.unused", defaultValue: "未使用")
     @Published private(set) var selectedInput = UserDefaults.standard.string(forKey: "selectedInput") ?? "builtin" {
         didSet { UserDefaults.standard.set(selectedInput, forKey: "selectedInput") }
     }
@@ -72,7 +72,7 @@ final class MonitorModel: ObservableObject {
     private var backgroundStartTime: TimeInterval = 0
     private var didRunDiagnostic = false
     @Published private(set) var requestedFrames: Double = 1
-    @Published private(set) var tuningNote = "自動 · 接続先の最小バッファを使用"
+    @Published private(set) var tuningNote = String(localized: "latency.tuning.initial", defaultValue: "自動 · 接続先の最小バッファを使用")
     private var tuner = BufferTuner()
     private var tuningTask: Task<Void, Never>?
     private var diagnosticFrameOverride: Double?
@@ -91,7 +91,7 @@ final class MonitorModel: ObservableObject {
     private var diagnosticAutomaticAudio = false
     private var appliedBufferRequest: Double = 1
     private var diagnosticRunID = ""
-    @Published private(set) var selectedModeLabel = "自動"
+    @Published private(set) var selectedModeLabel = String(localized: "audio.mode.automatic", defaultValue: "自動")
     @Published private(set) var modePreference = AudioModePreference.load() {
         didSet { UserDefaults.standard.set(modePreference.rawValue, forKey: "audioModePreference") }
     }
@@ -141,7 +141,7 @@ final class MonitorModel: ObservableObject {
         guard diagnosticSeconds > 0 else { return }
         Task { [weak self] in
             try? await Task.sleep(for: .seconds(diagnosticSeconds))
-            self?.stop(message: "実機音声診断が完了しました")
+            self?.stop(message: String(localized: "diagnostics.completed", defaultValue: "実機音声診断が完了しました"))
         }
         #endif
     }
@@ -154,7 +154,7 @@ final class MonitorModel: ObservableObject {
     var unconfirmedOutputs: [OutputPort] {
         outputs.filter { OutputSafety.needsConfirmation($0) && !confirmedOutputs.contains($0.uid) }
     }
-    var outputName: String { outputs.map(\.name).joined(separator: "、") }
+    var outputName: String { ListFormatter.localizedString(byJoining: outputs.map(\.name)) }
     var isWireless: Bool { outputs.contains { [.bluetoothA2DP, .bluetoothHFP, .bluetoothLE].contains($0.type) } }
     var reportedLatency: Double { inputLatency + outputLatency + bufferDuration }
 
@@ -191,7 +191,7 @@ final class MonitorModel: ObservableObject {
         for name in [AVAudioSession.mediaServicesWereLostNotification, AVAudioSession.mediaServicesWereResetNotification] {
             observers.append(center.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in
                 Task { @MainActor [weak self] in
-                    self?.stop(message: "音声システムが再起動しました。接続を確認して開始してください。")
+                    self?.stop(message: String(localized: "monitor.status.audio_reset", defaultValue: "音声システムが再起動しました。接続を確認して開始してください。"))
                     self?.refreshRoute()
                 }
             })
@@ -210,11 +210,11 @@ final class MonitorModel: ObservableObject {
 
     func confirmExternalOutput() {
         confirmedOutputs.formUnion(unconfirmedOutputs.map(\.uid))
-        status = "イヤホンを確認しました。開始できます。"
+        status = String(localized: "monitor.status.headphones_confirmed", defaultValue: "イヤホンを確認しました。開始できます。")
     }
 
     func setSpeakerEnabled(_ enabled: Bool) {
-        stop(message: enabled ? "スピーカー出力を許可しました" : "イヤホン専用に戻しました")
+        stop(message: enabled ? String(localized: "monitor.status.speaker_allowed", defaultValue: "スピーカー出力を許可しました") : String(localized: "monitor.status.headphones_only", defaultValue: "イヤホン専用に戻しました"))
         speakerEnabled = enabled
         if permissionGranted { configureOnly() }
     }
@@ -282,7 +282,7 @@ final class MonitorModel: ObservableObject {
 
     func restoreSettings(_ backup: SettingsBackup) throws -> Bool {
         let value = try backup.validated()
-        stop(message: "設定を復元しました。モニターの再開は手動です")
+        stop(message: String(localized: "monitor.status.restored", defaultValue: "設定を復元しました。モニターの再開は手動です"))
         MonitorPreferences.saveGainLimit(value.gainLimit)
         gainLimit = value.gainLimit
         gain = value.gain
@@ -297,7 +297,7 @@ final class MonitorModel: ObservableObject {
     func selectAudioMode(_ mode: AudioModePreference) {
         guard mode != modePreference else { return }
         let resume = isRunning
-        stop(message: "音声モードを変更しました")
+        stop(message: String(localized: "monitor.status.mode_changed", defaultValue: "音声モードを変更しました"))
         modePreference = mode
         selectedModeLabel = mode.title
         if resume { start() }
@@ -306,7 +306,7 @@ final class MonitorModel: ObservableObject {
     func selectInput(_ id: String) {
         guard selectedInput != id else { return }
         let resume = isRunning
-        stop(message: "マイクを切り替えました")
+        stop(message: String(localized: "monitor.status.input_changed", defaultValue: "マイクを切り替えました"))
         selectedInput = id
         if resume { start() }
         else if permissionGranted { configureOnly() }
@@ -316,7 +316,7 @@ final class MonitorModel: ObservableObject {
         let allowed = await AVAudioApplication.requestRecordPermission()
         permissionGranted = allowed
         permissionDenied = !allowed
-        if !allowed { status = "設定アプリでマイクへのアクセスを許可してください。" }
+        if !allowed { status = String(localized: "microphone.permission_required", defaultValue: "設定アプリでマイクへのアクセスを許可してください。") }
         return allowed
     }
 
@@ -343,7 +343,7 @@ final class MonitorModel: ObservableObject {
                 refreshRoute()
                 configuring = false
                 isStarting = false
-                status = canMonitor ? "準備できました" : "イヤホンの接続・確認が必要です"
+                status = canMonitor ? String(localized: "monitor.status.ready", defaultValue: "準備できました") : String(localized: "monitor.status.connection_required", defaultValue: "イヤホンの接続・確認が必要です")
                 try? session.setActive(false, options: .notifyOthersOnDeactivation)
             } catch {
                 if token == generation { fail(error) }
@@ -356,18 +356,18 @@ final class MonitorModel: ObservableObject {
         if resetTuning {
             tuner = BufferTuner()
             requestedFrames = diagnosticFrameOverride ?? 1
-            tuningNote = "自動 · 接続先の最小バッファを使用"
+            tuningNote = String(localized: "latency.tuning.initial", defaultValue: "自動 · 接続先の最小バッファを使用")
             renderedFrameOffset = 0; missedQuantumOffset = 0
             maximumInputPeak = 0; maximumOutputPeak = 0
             backgroundFrames = 0; backgroundSeconds = 0
             bufferMeasurements = []; minimumObservedFrames = nil
         }
         refreshRoute()
-        guard canStart || diagnosticHeadphones else { status = "イヤホンの接続・確認が必要です"; return }
+        guard canStart || diagnosticHeadphones else { status = String(localized: "monitor.status.connection_required", defaultValue: "イヤホンの接続・確認が必要です"); return }
         generation += 1
         let token = generation
         isStarting = true
-        status = "音声を接続中…"
+        status = String(localized: "monitor.status.connecting", defaultValue: "音声を接続中…")
         transition = Task { [weak self] in
             guard let self else { return }
             guard await requestAccess(), token == generation, !Task.isCancelled else {
@@ -384,16 +384,16 @@ final class MonitorModel: ObservableObject {
                 try validateActiveRoute()
                 let probeBuffers = (resetTuning || reprobeMinimum) && diagnosticFrameOverride == nil && !inBackground
                 if (resetTuning || reprobeMinimum) && diagnosticModeOverride == nil && preference == .automatic && !probeBuffers { try await chooseLatencyMode(token: token) }
-                selectedModeLabel = monitoringMode == .measurement ? "測定" : "標準"
+                selectedModeLabel = monitoringMode == .measurement ? String(localized: "audio.mode.measurement", defaultValue: "測定") : String(localized: "audio.mode.standard", defaultValue: "標準")
                 if probeBuffers {
                     try await chooseBufferPreference(token: token)
-                    selectedModeLabel = monitoringMode == .measurement ? "測定" : "標準"
+                    selectedModeLabel = monitoringMode == .measurement ? String(localized: "audio.mode.measurement", defaultValue: "測定") : String(localized: "audio.mode.standard", defaultValue: "標準")
                 }
                 guard !inBackground || backgroundEnabled else { stop(); return }
                 try audio.prepare(withSampleRate: session.sampleRate)
                 // Read the route again after AudioUnit initialization, before opening the gate.
                 refreshRoute()
-                guard canMonitor else { stop(message: "イヤホンが接続されていないため停止しました"); return }
+                guard canMonitor else { stop(message: String(localized: "monitor.status.no_headphones", defaultValue: "イヤホンが接続されていないため停止しました")); return }
                 updateGain()
                 applyEqualizer()
                 try audio.start()
@@ -411,7 +411,7 @@ final class MonitorModel: ObservableObject {
                 tuner.didStart(now: ProcessInfo.processInfo.systemUptime, actualFrames: session.ioBufferDuration * session.sampleRate,
                     minimumObservedFrames: minimumObservedFrames)
                 startTuning()
-                status = "モニター中"
+                status = String(localized: "monitor.status.running", defaultValue: "モニター中")
                 updateNowPlaying()
                 logger.info("started rate=\(self.sampleRate) buffer=\(self.bufferDuration) input=\(self.activeInput, privacy: .public) output=\(self.outputName, privacy: .public)")
                 Task { [weak self] in
@@ -517,7 +517,7 @@ final class MonitorModel: ObservableObject {
     }
 
     private func chooseBufferPreference(token: Int) async throws {
-        status = "最小I/Oを確認中…"
+        status = String(localized: "latency.tuning.probing", defaultValue: "最小I/Oを確認中…")
         let previousRequest = requestedFrames
         let previousMode = monitoringMode
         let automatic = (diagnosticAutomaticAudio || modePreference == .automatic) && diagnosticModeOverride == nil
@@ -584,7 +584,7 @@ final class MonitorModel: ObservableObject {
         try await Task.sleep(for: .milliseconds(100))
         guard token == generation, !Task.isCancelled else { throw CancellationError() }
         try validateActiveRoute()
-        tuningNote = "自動 · 実コールバックを比較して\(Int(requestedFrames))フレームを要求"
+        tuningNote = String(localized: "latency.tuning.selected", defaultValue: "自動 · 実コールバックを比較して\(Int(requestedFrames))フレームを要求")
     }
 
     private func requestBuffer(sampleRate: Double) throws {
@@ -607,7 +607,7 @@ final class MonitorModel: ObservableObject {
                 guard let self, isRunning else { return }
                 let error = audio.renderError
                 guard error == 0 || error == kAudioUnitErr_CannotDoInCurrentContext else {
-                    stop(message: "音声処理が停止しました（\(error)）。接続を確認してください。"); return
+                    stop(message: String(localized: "monitor.error.audio_stopped", defaultValue: "音声処理が停止しました（\(error)）。接続を確認してください。")); return
                 }
                 let actual = max(Double(audio.currentQuantum), session.ioBufferDuration * session.sampleRate)
                 if let next = tuner.evaluate(now: ProcessInfo.processInfo.systemUptime,
@@ -617,7 +617,7 @@ final class MonitorModel: ObservableObject {
                     retune(to: next, reprobeMinimum: reprobe)
                     return
                 } else if error != 0 {
-                    stop(message: "この接続では安定した音声入力を確保できませんでした"); return
+                    stop(message: String(localized: "monitor.error.unstable_input", defaultValue: "この接続では安定した音声入力を確保できませんでした")); return
                 }
             }
         }
@@ -634,12 +634,12 @@ final class MonitorModel: ObservableObject {
         audio.stop()
         isRunning = false
         requestedFrames = frames
-        tuningNote = "自動調整 · \(Int(frames))フレームを要求"
+        tuningNote = String(localized: "latency.tuning.adjusting", defaultValue: "自動調整 · \(Int(frames))フレームを要求")
         // Keep the audio session active, including while in the background.
         start(resetTuning: false, reprobeMinimum: reprobeMinimum)
     }
 
-    func stop(message: String = "モニターを停止しました") {
+    func stop(message: String = String(localized: "monitor.status.stopped", defaultValue: "モニターを停止しました")) {
         audio.closeGate()
         audio.analysisEnabled = false; spectrumAnalyzer.stop()
         interruptionResume = nil
@@ -667,7 +667,7 @@ final class MonitorModel: ObservableObject {
     }
 
     private func fail(_ error: Error) {
-        stop(message: "開始できませんでした：\(error.localizedDescription)")
+        stop(message: String(localized: "monitor.error.start", defaultValue: "開始できませんでした：\(error.localizedDescription)"))
         writeDiagnostics()
         #if DEBUG
         print("MicRelay diagnostic failure: \(error)")
@@ -677,7 +677,7 @@ final class MonitorModel: ObservableObject {
     private func routeChanged(reason: UInt, previousIDs: [String]) {
         if reason == AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue {
             confirmedOutputs.subtract(previousIDs)
-            stop(message: "接続が外れたため停止しました。再接続して開始してください。")
+            stop(message: String(localized: "monitor.status.disconnected", defaultValue: "接続が外れたため停止しました。再接続して開始してください。"))
             refreshRoute()
             return
         }
@@ -691,13 +691,13 @@ final class MonitorModel: ObservableObject {
             retune(to: 1)
             return
         }
-        stop(message: "音声の接続が変わったため停止しました。確認して開始してください。")
+        stop(message: String(localized: "monitor.status.route_changed", defaultValue: "音声の接続が変わったため停止しました。確認して開始してください。"))
     }
 
     private func interrupted(type: UInt, options: UInt) {
         if type == AVAudioSession.InterruptionType.began.rawValue {
             let resume = isRunning ? (runningOutputIDs, selectedInput) : nil
-            stop(message: "他のアプリの音声により中断しました")
+            stop(message: String(localized: "monitor.status.interrupted", defaultValue: "他のアプリの音声により中断しました"))
             if let resume { interruptionResume = (resume.0, resume.1) }
         } else if let resume = interruptionResume {
             interruptionResume = nil
@@ -713,12 +713,12 @@ final class MonitorModel: ObservableObject {
         outputs = session.currentRoute.outputs.map { OutputPort(uid: $0.uid, type: $0.portType, name: $0.portName) }
         // Confirmation is valid only while this exact output remains connected.
         if !configuring { confirmedOutputs.formIntersection(Set(outputs.map(\.uid))) }
-        activeInput = session.currentRoute.inputs.map(\.portName).joined(separator: "、")
-        if activeInput.isEmpty { activeInput = "未使用" }
-        var choices = [MicrophoneChoice(id: "builtin", name: "本体マイク", detail: "このiPhone / iPadのマイク", icon: "iphone")]
+        activeInput = ListFormatter.localizedString(byJoining: session.currentRoute.inputs.map(\.portName))
+        if activeInput.isEmpty { activeInput = String(localized: "microphone.unused", defaultValue: "未使用") }
+        var choices = [MicrophoneChoice(id: "builtin", name: String(localized: "microphone.built_in", defaultValue: "本体マイク"), detail: String(localized: "microphone.built_in.detail", defaultValue: "このiPhone / iPadのマイク"), icon: "iphone")]
         for port in session.availableInputs ?? [] where port.portType != .builtInMic {
             choices.append(MicrophoneChoice(id: port.uid, name: port.portName,
-                detail: port.portType == .bluetoothHFP ? "Bluetooth通話用マイク" : "外部マイク", icon: "headphones"))
+                detail: port.portType == .bluetoothHFP ? String(localized: "microphone.bluetooth.detail", defaultValue: "Bluetooth通話用マイク") : String(localized: "microphone.external.detail", defaultValue: "外部マイク"), icon: "headphones"))
         }
         microphones = choices
         sampleRate = session.sampleRate
@@ -734,7 +734,7 @@ final class MonitorModel: ObservableObject {
             backgroundStartFrame = renderedFrameOffset + audio.renderedFrames
             backgroundStartTime = ProcessInfo.processInfo.systemUptime
             meter?.invalidate(); meter = nil
-            if !backgroundEnabled { stop(message: "バックグラウンドに移ったため停止しました") }
+            if !backgroundEnabled { stop(message: String(localized: "monitor.status.background_stopped", defaultValue: "バックグラウンドに移ったため停止しました")) }
             logger.info("background monitoring=\(self.isRunning)")
         } else if phase == .active {
             if inBackground && isRunning {
@@ -748,7 +748,7 @@ final class MonitorModel: ObservableObject {
             startSpectrumIfNeeded()
             refreshRoute()
             if isRunning && (!canMonitor || (audio.renderError != 0 && audio.renderError != kAudioUnitErr_CannotDoInCurrentContext)) {
-                stop(message: "音声の接続を確認して開始してください")
+                stop(message: String(localized: "monitor.status.check_connection", defaultValue: "音声の接続を確認して開始してください"))
             }
         }
     }
@@ -828,7 +828,7 @@ final class MonitorModel: ObservableObject {
 
     private func updateNowPlaying() {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyTitle: "マイクをモニター中",
+            MPMediaItemPropertyTitle: String(localized: "now_playing.title", defaultValue: "マイクをモニター中"),
             MPMediaItemPropertyArtist: "MicRelay · \(activeInput)",
             MPNowPlayingInfoPropertyIsLiveStream: true,
             MPNowPlayingInfoPropertyPlaybackRate: 1.0
@@ -841,8 +841,8 @@ private enum MonitorError: LocalizedError {
     case noStableMode
     var errorDescription: String? {
         switch self {
-        case .inputUnavailable: return "選んだマイクまたは出力先が利用できません。接続を確認してください。"
-        case .noStableMode: return "この接続で安定する音声設定を見つけられませんでした。"
+        case .inputUnavailable: return String(localized: "monitor.error.input_unavailable", defaultValue: "選んだマイクまたは出力先が利用できません。接続を確認してください。")
+        case .noStableMode: return String(localized: "monitor.error.no_stable_mode", defaultValue: "この接続で安定する音声設定を見つけられませんでした。")
         }
     }
 }

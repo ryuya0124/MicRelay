@@ -1,0 +1,23 @@
+{
+  "sourceLanguage": "ja",
+  "strings": {
+    "NSMicrophoneUsageDescription": {
+      "comment": "System microphone permission prompt. Audio is processed locally.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイクの音を、この端末に接続したイヤホンでリアルタイムに聞くために使用します。音声は保存・送信しません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hear microphone audio through headphones connected to this device in real time. Audio is not saved or transmitted."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

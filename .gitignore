@@ -22,3 +22,4 @@ fastlane/report.xml
 fastlane/README.md
 fastlane/Preview.html
 fastlane/screenshots/
+__pycache__/

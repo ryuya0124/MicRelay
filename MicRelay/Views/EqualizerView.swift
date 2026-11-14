@@ -18,11 +18,11 @@ struct EqualizerView: View {
                     Toggle("EQ", isOn: Binding(get: { model.equalizer.enabled }, set: model.setEqualizerEnabled))
                         .font(.headline).accessibilityIdentifier("equalizerEnabled")
                     Spacer(minLength: 30)
-                    Button(model.isRunning ? "モニター停止" : "モニター開始") {
+                    Button(model.isRunning ? String(localized: "eq.action.stop", defaultValue: "モニター停止") : String(localized: "eq.action.start", defaultValue: "モニター開始")) {
                         if model.isRunning { model.stop() } else { model.start() }
                     }.buttonStyle(.bordered).disabled(model.isStarting || (!model.isRunning && !model.canStart))
                 }
-                Text(model.equalizer.enabled ? "EQ ON" : "EQ OFF · フィルターをバイパス")
+                Text(model.equalizer.enabled ? String(localized: "eq.enabled", defaultValue: "EQ ON") : String(localized: "eq.bypass", defaultValue: "EQ OFF · フィルターをバイパス"))
                     .font(.caption).foregroundStyle(model.equalizer.enabled ? Color.teal : .secondary)
                 SpectrumPlot(frame: model.spectrum, selectedFrequency: band.frequency,
                     maximumFrequency: maximumFrequency, isRunning: model.isRunning) { frequency in
@@ -30,18 +30,18 @@ struct EqualizerView: View {
                     }
                     .frame(height: 260)
                     .accessibilityElement(children: .ignore)
-                    .accessibilityLabel("入力とEQ後の周波数スペクトラム")
-                    .accessibilityValue("解析フレーム \(model.spectrumFrameCount)、ピーク \(Int(model.spectrum?.dominantFrequency ?? 0)) Hz、差分 \(spectralDifference) dB")
+                    .accessibilityLabel(String(localized: "accessibility.spectrum", defaultValue: "入力とEQ後の周波数スペクトラム"))
+                    .accessibilityValue(String(localized: "accessibility.spectrum_values", defaultValue: "解析フレーム \(model.spectrumFrameCount)、ピーク \(Int(model.spectrum?.dominantFrequency ?? 0)) Hz、差分 \(spectralDifference) dB"))
                     .accessibilityIdentifier("frequencySpectrum")
                 HStack(spacing: 20) {
-                    Label("入力", systemImage: "minus").foregroundStyle(.teal)
-                    Label("EQ後", systemImage: "minus").foregroundStyle(.orange)
+                    Label(String(localized: "audio.input", defaultValue: "入力"), systemImage: "minus").foregroundStyle(.teal)
+                    Label(String(localized: "eq.post_eq", defaultValue: "EQ後"), systemImage: "minus").foregroundStyle(.orange)
                     Spacer()
                     if let frame = model.spectrum {
-                        Text("ピーク \(frequencyLabel(frame.dominantFrequency))").monospacedDigit()
+                        Text(String(localized: "eq.peak_frequency", defaultValue: "ピーク \(frequencyLabel(frame.dominantFrequency))")).monospacedDigit()
                     }
                 }.font(.caption)
-                Text("出力ゲインをかける前のスペクトラムです。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。")
+                Text(String(localized: "eq.spectrum_help", defaultValue: "出力ゲインをかける前のスペクトラムです。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"))
                     .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
@@ -58,12 +58,12 @@ struct EqualizerView: View {
                     }
                 }
                 VStack(alignment: .leading, spacing: 18) {
-                    Toggle("バンド \(selected + 1) を使う", isOn: binding(\.enabled))
-                    Picker("フィルター", selection: binding(\.filter)) {
+                    Toggle(String(localized: "eq.enable_band", defaultValue: "バンド \(selected + 1) を使う"), isOn: binding(\.enabled))
+                    Picker(String(localized: "eq.filter.title", defaultValue: "フィルター"), selection: binding(\.filter)) {
                         ForEach(EqualizerFilter.allCases) { type in Text(type.title).tag(type) }
                     }.pickerStyle(.menu)
                     HStack {
-                        Text("周波数")
+                        Text(String(localized: "eq.frequency", defaultValue: "周波数"))
                         Spacer()
                         TextField("Hz", value: binding(\.frequency), format: .number.precision(.fractionLength(0...1)))
                             .keyboardType(.decimalPad).multilineTextAlignment(.trailing).frame(width: 110)
@@ -73,30 +73,30 @@ struct EqualizerView: View {
                     Slider(value: Binding(get: { log10(min(maximumFrequency, max(20, band.frequency))) }, set: { value in
                         model.updateEqualizerBand(selected) { $0.frequency = pow(10, value).rounded() }
                     }), in: log10(20)...log10(maximumFrequency))
-                        .accessibilityLabel("周波数")
+                        .accessibilityLabel(String(localized: "eq.frequency", defaultValue: "周波数"))
                     if band.filter == .peak {
-                        HStack { Text("増減"); Spacer(); Text(String(format: "%+.1f dB", band.gainDB)).monospacedDigit() }
-                        Slider(value: binding(\.gainDB), in: -36...24, step: 0.5).accessibilityLabel("バンドの増減")
+                        HStack { Text(String(localized: "eq.gain", defaultValue: "増減")); Spacer(); Text(String(format: "%+.1f dB", locale: Locale.current, band.gainDB)).monospacedDigit() }
+                        Slider(value: binding(\.gainDB), in: -36...24, step: 0.5).accessibilityLabel(String(localized: "eq.band_gain", defaultValue: "バンドの増減"))
                     }
-                    HStack { Text("Q（帯域の狭さ）"); Spacer(); Text(String(format: "%.2f", band.q)).monospacedDigit() }
+                    HStack { Text(String(localized: "eq.q", defaultValue: "Q（帯域の狭さ）")); Spacer(); Text(String(format: "%.2f", locale: Locale.current, band.q)).monospacedDigit() }
                     Slider(value: Binding(get: { log10(band.q) }, set: { value in
                         model.updateEqualizerBand(selected) { $0.q = pow(10, value) }
                     }), in: log10(0.2)...log10(30)).accessibilityLabel("Q")
-                    Text(band.filter == .notch ? "指定した中心周波数を強く減衰させます。Qを上げると除去する帯域が狭くなります。" : "Qを上げると、中心周波数付近の狭い範囲に作用します。")
+                    Text(band.filter == .notch ? String(localized: "eq.notch_help", defaultValue: "指定した中心周波数を強く減衰させます。Qを上げると除去する帯域が狭くなります。") : String(localized: "eq.q_help", defaultValue: "Qを上げると、中心周波数付近の狭い範囲に作用します。"))
                         .font(.caption).foregroundStyle(.secondary)
                     if band.frequency >= maximumFrequency {
-                        Text("現在の入力で扱える周波数は約\(frequencyLabel(maximumFrequency))までです。")
+                        Text(String(localized: "eq.frequency_limit", defaultValue: "現在の入力で扱える周波数は約\(frequencyLabel(maximumFrequency))までです。"))
                             .font(.caption).foregroundStyle(.orange)
                     }
                 }.padding(20).background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 20))
-                Button("フラットに戻す") { model.resetEqualizer() }.font(.footnote)
-                Text("OFF時はEQ処理を通りません。EQの設定はこの端末に保存されます。")
+                Button(String(localized: "eq.reset", defaultValue: "フラットに戻す")) { model.resetEqualizer() }.font(.footnote)
+                Text(String(localized: "eq.persistence_help", defaultValue: "OFF時はEQ処理を通りません。EQの設定はこの端末に保存されます。"))
                     .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
             }
             .padding(24).frame(maxWidth: 1000).frame(maxWidth: .infinity)
         }
         .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("イコライザー")
+        .navigationTitle(String(localized: "eq.title", defaultValue: "イコライザー"))
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { model.setSpectrumVisible(true) }
         .onDisappear { model.setSpectrumVisible(false) }
@@ -113,7 +113,7 @@ struct EqualizerView: View {
 }
 
 private func frequencyLabel(_ value: Double) -> String {
-    value >= 1000 ? String(format: "%.2g kHz", value / 1000) : String(format: "%.0f Hz", value)
+    value >= 1000 ? String(format: "%.2g kHz", locale: Locale.current, value / 1000) : String(format: "%.0f Hz", locale: Locale.current, value)
 }
 
 private struct SpectrumPlot: View {

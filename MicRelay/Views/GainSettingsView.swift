@@ -12,37 +12,36 @@ struct GainSettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("スライダーの上限") {
+                Section(String(localized: "gain.slider_limit", defaultValue: "スライダーの上限")) {
                     HStack {
-                        TextField("上限", text: $value)
+                        TextField(String(localized: "gain.maximum", defaultValue: "上限"), text: $value)
                             .keyboardType(.numbersAndPunctuation)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
                             .accessibilityIdentifier("gainLimitInput")
                         Text("%").foregroundStyle(.secondary)
                     }
-                    Text("任意の上限を入力できます。現在のゲインと上限は、この端末に保存されます。")
+                    Text(String(localized: "gain.limit_help", defaultValue: "任意の上限を入力できます。現在のゲインと上限は、この端末に保存されます。"))
                         .font(.footnote).foregroundStyle(.secondary)
                 }
                 Section {
-                    Text("音声のフルスケールを超える増幅分はクリップします。")
+                    Text(String(localized: "gain.clipping_help", defaultValue: "音声のフルスケールを超える増幅分はクリップします。"))
                         .font(.footnote).foregroundStyle(.secondary)
                     if let error { Text(error).foregroundStyle(.red).font(.footnote) }
                 }
             }
-            .navigationTitle("ゲイン上限")
+            .navigationTitle(String(localized: "gain.limit", defaultValue: "ゲイン上限"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("キャンセル") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button(String(localized: "common.cancel", defaultValue: "キャンセル")) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("保存") {
-                        let text = value.replacingOccurrences(of: ",", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-                        if let percent = Double(text), model.setGainLimit(percent: percent) { dismiss() }
-                        else { error = "0より大きい有効な数値を入力してください。" }
+                    Button(String(localized: "common.save", defaultValue: "保存")) {
+                        if let percent = MonitorPreferences.parseGainLimit(value), model.setGainLimit(percent: percent) { dismiss() }
+                        else { error = String(localized: "gain.error.invalid", defaultValue: "0より大きい有効な数値を入力してください。") }
                     }.accessibilityIdentifier("saveGainLimit")
                 }
             }
-            .onAppear { value = String(format: "%.12g", model.gainLimit * 100) }
+            .onAppear { value = MonitorPreferences.gainLimitInput(model.gainLimit) }
         }
     }
 }

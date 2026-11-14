@@ -24,41 +24,41 @@ struct SettingsBackupView: View {
     var body: some View {
         Form {
             Section {
-                Button("設定を書き出す", systemImage: "square.and.arrow.up") {
+                Button(String(localized: "backup.export", defaultValue: "設定を書き出す"), systemImage: "square.and.arrow.up") {
                     do { document = SettingsDocument(data: try model.settingsBackup().encoded()); exporting = true }
                     catch { message = error.localizedDescription }
                 }.accessibilityIdentifier("exportSettings")
-                Button("ファイルから読み込む", systemImage: "square.and.arrow.down") { importing = true }
+                Button(String(localized: "backup.import", defaultValue: "ファイルから読み込む"), systemImage: "square.and.arrow.down") { importing = true }
                     .accessibilityIdentifier("importSettings")
             } footer: {
-                Text("ゲイン・ゲイン上限・EQ・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。")
+                Text(String(localized: "backup.help", defaultValue: "ゲイン・ゲイン上限・EQ・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"))
             }
             if let candidate {
-                Section("読み込んだ設定") {
-                    LabeledContent("ゲイン", value: MonitorPreferences.percentLabel(candidate.gain))
-                    LabeledContent("ゲイン上限", value: MonitorPreferences.percentLabel(candidate.gainLimit))
-                    LabeledContent("イコライザー", value: candidate.equalizer.enabled ? "ON" : "OFF")
-                    LabeledContent("バックグラウンド", value: candidate.backgroundEnabled ? "ON" : "OFF")
-                    LabeledContent("音声モード", value: (candidate.audioMode ?? .automatic).title)
-                    LabeledContent("作成日時", value: candidate.createdAt.formatted())
-                    Text("復元時にモニターを停止します。接続されていないマイクは本体マイクへ戻します。")
+                Section(String(localized: "backup.loaded", defaultValue: "読み込んだ設定")) {
+                    LabeledContent(String(localized: "gain.title", defaultValue: "ゲイン"), value: MonitorPreferences.percentLabel(candidate.gain))
+                    LabeledContent(String(localized: "gain.limit", defaultValue: "ゲイン上限"), value: MonitorPreferences.percentLabel(candidate.gainLimit))
+                    LabeledContent(String(localized: "eq.title", defaultValue: "イコライザー"), value: candidate.equalizer.enabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
+                    LabeledContent(String(localized: "background.title", defaultValue: "バックグラウンド"), value: candidate.backgroundEnabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
+                    LabeledContent(String(localized: "audio.mode.title", defaultValue: "音声モード"), value: (candidate.audioMode ?? .automatic).title)
+                    LabeledContent(String(localized: "backup.created_at", defaultValue: "作成日時"), value: candidate.createdAt.formatted())
+                    Text(String(localized: "backup.restore_help", defaultValue: "復元時にモニターを停止します。接続されていないマイクは本体マイクへ戻します。"))
                         .font(.footnote).foregroundStyle(.secondary)
-                    Button("この設定を復元") {
+                    Button(String(localized: "backup.restore", defaultValue: "この設定を復元")) {
                         do {
                             let inputAvailable = try model.restoreSettings(candidate)
-                            message = inputAvailable ? "設定を復元しました。" : "設定を復元しました。元のマイクが利用できないため本体マイクを選びました。"
+                            message = inputAvailable ? String(localized: "backup.restored", defaultValue: "設定を復元しました。") : String(localized: "backup.restored_fallback", defaultValue: "設定を復元しました。元のマイクが利用できないため本体マイクを選びました。")
                             self.candidate = nil
                         } catch { message = error.localizedDescription }
                     }.accessibilityIdentifier("restoreSettings")
-                    Button("取り消す", role: .cancel) { self.candidate = nil }
+                    Button(String(localized: "common.discard", defaultValue: "取り消す"), role: .cancel) { self.candidate = nil }
                 }
             }
             if let message { Section { Text(message) } }
         }
-        .navigationTitle("バックアップと復元").navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(String(localized: "backup.title", defaultValue: "バックアップと復元")).navigationBarTitleDisplayMode(.inline)
         .fileExporter(isPresented: $exporting, document: document, contentType: .json, defaultFilename: "MicRelay-settings") { result in
             switch result {
-            case .success: message = "設定を書き出しました。"
+            case .success: message = String(localized: "backup.exported", defaultValue: "設定を書き出しました。")
             case .failure(let error): message = error.localizedDescription
             }
         }

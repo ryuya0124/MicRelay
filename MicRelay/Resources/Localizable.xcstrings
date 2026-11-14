@@ -1,0 +1,2504 @@
+{
+  "sourceLanguage": "ja",
+  "strings": {
+    "%": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "%lld": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "%lldk": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "EQ": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "Hz": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "MIT License · Copyright © 2026 ryuya": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "MicRelay": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "Q": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "accessibility.input_peak": {
+      "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input peak %lld dBFS"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力ピーク %lld dBFS"
+          }
+        }
+      }
+    },
+    "accessibility.input_waveform": {
+      "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microphone input waveform"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイク入力波形"
+          }
+        }
+      }
+    },
+    "accessibility.spectrum": {
+      "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input and post-EQ frequency spectrum"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力とEQ後の周波数スペクトラム"
+          }
+        }
+      }
+    },
+    "accessibility.spectrum_values": {
+      "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis frames %llu, peak %lld Hz, difference %lld dB"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解析フレーム %llu、ピーク %lld Hz、差分 %lld dB"
+          }
+        }
+      }
+    },
+    "audio.active_mode": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Active mode"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動作中のモード"
+          }
+        }
+      }
+    },
+    "audio.input": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力"
+          }
+        }
+      }
+    },
+    "audio.mode.automatic": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動"
+          }
+        }
+      }
+    },
+    "audio.mode.measurement": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measurement"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "測定"
+          }
+        }
+      }
+    },
+    "audio.mode.standard": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Standard"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "標準"
+          }
+        }
+      }
+    },
+    "audio.mode.title": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio mode"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声モード"
+          }
+        }
+      }
+    },
+    "audio.sample_rate": {
+      "comment": "Audio UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample rate"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルレート"
+          }
+        }
+      }
+    },
+    "background.enabled": {
+      "comment": "Background UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue with the screen closed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画面を閉じても続ける"
+          }
+        }
+      }
+    },
+    "background.help": {
+      "comment": "Background UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Play alongside other apps. Monitoring may be interrupted if another app uses the microphone exclusively."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "他のアプリと同時に再生します。他アプリがマイクを排他的に使う場合などは中断することがあります。"
+          }
+        }
+      }
+    },
+    "background.title": {
+      "comment": "Background UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バックグラウンド"
+          }
+        }
+      }
+    },
+    "backup.created_at": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Created"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作成日時"
+          }
+        }
+      }
+    },
+    "backup.error.size": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The backup file is too large."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バックアップファイルが大きすぎます。"
+          }
+        }
+      }
+    },
+    "backup.error.values": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The settings contain invalid values and cannot be restored."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定値が正しくないため復元できません。"
+          }
+        }
+      }
+    },
+    "backup.error.version": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This backup format or version is not supported."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このバックアップ形式・バージョンには対応していません。"
+          }
+        }
+      }
+    },
+    "backup.export": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を書き出す"
+          }
+        }
+      }
+    },
+    "backup.exported": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings exported."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を書き出しました。"
+          }
+        }
+      }
+    },
+    "backup.help": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save gain, gain limit, EQ, audio mode, background settings, and the selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmation are not restored."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲイン・ゲイン上限・EQ・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
+          }
+        }
+      }
+    },
+    "backup.import": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import from file"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルから読み込む"
+          }
+        }
+      }
+    },
+    "backup.loaded": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imported settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込んだ設定"
+          }
+        }
+      }
+    },
+    "backup.navigation": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back up and restore settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定のバックアップと復元"
+          }
+        }
+      }
+    },
+    "backup.restore": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore these settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この設定を復元"
+          }
+        }
+      }
+    },
+    "backup.restore_help": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restoring stops monitoring. If the saved microphone is unavailable, the built-in microphone is selected."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "復元時にモニターを停止します。接続されていないマイクは本体マイクへ戻します。"
+          }
+        }
+      }
+    },
+    "backup.restored": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings restored."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を復元しました。"
+          }
+        }
+      }
+    },
+    "backup.restored_fallback": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings restored. The built-in microphone was selected because the saved microphone is unavailable."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を復元しました。元のマイクが利用できないため本体マイクを選びました。"
+          }
+        }
+      }
+    },
+    "backup.title": {
+      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Backup and restore"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バックアップと復元"
+          }
+        }
+      }
+    },
+    "common.cancel": {
+      "comment": "Common UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
+          }
+        }
+      }
+    },
+    "common.discard": {
+      "comment": "Common UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discard"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取り消す"
+          }
+        }
+      }
+    },
+    "common.off": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OFF"
+          }
+        }
+      }
+    },
+    "common.on": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ON"
+          }
+        }
+      }
+    },
+    "common.save": {
+      "comment": "Common UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        }
+      }
+    },
+    "dBFS": {
+      "shouldTranslate": false,
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+    },
+    "diagnostics.audio_error": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio error"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声エラー"
+          }
+        }
+      }
+    },
+    "diagnostics.background_duration": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time in background"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景継続時間"
+          }
+        }
+      }
+    },
+    "diagnostics.background_frames": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Background frames"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景処理フレーム"
+          }
+        }
+      }
+    },
+    "diagnostics.callback": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actual callback"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実コールバック"
+          }
+        }
+      }
+    },
+    "diagnostics.completed": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On-device audio diagnostics completed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実機音声診断が完了しました"
+          }
+        }
+      }
+    },
+    "diagnostics.input_peak": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input peak"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力ピーク"
+          }
+        }
+      }
+    },
+    "diagnostics.live_summary": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input peak %lld, output peak %lld, processed frames %llu, background frames %llu, errors %d, quantum %u, sample rate %lld"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力ピーク %lld、出力ピーク %lld、処理フレーム %llu、背景フレーム %llu、エラー %d、量子 %u、サンプルレート %lld"
+          }
+        }
+      }
+    },
+    "diagnostics.missed_blocks": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Missed blocks"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "欠落ブロック"
+          }
+        }
+      }
+    },
+    "diagnostics.output_peak": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output peak"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力ピーク"
+          }
+        }
+      }
+    },
+    "diagnostics.processed_frames": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processed frames"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "処理フレーム"
+          }
+        }
+      }
+    },
+    "diagnostics.title": {
+      "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動作診断"
+          }
+        }
+      }
+    },
+    "eq.action.start": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start monitoring"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター開始"
+          }
+        }
+      }
+    },
+    "eq.action.stop": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop monitoring"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター停止"
+          }
+        }
+      }
+    },
+    "eq.band_gain": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band gain"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンドの増減"
+          }
+        }
+      }
+    },
+    "eq.bypass": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EQ OFF · Filters bypassed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EQ OFF · フィルターをバイパス"
+          }
+        }
+      }
+    },
+    "eq.enable_band": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use band %lld"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンド %lld を使う"
+          }
+        }
+      }
+    },
+    "eq.enabled": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EQ ON"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EQ ON"
+          }
+        }
+      }
+    },
+    "eq.filter.high_pass": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low cut"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ローカット"
+          }
+        }
+      }
+    },
+    "eq.filter.low_pass": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High cut"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ハイカット"
+          }
+        }
+      }
+    },
+    "eq.filter.notch": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notch (band stop)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ノッチ（帯域除去）"
+          }
+        }
+      }
+    },
+    "eq.filter.title": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルター"
+          }
+        }
+      }
+    },
+    "eq.frequency": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequency"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "周波数"
+          }
+        }
+      }
+    },
+    "eq.frequency_limit": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The current input supports frequencies up to about %@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在の入力で扱える周波数は約%@までです。"
+          }
+        }
+      }
+    },
+    "eq.gain": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "増減"
+          }
+        }
+      }
+    },
+    "eq.notch_help": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strongly attenuates the selected center frequency. A higher Q narrows the rejected band."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定した中心周波数を強く減衰させます。Qを上げると除去する帯域が狭くなります。"
+          }
+        }
+      }
+    },
+    "eq.peak_frequency": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peak %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ピーク %@"
+          }
+        }
+      }
+    },
+    "eq.persistence_help": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When off, EQ processing is bypassed. EQ settings are saved on this device."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OFF時はEQ処理を通りません。EQの設定はこの端末に保存されます。"
+          }
+        }
+      }
+    },
+    "eq.post_eq": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Post-EQ"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "EQ後"
+          }
+        }
+      }
+    },
+    "eq.q": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Q (bandwidth)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Q（帯域の狭さ）"
+          }
+        }
+      }
+    },
+    "eq.q_help": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A higher Q affects a narrower range around the center frequency."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Qを上げると、中心周波数付近の狭い範囲に作用します。"
+          }
+        }
+      }
+    },
+    "eq.reset": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset to flat"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フラットに戻す"
+          }
+        }
+      }
+    },
+    "eq.spectrum_help": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The spectrum is shown before output gain. Tap or drag the graph to adjust the selected band’s frequency."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力ゲインをかける前のスペクトラムです。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
+          }
+        }
+      }
+    },
+    "eq.title": {
+      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Equalizer"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イコライザー"
+          }
+        }
+      }
+    },
+    "gain.clipping_help": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amplification beyond audio full scale is clipped."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声のフルスケールを超える増幅分はクリップします。"
+          }
+        }
+      }
+    },
+    "gain.error.invalid": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid number greater than zero."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "0より大きい有効な数値を入力してください。"
+          }
+        }
+      }
+    },
+    "gain.limit": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain limit"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲイン上限"
+          }
+        }
+      }
+    },
+    "gain.limit_help": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter any maximum value. The current gain and maximum are saved on this device."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "任意の上限を入力できます。現在のゲインと上限は、この端末に保存されます。"
+          }
+        }
+      }
+    },
+    "gain.maximum": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maximum"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上限"
+          }
+        }
+      }
+    },
+    "gain.settings": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain limit settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲイン上限の設定"
+          }
+        }
+      }
+    },
+    "gain.slider_limit": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slider maximum"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スライダーの上限"
+          }
+        }
+      }
+    },
+    "gain.title": {
+      "comment": "Gain UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gain"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲイン"
+          }
+        }
+      }
+    },
+    "latency.help": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These values are reported by the OS, not measured microphone-to-ear latency. Bluetooth adds wireless transmission and codec latency."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OSの報告値です。耳に届くまでの実測遅延ではありません。Bluetoothは無線伝送・コーデックの遅延が加わります。"
+          }
+        }
+      }
+    },
+    "latency.io_buffer": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I/O buffer"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I/Oバッファ"
+          }
+        }
+      }
+    },
+    "latency.title": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latency"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レイテンシー"
+          }
+        }
+      }
+    },
+    "latency.tuning.adjusting": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adjusting automatically · Requested %lld frames"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動調整 · %lldフレームを要求"
+          }
+        }
+      }
+    },
+    "latency.tuning.initial": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic · Find the smallest buffer for this connection"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動 · 接続先の最小バッファを使用"
+          }
+        }
+      }
+    },
+    "latency.tuning.probing": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking the smallest I/O buffer…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最小I/Oを確認中…"
+          }
+        }
+      }
+    },
+    "latency.tuning.selected": {
+      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic · Requested %lld frames after comparing callbacks"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動 · 実コールバックを比較して%lldフレームを要求"
+          }
+        }
+      }
+    },
+    "licenses.dependencies": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Development and signing dependencies (%lld)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開発・署名ツールの依存関係（%lld件）"
+          }
+        }
+      }
+    },
+    "licenses.dependencies_help": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These packages, including Fastlane and Bundler, are development tools and are not part of the app’s audio processing. Each entry includes copyright notices and the full license text."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fastlane・Bundlerなどの開発用パッケージです。アプリの音声処理には組み込まれていません。各項目に著作権表記とライセンス本文を収録しています。"
+          }
+        }
+      }
+    },
+    "licenses.frameworks": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Runtime frameworks"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実行時のフレームワーク"
+          }
+        }
+      }
+    },
+    "licenses.frameworks_help": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This app uses Apple frameworks provided by the OS, including SwiftUI, AVFAudio, AudioToolbox, Accelerate, AVKit, MediaPlayer, and Foundation. No third-party runtime libraries are bundled."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundationなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"
+          }
+        }
+      }
+    },
+    "licenses.github": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source code on GitHub"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub ソースコード"
+          }
+        }
+      }
+    },
+    "licenses.navigation": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licenses and source code"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライセンスとソースコード"
+          }
+        }
+      }
+    },
+    "licenses.see_text": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See license text"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライセンス本文参照"
+          }
+        }
+      }
+    },
+    "licenses.title": {
+      "comment": "Licenses UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Licenses"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライセンス"
+          }
+        }
+      }
+    },
+    "microphone.bluetooth.detail": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth call microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth通話用マイク"
+          }
+        }
+      }
+    },
+    "microphone.built_in": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Built-in microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本体マイク"
+          }
+        }
+      }
+    },
+    "microphone.built_in.detail": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This iPhone or iPad’s microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このiPhone / iPadのマイク"
+          }
+        }
+      }
+    },
+    "microphone.external.detail": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "External microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部マイク"
+          }
+        }
+      }
+    },
+    "microphone.help": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the built-in microphone or a connected device’s microphone. Only microphones made available by the OS are shown."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本体マイクと、接続機器のマイクから選べます。OSが利用可能として公開するマイクを表示します。"
+          }
+        }
+      }
+    },
+    "microphone.open_settings": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow microphone in Settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定でマイクを許可"
+          }
+        }
+      }
+    },
+    "microphone.permission_required": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow microphone access in Settings."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定アプリでマイクへのアクセスを許可してください。"
+          }
+        }
+      }
+    },
+    "microphone.refresh": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refresh connections and microphones"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続とマイクを更新"
+          }
+        }
+      }
+    },
+    "microphone.section": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力マイク"
+          }
+        }
+      }
+    },
+    "microphone.unused": {
+      "comment": "Microphone UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not in use"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未使用"
+          }
+        }
+      }
+    },
+    "monitor.action.cancel": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel connection"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続をキャンセル"
+          }
+        }
+      }
+    },
+    "monitor.action.start": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start monitoring"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニターを開始"
+          }
+        }
+      }
+    },
+    "monitor.action.stop": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop monitoring"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニターを停止"
+          }
+        }
+      }
+    },
+    "monitor.connection_help": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect headphones or enable the built-in speaker."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンを接続するか、本体スピーカーを有効にしてください。"
+          }
+        }
+      }
+    },
+    "monitor.error.audio_stopped": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio processing stopped (%d). Check your connection."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声処理が停止しました（%d）。接続を確認してください。"
+          }
+        }
+      }
+    },
+    "monitor.error.input_unavailable": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected microphone or output is unavailable. Check your connection."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選んだマイクまたは出力先が利用できません。接続を確認してください。"
+          }
+        }
+      }
+    },
+    "monitor.error.no_stable_mode": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not find stable audio settings for this connection."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この接続で安定する音声設定を見つけられませんでした。"
+          }
+        }
+      }
+    },
+    "monitor.error.start": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not start: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始できませんでした：%@"
+          }
+        }
+      }
+    },
+    "monitor.error.unstable_input": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not obtain stable audio input with this connection"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この接続では安定した音声入力を確保できませんでした"
+          }
+        }
+      }
+    },
+    "monitor.gain": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitor gain"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニターゲイン"
+          }
+        }
+      }
+    },
+    "monitor.input_level": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input level"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力レベル"
+          }
+        }
+      }
+    },
+    "monitor.section": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitor"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター"
+          }
+        }
+      }
+    },
+    "monitor.state.stopped": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止中"
+          }
+        }
+      }
+    },
+    "monitor.status.audio_reset": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The audio system restarted. Check your connection and start again."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声システムが再起動しました。接続を確認して開始してください。"
+          }
+        }
+      }
+    },
+    "monitor.status.background_stopped": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped after moving to the background"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バックグラウンドに移ったため停止しました"
+          }
+        }
+      }
+    },
+    "monitor.status.check_connection": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the audio connection and start again"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声の接続を確認して開始してください"
+          }
+        }
+      }
+    },
+    "monitor.status.connecting": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting audio…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声を接続中…"
+          }
+        }
+      }
+    },
+    "monitor.status.connection_required": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect and confirm your headphones"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンの接続・確認が必要です"
+          }
+        }
+      }
+    },
+    "monitor.status.disconnected": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped because the device was disconnected. Reconnect and start again."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "接続が外れたため停止しました。再接続して開始してください。"
+          }
+        }
+      }
+    },
+    "monitor.status.headphones_confirmed": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headphones confirmed. Ready to start."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンを確認しました。開始できます。"
+          }
+        }
+      }
+    },
+    "monitor.status.headphones_only": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switched to headphones only"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホン専用に戻しました"
+          }
+        }
+      }
+    },
+    "monitor.status.initial": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect headphones to get started"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンを接続して始めましょう"
+          }
+        }
+      }
+    },
+    "monitor.status.input_changed": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microphone changed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイクを切り替えました"
+          }
+        }
+      }
+    },
+    "monitor.status.interrupted": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interrupted by another app’s audio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "他のアプリの音声により中断しました"
+          }
+        }
+      }
+    },
+    "monitor.status.mode_changed": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio mode changed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声モードを変更しました"
+          }
+        }
+      }
+    },
+    "monitor.status.no_headphones": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped because headphones are not connected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンが接続されていないため停止しました"
+          }
+        }
+      }
+    },
+    "monitor.status.ready": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "準備できました"
+          }
+        }
+      }
+    },
+    "monitor.status.restored": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings restored. Start monitoring manually."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を復元しました。モニターの再開は手動です"
+          }
+        }
+      }
+    },
+    "monitor.status.route_changed": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped because the audio connection changed. Check it and start again."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声の接続が変わったため停止しました。確認して開始してください。"
+          }
+        }
+      }
+    },
+    "monitor.status.running": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitoring"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター中"
+          }
+        }
+      }
+    },
+    "monitor.status.speaker_allowed": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speaker output enabled"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スピーカー出力を許可しました"
+          }
+        }
+      }
+    },
+    "monitor.status.stopped": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitoring stopped"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニターを停止しました"
+          }
+        }
+      }
+    },
+    "monitor.system_volume": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System volume"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム音量"
+          }
+        }
+      }
+    },
+    "monitor.volume_section": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volume and sound"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音量と音質"
+          }
+        }
+      }
+    },
+    "now_playing.title": {
+      "comment": "Now_playing UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitoring microphone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイクをモニター中"
+          }
+        }
+      }
+    },
+    "output.allow_speaker": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use built-in speaker"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本体スピーカーを使う"
+          }
+        }
+      }
+    },
+    "output.confirm_headphones": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device is headphones"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この接続先はイヤホンです"
+          }
+        }
+      }
+    },
+    "output.confirm_help": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm that the connected Bluetooth or USB device is headphones."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth・USB機器は接続先がイヤホンであることを確認してください。"
+          }
+        }
+      }
+    },
+    "output.destination": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output device"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力先"
+          }
+        }
+      }
+    },
+    "output.disconnected": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未接続"
+          }
+        }
+      }
+    },
+    "output.headphones_help": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitoring stops automatically when headphones are disconnected."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンの切断時は自動停止します。"
+          }
+        }
+      }
+    },
+    "output.select": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select output device"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力先を選択"
+          }
+        }
+      }
+    },
+    "output.speaker_help": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Feedback can occur if the microphone picks up the speaker’s sound."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スピーカーの音がマイクに入るとハウリングします。"
+          }
+        }
+      }
+    },
+    "output.title": {
+      "comment": "Output UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力"
+          }
+        }
+      }
+    },
+    "privacy.local_audio": {
+      "comment": "Privacy UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio is processed on this device. It is not recorded or transmitted."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声はこの端末内で処理します。録音・送信はしません。"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
