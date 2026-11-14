@@ -22,7 +22,7 @@ def request(method, path, body = nil)
     req.body = JSON.generate(body)
   end
   response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
-  result = JSON.parse(response.body)
+  result = response.body.to_s.empty? ? {} : JSON.parse(response.body)
   abort "Apple API #{response.code}: #{result['errors']}" unless response.code.to_i.between?(200, 299)
   result
 end
@@ -36,7 +36,7 @@ policy = reference['features'].find { |f| f['featureId'] == 'APP_STORE_VERSIONS'
 group = policy['groupLimits'].find { |g| g['groupIds'].include?('DEFAULT_PROFILE') } or abort 'Header placement unsupported'
 abort 'Header placement limit changed' unless group['maxCount'] == 1
 path = File.join(ROOT, "store/header/MicRelay-#{KIND}.png")
-name = "MicRelay #{KIND} v1"
+name = "MicRelay #{KIND} v3"
 images = request('get', "appAssetLibraries/#{library}/images?filter[category]=CREATIVE_ASSETS")['data']
 image = images.find { |i| i['attributes']['referenceName'] == name }
 unless image
@@ -57,7 +57,8 @@ abort 'Unexpected header specification' unless spec && spec['compatiblePlacement
 placements = request('get', "appStoreVersionLocalizations/#{localization.id}/placements?filter[placementType]=#{PLACEMENT_TYPE}")['data']
 placement = placements.find { |p| p.dig('relationships','image','data','id') == image['id'] }
 if !placement && !placements.empty?
-  abort 'A different header is already placed; inspect before replacing'
+  # Replace our previous draft-only artwork; the reusable image remains in Asset Library.
+  placements.each { |p| request('delete', "appAssetLibraryPlacements/#{p['id']}") }
 end
 placement ||= request('post', 'appAssetLibraryPlacements', data: {type:'appAssetLibraryPlacements', attributes: {placementType:PLACEMENT_TYPE, placementGroup:'DEFAULT_PROFILE'}, relationships: {image: {data: {type:'appAssetLibraryImages', id:image['id']}}, appStoreVersionLocalization: {data:{type:'appStoreVersionLocalizations', id:localization.id}}}})['data']
 puts JSON.pretty_generate({image_id:image['id'], image_state:image['attributes']['state'], placement_id:placement['id'], placement_state:placement['attributes']['state']})

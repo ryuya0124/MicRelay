@@ -27,6 +27,7 @@
 		BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */; };
 		BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048B12B882B5CAFCAA660AA /* MonitorView.swift */; };
 		D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */; };
+		D37FB316610FF8DD2B263E7D /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B5DC2C5C89B7151EE98BC9DC /* AppIcon.icon */; };
 		D4FD2EC0054610714F6F8772 /* MRRealtimeAudio.mm in Sources */ = {isa = PBXBuildFile; fileRef = A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */; };
 		D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D14E373F9952C1EF310111 /* BufferTunerTests.swift */; };
 		D7499245142469AB60ADD50C /* AudioModePreference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780AF3899DA7721B617ABE3 /* AudioModePreference.swift */; };
@@ -83,6 +84,7 @@
 		AB4AB63514CAEA45221EA6CF /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
 		B1B67D88328C490111931D3C /* EqualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerView.swift; sourceTree = "<group>"; };
 		B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRRealtimeAudio.h; sourceTree = "<group>"; };
+		B5DC2C5C89B7151EE98BC9DC /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelectorTests.swift; sourceTree = "<group>"; };
 		BAEAEF20AAA107377CB57217 /* MicRelay.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MicRelay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C735ADF1A37C633D8A927E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		1E9B03146DD48D8A09CD5B6B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B5DC2C5C89B7151EE98BC9DC /* AppIcon.icon */,
 				4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */,
 			);
 			path = Resources;
@@ -300,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D37FB316610FF8DD2B263E7D /* AppIcon.icon in Resources */,
 				572EDB2468E3A9283F80CDA8 /* Assets.xcassets in Resources */,
 				A963391724D82F8061432C5B /* LICENSE in Resources */,
 				E2569C05BCFE10AF95DEB770 /* PrivacyInfo.xcprivacy in Resources */,
@@ -377,7 +381,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -590,7 +594,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -16,18 +16,23 @@ targets:
     type: application
     platform: iOS
     sources:
-      - MicRelay
+      - path: MicRelay
+        excludes: [Resources/AppIcon.icon]
+      - path: MicRelay/Resources/AppIcon.icon
+        type: file
+        buildPhase: resources
       - path: LICENSE
         buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: net.ryuya-dev.MicRelay
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: '1,2'
         SWIFT_OBJC_BRIDGING_HEADER: MicRelay/Audio/MicRelay-Bridging-Header.h
         SUPPORTS_MACCATALYST: NO
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
         MARKETING_VERSION: '1.0.0'
-        CURRENT_PROJECT_VERSION: '2'
+        CURRENT_PROJECT_VERSION: '3'
     info:
       path: MicRelay/Info.plist
       properties:

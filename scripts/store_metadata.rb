@@ -55,7 +55,7 @@ when 'screenshots'
     end
   end
 when 'attach'
-  build = Spaceship::ConnectAPI::Build.all(app_id: app.id).find { |b| b.processing_state == 'VALID' && b.version == '2' && b.app_version == '1.0.0' } or abort 'Valid build 2 missing'
+  build = Spaceship::ConnectAPI::Build.all(app_id: app.id).find { |b| b.processing_state == 'VALID' && b.version == '3' && b.app_version == '1.0.0' } or abort 'Valid build 3 missing'
   version.select_build(build_id: build.id)
   puts "Selected build #{build.id} for draft. No review submission."
 when 'verify'

@@ -46,8 +46,10 @@ Bluetooth機器、マイク付きイヤホン、別のUSBインターフェイ�
 
 ## 配布状態
 
-公開MITソース：[ryuya0124/MicRelay](https://github.com/ryuya0124/MicRelay)。App Store ConnectはアプリID `6834848400`、Bundle ID `net.ryuya-dev.MicRelay`、1.0.0（ビルド2）。Apple Distribution署名を照合済み。初回アップロードの1.0（ビルド1）は外部グループに割り当てていない。
+公開MITソース：[ryuya0124/MicRelay](https://github.com/ryuya0124/MicRelay)。App Store ConnectはアプリID `6834848400`、Bundle ID `net.ryuya-dev.MicRelay`、1.0.0（ビルド3）。Apple Distribution署名を照合済み。初回アップロードの1.0（ビルド1）は外部グループに割り当てていない。画像生成の不具合があったビルド2はmainから除外し、レイヤー付きアイコンのビルド3へ差し替えた。
 
-外部TestFlight [main](https://testflight.apple.com/join/57HvuCWz) へビルド2を割り当て、Beta App Reviewに提出。確認時点は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。App Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出なし、手動リリースのまま。
+外部TestFlight [main](https://testflight.apple.com/join/57HvuCWz) へビルド3を割り当て、Beta App Reviewに提出。確認時点は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。App Store本体は `PREPARE_FOR_SUBMISSION`、App Review提出なし、手動リリースのまま。
 
-ストアのiPhone3枚・iPad3枚・Duo2枚はApple側で `COMPLETE`。日本語説明・サブタイトル・キーワード・サポート/プライバシーURL・年齢区分申告・ユーティリティ/ミュージック分類・自作アイコンとヘッダー/検索用画像を登録。IPA SHA-256：`e3a40ca4fff6c539ad32e3ea8036ac7d53a7b5323d93f51c9927db65d1df0853`。
+ストアのiPhone3枚・iPad3枚・Duo2枚はApple側で `COMPLETE`。日本語説明・サブタイトル・キーワード・サポート/プライバシーURL・年齢区分申告・ユーティリティ/ミュージック分類・自作アイコンとヘッダー/検索用画像を登録。IPA SHA-256：`8b42f61585d1ecc3d54e01b8acf495169ccc5cd03ead62cdc820c149150732cc`。
+
+アイコンはApple Icon Composer形式（2つのSVGレイヤー、屈折・ハイライト・半透明）を採用。Default / Dark / ClearLight / ClearDark / TintedLight / TintedDarkをAppleのictool 27.2で描画して確認。配布アーカイブのAssets.car内にもLight / Dark / TintableのIconImageStackと各レイヤーを確認した。旧OS向けの不透明アイコンも同梱。App Storeのプライバシー回答は「データ収集なし」の下書きで、公開前の宣誓は未実行。無料・日本1地域の提供設定を保存。

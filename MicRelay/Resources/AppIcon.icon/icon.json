@@ -1,0 +1,119 @@
+{
+  "features": [
+    "refractivity"
+  ],
+  "fill-specializations": [
+    {
+      "value": {
+        "solid": "srgb:0.04500,0.10000,0.14000,1.00000"
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "solid": "srgb:0.01200,0.03000,0.04500,1.00000"
+      }
+    },
+    {
+      "appearance": "tinted",
+      "value": {
+        "solid": "extended-gray:0.16000,1.00000"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "headphones",
+      "layers": [
+        {
+          "name": "headphones",
+          "image-name": "headphones.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.38000,0.94000,0.77000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.28000,0.85000,0.68000,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "extended-gray:1.00000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "specular": true,
+      "refractivity": {
+        "enabled": true,
+        "depth": 0.25,
+        "strength": 0.35
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.18
+      },
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.35
+      }
+    },
+    {
+      "name": "wave",
+      "layers": [
+        {
+          "name": "wave",
+          "image-name": "wave.svg",
+          "glass": true,
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.82000,1.00000,0.95000,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.90000,1.00000,0.97000,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "extended-gray:1.00000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "lighting": "individual",
+      "specular": true,
+      "refractivity": {
+        "enabled": true,
+        "depth": 0.25,
+        "strength": 0.35
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.18
+      },
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.35
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "iOS"
+    ]
+  }
+}

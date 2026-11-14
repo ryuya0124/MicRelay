@@ -55,7 +55,7 @@ xcodebuild -project MicRelay.xcodeproj -scheme MicRelay \
   -derivedDataPath build -allowProvisioningUpdates build
 ```
 
-`project.yml` がプロジェクト設定の元です。Bundle IDは所有ドメイン `ryuya-dev.net` の逆順による `net.ryuya-dev.MicRelay` です。アプリアイコンは `swift scripts/generate-icon.swift` で再生成できます。
+`project.yml` がプロジェクト設定の元です。Bundle IDは所有ドメイン `ryuya-dev.net` の逆順による `net.ryuya-dev.MicRelay` です。iOS 26以降のアイコンは `MicRelay/Resources/AppIcon.icon` の2層構成で、Liquid Glass・ダーク・Clear・Tintedに対応します。AppleのIcon Composerレンダラーによる [6種類のプレビュー](store/icon-previews/appearances.png) があります。`scripts/export-icon-previews.sh` で再生成できます。旧OS向けの不透明アイコンは `swift scripts/generate-icon.swift` で生成します。
 
 ## ソース管理・署名・App Store Connect
 
