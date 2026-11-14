@@ -147,7 +147,7 @@ platform :ios do
     required = [:contact_first_name, :contact_last_name, :contact_phone, :contact_email]
     UI.user_error!("Complete Beta App Review contact is required") unless required.all? { |field| !contact[field].to_s.empty? }
     contact[:demo_account_required] = false
-    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones or an HDMI device, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones or HDMI, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
+    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones or an HDMI device, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones or HDMI, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass, including range-based band-stop and band-pass filters with lower/upper cutoff frequencies. Wind noise reduction is an independent, adjustable fourth-order low cut with no look-ahead buffer. Settings backup/restore uses local JSON files and accepts legacy version 1 files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
     upload_to_testflight(
       api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
       app_version: "1.0.0", build_number: PROJECT_BUILD_NUMBER, app_platform: "ios", distribute_only: true,
@@ -164,8 +164,8 @@ platform :ios do
         }]
       },
       localized_build_info: {
-        "ja" => {whats_new: "HDMIをモニター出力先として許可しました。切断時は停止します。マイク選択、EQ、ゲイン保存、背景継続を確認してください。"},
-        "en-US" => {whats_new: "HDMI is now allowed as a monitor output. Monitoring stops when the output is disconnected. Please test microphone selection, EQ, saved gain, and background monitoring."}
+        "ja" => {whats_new: "バンドストップ／バンドパスと、先読みなしの風切り音低減を追加しました。周波数範囲・低域カット調整、独立したON/OFF、設定の保持と旧バックアップの読み込みを確認してください。"},
+        "en-US" => {whats_new: "Added band-stop/band-pass filters and wind rumble reduction without look-ahead buffering. Please test frequency bounds, low-cut adjustment, independent bypass switches, saved settings, and legacy backup imports."}
       }
 
     )

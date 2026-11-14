@@ -31,13 +31,14 @@ struct SettingsBackupView: View {
                 Button(String(localized: "backup.import", defaultValue: "ファイルから読み込む"), systemImage: "square.and.arrow.down") { importing = true }
                     .accessibilityIdentifier("importSettings")
             } footer: {
-                Text(String(localized: "backup.help", defaultValue: "ゲイン・ゲイン上限・EQ・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"))
+                Text(String(localized: "backup.help", defaultValue: "ゲイン・ゲイン上限・EQ・風切り音低減・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"))
             }
             if let candidate {
                 Section(String(localized: "backup.loaded", defaultValue: "読み込んだ設定")) {
                     LabeledContent(String(localized: "gain.title", defaultValue: "ゲイン"), value: MonitorPreferences.percentLabel(candidate.gain))
                     LabeledContent(String(localized: "gain.limit", defaultValue: "ゲイン上限"), value: MonitorPreferences.percentLabel(candidate.gainLimit))
                     LabeledContent(String(localized: "eq.title", defaultValue: "イコライザー"), value: candidate.equalizer.enabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
+                    LabeledContent(String(localized: "wind.title", defaultValue: "風切り音低減"), value: candidate.windNoise?.enabled == true ? "\(Int(candidate.windNoise?.cutoff ?? 120)) Hz" : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "background.title", defaultValue: "バックグラウンド"), value: candidate.backgroundEnabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "audio.mode.title", defaultValue: "音声モード"), value: (candidate.audioMode ?? .automatic).title)
                     LabeledContent(String(localized: "backup.created_at", defaultValue: "作成日時"), value: candidate.createdAt.formatted())

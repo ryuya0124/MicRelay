@@ -62,3 +62,9 @@ iPhone 17実機で、実装の `processEqualizer` を最適化ありのObjective
 音声割り込み内の最大実行時間やiPadの測定値ではない。OSのスケジューリング、入力取得、出力コピー、解析データ転送なども含まない。まとまったサンプルを処理した計算コストの目安であり、この数値を音響遅延の実測値として扱わない。非公開の記録は `artifacts/iPhone17-EQTiming.xcresult`。
 
 参考：[Apple: Audio Session Preferred Values](https://developer.apple.com/library/archive/qa/qa1631/_index.html)、[MathWorks: Group Delay and Phase Delay](https://www.mathworks.com/help/signal/ug/delay.html)。
+
+## マイクモードと風切り音低減（ビルド6）
+
+ユーザーから、iOSのマイクモードが標準のときは入力遅延が1桁ms、声の分離では約28 msになったとの観測報告を受けた。こちらで再計測した値ではなく、端末・接続・OSごとに固定の値という意味でもない。
+
+アプリの風切り音低減はOSの声の分離を使わず、2段のbiquadによる4次ButterworthハイパスをRemoteIO内で処理する。先読み・FFT待ち・再生用の追加バッファは使わない。先読みを5 ms使う方式なら原理上その5 msを待つ必要があるが、本機能にはその待ち時間はない。IIRの周波数依存の群遅延は残る。ビルド6の音響総遅延は実機確認を後回しにする指示に従い未計測で、ビルド5の11.7〜12 msを新機能ON時の値として扱わない。

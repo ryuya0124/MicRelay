@@ -5,7 +5,7 @@ Choose the built-in microphone or a headset or external microphone made availabl
 
 GAIN AND EQUALIZER
 Set monitor gain and choose the gain slider’s maximum. Your gain settings are kept after restarting the app.
-The six-band equalizer lets you adjust each band’s frequency, gain, and Q. Notch, low-cut, and high-cut filters are also available. Compare the live input and post-EQ frequency spectra while adjusting the filters. Turning EQ off bypasses filter processing.
+The six-band equalizer lets you adjust each band’s frequency, gain, and Q. Notch, low-cut, and high-cut filters are also available. Band-stop and band-pass filters let you set lower and upper frequencies to attenuate a range or pass only that range. Compare the live input and post-EQ frequency spectra while adjusting the filters. Turning EQ off bypasses filter processing.
 
 MONITORING AND DISPLAY
 Audio mode and I/O buffer settings adapt to your device and connection. You can also choose Automatic, Standard, or Measurement mode manually. View the input waveform, input level, and input/output latency reported by the OS. With background monitoring enabled, audio continues while the screen is locked or another app is open.
@@ -21,3 +21,5 @@ Using the speaker can cause feedback. Amplification beyond audio full scale is c
 Audio is processed on your device. It is not recorded or sent to a server. No account is required. Source code and license notices are available from a dedicated screen in the app.
 
 Available in Japanese and English.
+
+Wind noise reduction has an independent on/off switch and an adjustable low-cut frequency. It adds no look-ahead audio buffer. Higher settings also reduce voice bass.

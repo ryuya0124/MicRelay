@@ -12,19 +12,21 @@ struct SettingsBackup: Codable, Equatable {
     let backgroundEnabled: Bool
     let selectedInput: String
     let audioMode: AudioModePreference?
+    let windNoise: WindNoiseSettings?
 
-    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic) {
-        format = "net.ryuya-dev.MicRelay.settings"; version = 1; createdAt = Date()
+    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic, windNoise: WindNoiseSettings = .init()) {
+        format = "net.ryuya-dev.MicRelay.settings"; version = 2; createdAt = Date()
         self.gain = gain; self.gainLimit = gainLimit; self.equalizer = equalizer
         self.backgroundEnabled = backgroundEnabled; self.selectedInput = selectedInput
-        self.audioMode = audioMode
+        self.audioMode = audioMode; self.windNoise = windNoise
     }
 
     func validated() throws -> Self {
-        guard format == "net.ryuya-dev.MicRelay.settings", version == 1 else { throw BackupError.version }
+        guard format == "net.ryuya-dev.MicRelay.settings", (1...2).contains(version),
+              version >= 2 || (windNoise == nil && !equalizer.bands.contains(where: { $0.filter.usesFrequencyRange })) else { throw BackupError.version }
         guard gain.isFinite, gainLimit.isFinite, gain >= 0, gainLimit > 0, gain <= gainLimit,
               !selectedInput.isEmpty, selectedInput.utf8.count <= 1024,
-              equalizer.isValid else { throw BackupError.values }
+              equalizer.isValid, windNoise?.isValid != false else { throw BackupError.values }
         return self
     }
     func encoded() throws -> Data {

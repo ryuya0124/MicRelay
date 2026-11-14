@@ -68,18 +68,18 @@
       }
     },
     "accessibility.spectrum": {
-      "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Input and post-EQ frequency spectrum"
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "入力とEQ後の周波数スペクトラム"
+            "value": "入力と処理後の周波数スペクトラム"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input and processed frequency spectrum"
           }
         }
       }
@@ -374,18 +374,18 @@
       }
     },
     "backup.help": {
-      "comment": "Backup UI or status text. Keep format placeholders and units intact.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save gain, gain limit, EQ, audio mode, background settings, and the selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmation are not restored."
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ゲイン・ゲイン上限・EQ・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
+            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save gain, gain limit, EQ, wind reduction, audio mode, background settings, and the selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmations are not restored."
           }
         }
       }
@@ -901,6 +901,40 @@
         }
       }
     },
+    "eq.filter.band_pass": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンドパス（範囲だけ通す）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band pass (pass a range)"
+          }
+        }
+      }
+    },
+    "eq.filter.band_stop": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンドストップ（範囲をカット）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band stop (cut a range)"
+          }
+        }
+      }
+    },
     "eq.filter.high_pass": {
       "comment": "Eq UI or status text. Keep format placeholders and units intact.",
       "localizations": {
@@ -1072,18 +1106,18 @@
       }
     },
     "eq.post_eq": {
-      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Post-EQ"
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "EQ後"
+            "value": "処理後"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processed"
           }
         }
       }
@@ -1122,6 +1156,91 @@
         }
       }
     },
+    "eq.range.graph_help": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "色の付いた範囲が選択中の帯域です。グラフをタップ・ドラッグすると、近い方の境界を調整できます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The shaded area is the selected band. Tap or drag the graph to adjust the nearer boundary."
+          }
+        }
+      }
+    },
+    "eq.range.lower": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下限周波数"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower frequency"
+          }
+        }
+      }
+    },
+    "eq.range.pass_help": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定した範囲だけを通し、その外側を減衰します。境界の周波数では約3 dB減衰します。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passes the selected range and attenuates frequencies outside it. Each boundary is attenuated by about 3 dB."
+          }
+        }
+      }
+    },
+    "eq.range.stop_help": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定した範囲を減衰し、その外側を通します。境界の周波数では約3 dB減衰します。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attenuates the selected range and passes frequencies outside it. Each boundary is attenuated by about 3 dB."
+          }
+        }
+      }
+    },
+    "eq.range.upper": {
+      "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上限周波数"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper frequency"
+          }
+        }
+      }
+    },
     "eq.reset": {
       "comment": "Eq UI or status text. Keep format placeholders and units intact.",
       "localizations": {
@@ -1140,18 +1259,18 @@
       }
     },
     "eq.spectrum_help": {
-      "comment": "Eq UI or status text. Keep format placeholders and units intact.",
+      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The spectrum is shown before output gain. Tap or drag the graph to adjust the selected band’s frequency."
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "出力ゲインをかける前のスペクトラムです。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
+            "value": "風切り音低減とEQの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shows the signal before and after wind reduction and EQ, without output gain. Tap or drag the graph to adjust the selected band’s frequency."
           }
         }
       }
@@ -2495,6 +2614,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "音声はこの端末内で処理します。録音・送信はしません。"
+          }
+        }
+      }
+    },
+    "wind.cutoff": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低域カット周波数"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low-cut frequency"
+          }
+        }
+      }
+    },
+    "wind.help": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低い周波数の風切り音を減らします。値を上げると声の低音も減ります。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduces low-frequency wind rumble. Higher values also reduce the bass in your voice."
+          }
+        }
+      }
+    },
+    "wind.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "風切り音低減"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wind noise reduction"
           }
         }
       }

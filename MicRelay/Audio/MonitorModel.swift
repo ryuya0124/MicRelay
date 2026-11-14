@@ -49,7 +49,10 @@ final class MonitorModel: ObservableObject {
     }
     @Published private(set) var gainLimit: Double = MonitorPreferences.gainLimit()
     @Published private(set) var equalizer = EqualizerSettings.load() {
-        didSet { if !diagnosticEqualizer { equalizer.save() }; applyEqualizer() }
+        didSet { if !diagnosticProcessingSettings { equalizer.save() }; applyEqualizer() }
+    }
+    @Published private(set) var windNoise = WindNoiseSettings.load() {
+        didSet { if !diagnosticProcessingSettings { windNoise.save() }; applyWindNoise() }
     }
     @Published private(set) var spectrum: SpectrumFrame?
     @Published private(set) var spectrumFrameCount: UInt64 = 0
@@ -101,7 +104,7 @@ final class MonitorModel: ObservableObject {
     private var minimumObservedFrames: Double?
     private let spectrumAnalyzer = SpectrumAnalyzer()
     private var spectrumVisible = false
-    private var diagnosticEqualizer = false
+    private var diagnosticProcessingSettings = false
 
     func startDiagnosticIfRequested() {
         #if DEBUG
@@ -161,12 +164,29 @@ final class MonitorModel: ObservableObject {
     init() {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--validate-eq") {
-            diagnosticEqualizer = true
+            diagnosticProcessingSettings = true
+            windNoise = .init()
             var value = EqualizerSettings()
             value.enabled = true
             value.bands[0].filter = .highPass; value.bands[0].frequency = 150
             value.bands[2].frequency = 800; value.bands[2].gainDB = -18; value.bands[2].q = 0.5
             equalizer = value
+        }
+        #endif
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--validate-range-eq") {
+            diagnosticProcessingSettings = true
+            windNoise = .init()
+            var value = EqualizerSettings(); value.enabled = true
+            value.bands[0].filter = .bandStop; value.bands[0].lowerFrequency = 500; value.bands[0].upperFrequency = 2000
+            equalizer = value
+        }
+        #endif
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--validate-wind") {
+            diagnosticProcessingSettings = true
+            equalizer = .init()
+            windNoise = .init(enabled: true, cutoff: 300)
         }
         #endif
         if UserDefaults.standard.object(forKey: "backgroundEnabled") != nil {
@@ -176,6 +196,7 @@ final class MonitorModel: ObservableObject {
         permissionDenied = AVAudioApplication.shared.recordPermission == .denied
         refreshRoute()
         applyEqualizer()
+        applyWindNoise()
         let center = NotificationCenter.default
         observers.append(center.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: .main) { [weak self] note in
             let reason = (note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt) ?? 0
@@ -227,6 +248,19 @@ final class MonitorModel: ObservableObject {
         audio.setEqualizerEnabled(equalizer.enabled, bands: equalizer.bands.map(\.native))
     }
 
+    private func applyWindNoise() {
+        audio.setWindNoiseEnabled(windNoise.enabled, cutoff: windNoise.cutoff)
+    }
+    func setWindNoiseEnabled(_ enabled: Bool) {
+        var value = windNoise; value.enabled = enabled; windNoise = value
+    }
+    func setWindNoiseCutoff(_ cutoff: Double) {
+        guard cutoff.isFinite else { return }
+        var value = windNoise
+        value.cutoff = min(WindNoiseSettings.cutoffRange.upperBound, max(WindNoiseSettings.cutoffRange.lowerBound, cutoff))
+        windNoise = value
+    }
+
     func setEqualizerEnabled(_ enabled: Bool) {
         var value = equalizer; value.enabled = enabled; equalizer = value
     }
@@ -236,10 +270,14 @@ final class MonitorModel: ObservableObject {
         var value = equalizer
         update(&value.bands[index])
         var band = value.bands[index]
-        guard band.frequency.isFinite, band.gainDB.isFinite, band.q.isFinite else { return }
+        guard band.frequency.isFinite, band.gainDB.isFinite, band.q.isFinite,
+              band.lowerFrequency.isFinite, band.upperFrequency.isFinite else { return }
         band.frequency = min(20000, max(20, band.frequency))
         band.gainDB = min(24, max(-36, band.gainDB))
         band.q = min(30, max(0.2, band.q))
+        band.lowerFrequency = min(19999, max(20, band.lowerFrequency))
+        band.upperFrequency = min(20000, max(21, band.upperFrequency))
+        guard band.upperFrequency - band.lowerFrequency >= 1 else { return }
         value.bands[index] = band
         equalizer = value
     }
@@ -277,7 +315,7 @@ final class MonitorModel: ObservableObject {
 
     func settingsBackup() -> SettingsBackup {
         SettingsBackup(gain: gain, gainLimit: gainLimit, equalizer: equalizer,
-            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference)
+            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference, windNoise: windNoise)
     }
 
     func restoreSettings(_ backup: SettingsBackup) throws -> Bool {
@@ -287,6 +325,7 @@ final class MonitorModel: ObservableObject {
         gainLimit = value.gainLimit
         gain = value.gain
         equalizer = value.equalizer
+        windNoise = value.windNoise ?? .init()
         backgroundEnabled = value.backgroundEnabled
         modePreference = value.audioMode ?? .automatic
         let available = value.selectedInput == "builtin" || microphones.contains { $0.id == value.selectedInput }
@@ -396,6 +435,7 @@ final class MonitorModel: ObservableObject {
                 guard canMonitor else { stop(message: String(localized: "monitor.status.no_output", defaultValue: "対応する出力先が接続されていないため停止しました")); return }
                 updateGain()
                 applyEqualizer()
+                applyWindNoise()
                 try audio.start()
                 configuring = false
                 isStarting = false
@@ -461,6 +501,7 @@ final class MonitorModel: ObservableObject {
                 try validateActiveRoute()
                 try audio.prepare(withSampleRate: session.sampleRate)
                 audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
+                audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
                 // Compare active hardware paths without changing the saved/user-facing gain.
                 audio.gain = 0
                 try audio.start()
@@ -538,6 +579,7 @@ final class MonitorModel: ObservableObject {
                 try validateActiveRoute()
                 try audio.prepare(withSampleRate: session.sampleRate)
                 audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
+                audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
                 audio.gain = 0 // The saved gain and EQ are untouched throughout probing.
                 try audio.start()
                 try await Task.sleep(for: .milliseconds(100))
@@ -802,6 +844,7 @@ final class MonitorModel: ObservableObject {
                 "renderedFrames": $0.renderedFrames, "renderError": $0.renderError, "stable": $0.isStable] as [String: Any] },
             "gain": gain,
             "gainLimit": gainLimit,
+            "windNoiseEnabled": windNoise.enabled, "windNoiseCutoff": windNoise.cutoff,
             "equalizerEnabled": equalizer.enabled, "spectrumFrames": spectrumFrameCount,
             "analysisDroppedFrames": audio.analysisDroppedFrames,
             "modeCandidates": modeMeasurements.map { ["mode": $0.mode, "inputLatency": $0.inputLatency,

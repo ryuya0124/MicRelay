@@ -8,11 +8,12 @@
 
 namespace mr {
 constexpr size_t bandCount = 6;
-enum class FilterType : int { peak = 0, notch = 1, highPass = 2, lowPass = 3 };
+enum class FilterType : int { peak = 0, notch = 1, highPass = 2, lowPass = 3, bandStop = 4, bandPass = 5 };
 struct BandParameters {
     double frequency = 1000, gainDB = 0, q = 1;
     FilterType type = FilterType::peak;
     bool enabled = true;
+    double lowerFrequency = 300, upperFrequency = 3000;
 };
 struct Coefficients {
     double b0 = 1, b1 = 0, b2 = 0, a1 = 0, a2 = 0;
@@ -27,6 +28,36 @@ struct BiquadState {
 inline Coefficients coefficients(BandParameters p, double rate) {
     Coefficients c;
     if (!p.enabled || !std::isfinite(rate) || rate <= 0 || !std::isfinite(p.frequency)) return c;
+    if (p.type == FilterType::bandStop || p.type == FilterType::bandPass) {
+        if (!std::isfinite(p.lowerFrequency) || !std::isfinite(p.upperFrequency) ||
+            p.lowerFrequency <= 0 || p.upperFrequency <= p.lowerFrequency) return c;
+        const double limit = rate * 0.5;
+        if (p.lowerFrequency >= limit) {
+            if (p.type == FilterType::bandPass) { c.b0 = 0; c.active = true; }
+            return c;
+        }
+        if (p.upperFrequency >= limit) {
+            // Only the lower edge is representable: use a single high/low cut.
+            const double w = 2 * 3.14159265358979323846 * p.lowerFrequency / rate;
+            const double cs = std::cos(w), alpha = std::sin(w) / std::sqrt(2.0), a0 = 1 + alpha;
+            c.a1 = -2 * cs / a0; c.a2 = (1 - alpha) / a0;
+            if (p.type == FilterType::bandPass) { c.b0 = (1 + cs) / (2 * a0); c.b1 = -2 * c.b0; }
+            else { c.b0 = (1 - cs) / (2 * a0); c.b1 = 2 * c.b0; }
+            c.b2 = c.b0; c.active = true;
+            return c;
+        } else {
+            // Prewarp both -3 dB edges, then bilinear-transform the analog BPF/BSF.
+            // One biquad per band; no extra samples, look-ahead, or playback buffer.
+            constexpr double pi = 3.14159265358979323846;
+            const double lo = std::tan(pi * p.lowerFrequency / rate), hi = std::tan(pi * p.upperFrequency / rate);
+            const double product = lo * hi, width = hi - lo, a0 = 1 + width + product;
+            c.a1 = 2 * (product - 1) / a0; c.a2 = (1 - width + product) / a0;
+            if (p.type == FilterType::bandPass) { c.b0 = width / a0; c.b1 = 0; c.b2 = -c.b0; }
+            else { c.b0 = (1 + product) / a0; c.b1 = c.a1; c.b2 = c.b0; }
+            c.active = true;
+            return c;
+        }
+    }
     if (p.frequency >= rate * 0.499) {
         if (p.type == FilterType::highPass) { c.b0 = 0; c.active = true; }
         return c;

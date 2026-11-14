@@ -78,6 +78,88 @@ final class MicRelayUITests: XCTestCase {
         app.terminate()
     }
 
+    func testJapaneseWindControls() { checkWindControls(language: "ja", locale: "ja_JP", title: "風切り音低減") }
+    func testEnglishWindControls() { checkWindControls(language: "en", locale: "en_US", title: "Wind noise reduction") }
+    private func checkWindControls(language: String, locale: String, title: String) {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale, "--validate-wind"]
+        app.launch()
+        let toggle = app.switches["windNoiseToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 10))
+        for _ in 0..<5 where !toggle.isHittable { app.swipeUp() }
+        XCTAssertTrue(toggle.label.contains(title))
+        XCTAssertEqual(toggle.value as? String,"1")
+        let slider = app.sliders["windNoiseSlider"]
+        for _ in 0..<5 where !slider.isHittable { app.swipeUp() }
+        slider.adjust(toNormalizedSliderPosition: 0.8)
+        let before = app.staticTexts["windNoiseCutoff"].label
+        XCTAssertTrue(before.contains("Hz"))
+        for _ in 0..<5 where !toggle.isHittable { app.swipeDown() }
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String,"0")
+        XCTAssertFalse(slider.exists)
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String,"1")
+        XCTAssertEqual(app.staticTexts["windNoiseCutoff"].label,before)
+        screenshot("wind-\(language)-enabled")
+        app.terminate()
+    }
+
+    func testJapaneseRangeFilters() {
+        checkRangeFilters(language: "ja", locale: "ja_JP", stop: "バンドストップ（範囲をカット）", pass: "バンドパス（範囲だけ通す）")
+    }
+
+    func testEnglishRangeFilters() {
+        checkRangeFilters(language: "en", locale: "en_US", stop: "Band stop (cut a range)", pass: "Band pass (pass a range)")
+    }
+
+    private func checkRangeFilters(language: String, locale: String, stop: String, pass: String) {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale, "--show-equalizer", "--validate-range-eq"]
+        app.launch()
+        let lower = app.textFields["equalizerLowerFrequency"], upper = app.textFields["equalizerUpperFrequency"]
+        XCTAssertTrue(lower.waitForExistence(timeout: 10))
+        let picker = app.buttons["equalizerFilter"]
+        for _ in 0..<5 where !picker.isHittable { app.swipeUp() }
+        XCTAssertTrue(picker.label.contains(stop) || (picker.value as? String ?? "").contains(stop))
+        screenshot("range-\(language)-stop")
+        let lowerSlider = app.sliders["equalizerLowerSlider"], upperSlider = app.sliders["equalizerUpperSlider"]
+        for _ in 0..<5 where !upperSlider.isHittable { app.swipeUp() }
+        lowerSlider.adjust(toNormalizedSliderPosition: 0.4)
+        upperSlider.adjust(toNormalizedSliderPosition: 0.8)
+        let beforeLower = lower.value as? String, beforeUpper = upper.value as? String
+        XCTAssertNotEqual(beforeLower,beforeUpper)
+        for _ in 0..<5 where !picker.isHittable { app.swipeDown() }
+        picker.tap()
+        XCTAssertTrue(app.buttons[pass].waitForExistence(timeout: 5))
+        app.buttons[pass].tap()
+        XCTAssertTrue(picker.label.contains(pass) || (picker.value as? String ?? "").contains(pass))
+        XCTAssertEqual(lower.value as? String,beforeLower)
+        XCTAssertEqual(upper.value as? String,beforeUpper)
+        XCTAssertFalse(app.sliders["Q"].exists)
+        screenshot("range-\(language)-pass")
+        app.terminate()
+    }
+
+    func testRealInputRangeSpectrum() {
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker",
+            "--show-equalizer", "--validate-range-eq", "--automatic-mode", "--diagnostic-seconds=30"]
+        app.launch()
+        let plot = app.otherElements["frequencySpectrum"]
+        XCTAssertTrue(plot.waitForExistence(timeout: 15))
+        expectation(for: NSPredicate { _, _ in
+            let value = plot.value as? String ?? ""
+            let components = value.components(separatedBy: "、")
+            let frames = Int(components.first?.filter { "0123456789".contains($0) } ?? "") ?? 0
+            let difference = Int((components.first { $0.hasPrefix("差分") } ?? "").filter { "0123456789".contains($0) }) ?? 0
+            return frames > 10 && difference > 3
+        }, evaluatedWith: plot)
+        waitForExpectations(timeout: 18)
+        screenshot("range-real-input-spectrum")
+        app.terminate()
+    }
+
     func testLaunchAndSafeDefault() {
         let app = japaneseApp()
         app.launch()

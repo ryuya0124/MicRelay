@@ -9,7 +9,7 @@
 #include <cmath>
 #include <vector>
 #include <array>
-#include "MREqualizerDSP.hpp"
+#include "MRWindNoiseDSP.hpp"
 
 static_assert(std::atomic<float>::is_always_lock_free);
 static_assert(std::atomic<double>::is_always_lock_free);
@@ -46,25 +46,46 @@ struct RealtimeState {
     std::array<mr::BiquadState, mr::bandCount> eqStates;
     uint64_t eqVersion = UINT64_MAX;
     bool eqWasEnabled = false;
+    std::atomic<bool> windEnabled{false};
+    std::atomic<uint64_t> windSequence{0};
+    std::array<CoefficientMailbox, mr::windStageCount> windMailbox;
+    std::array<mr::BiquadState, mr::windStageCount> windStates;
+    uint64_t windVersion = UINT64_MAX;
+    bool windWasEnabled = false;
     double eqSmoothing = 0.004, rate = 48000;
     std::array<float, analysisCapacity> analysisInput{}, analysisOutput{};
     std::atomic<uint64_t> analysisRead{0}, analysisWrite{0}, analysisDrops{0};
 };
 
-static void syncEqualizer(RealtimeState &s) {
-    const uint64_t version = s.eqSequence.load(std::memory_order_acquire);
-    if ((version & 1) || version == s.eqVersion) return;
-    std::array<mr::Coefficients, mr::bandCount> values;
-    for (size_t i = 0; i < mr::bandCount; ++i) {
-        const auto &m = s.eqMailbox[i]; auto &v = values[i];
+template<size_t N>
+static void syncFilters(std::atomic<uint64_t> &sequence, const std::array<CoefficientMailbox, N> &mailbox,
+                        std::array<mr::BiquadState, N> &states, uint64_t &appliedVersion) {
+    const uint64_t version = sequence.load(std::memory_order_acquire);
+    if ((version & 1) || version == appliedVersion) return;
+    std::array<mr::Coefficients, N> values;
+    for (size_t i = 0; i < N; ++i) {
+        const auto &m = mailbox[i]; auto &v = values[i];
         v.b0 = m.b0.load(std::memory_order_relaxed); v.b1 = m.b1.load(std::memory_order_relaxed);
         v.b2 = m.b2.load(std::memory_order_relaxed); v.a1 = m.a1.load(std::memory_order_relaxed);
         v.a2 = m.a2.load(std::memory_order_relaxed); v.active = m.active.load(std::memory_order_relaxed);
     }
     std::atomic_thread_fence(std::memory_order_acquire);
-    if (s.eqSequence.load(std::memory_order_relaxed) != version) return;
-    for (size_t i = 0; i < mr::bandCount; ++i) s.eqStates[i].target = values[i];
-    s.eqVersion = version;
+    if (sequence.load(std::memory_order_relaxed) != version) return;
+    for (size_t i = 0; i < N; ++i) states[i].target = values[i];
+    appliedVersion = version;
+}
+// Single control-thread writer. Callback reads once and never spins or waits.
+template<size_t N>
+static void publishFilters(std::atomic<uint64_t> &sequence, std::array<CoefficientMailbox, N> &mailbox,
+                           const std::array<mr::Coefficients, N> &values) {
+    sequence.fetch_add(1, std::memory_order_acq_rel);
+    for (size_t i = 0; i < N; ++i) {
+        const auto &c = values[i]; auto &m = mailbox[i];
+        m.b0.store(c.b0, std::memory_order_relaxed); m.b1.store(c.b1, std::memory_order_relaxed);
+        m.b2.store(c.b2, std::memory_order_relaxed); m.a1.store(c.a1, std::memory_order_relaxed);
+        m.a2.store(c.a2, std::memory_order_relaxed); m.active.store(c.active, std::memory_order_relaxed);
+    }
+    sequence.fetch_add(1, std::memory_order_release);
 }
 
 static void silence(AudioBufferList *data, AudioUnitRenderActionFlags *flags) {
@@ -104,9 +125,15 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     const bool eqOn = s.eqEnabled.load(std::memory_order_acquire);
     if (eqOn) {
         if (!s.eqWasEnabled) { s.eqStates = {}; s.eqVersion = UINT64_MAX; }
-        syncEqualizer(s);
+        syncFilters(s.eqSequence, s.eqMailbox, s.eqStates, s.eqVersion);
     }
     s.eqWasEnabled = eqOn;
+    const bool windOn = s.windEnabled.load(std::memory_order_acquire);
+    if (windOn) {
+        if (!s.windWasEnabled) { s.windStates = {}; s.windVersion = UINT64_MAX; }
+        syncFilters(s.windSequence, s.windMailbox, s.windStates, s.windVersion);
+    }
+    s.windWasEnabled = windOn;
     const uint64_t write = s.analysisWrite.load(std::memory_order_relaxed);
     const bool wantsAnalysis = s.analysisEnabled.load(std::memory_order_relaxed);
     const bool capture = wantsAnalysis && write - s.analysisRead.load(std::memory_order_acquire) + count <= analysisCapacity;
@@ -116,7 +143,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         const float sample = s.input[frame];
         peak = std::max(peak, std::abs(sample));
         s.smoothedGain += (target - s.smoothedGain) * 0.004f;
-        const double processed = mr::processEqualizer(double(sample), eqOn, s.eqStates, s.eqSmoothing);
+        const double reduced = mr::processWindNoise(double(sample), windOn, s.windStates, s.eqSmoothing);
+        const double processed = mr::processEqualizer(reduced, eqOn, s.eqStates, s.eqSmoothing);
         const float value = float(std::clamp(processed * s.smoothedGain, -1.0, 1.0));
         if (capture) {
             const auto slot = (write + frame) & (analysisCapacity - 1);
@@ -152,10 +180,12 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 @implementation MRRealtimeAudio {
     RealtimeState _state;
     NSArray *_observers;
+    double _windCutoff;
     std::array<mr::BandParameters, mr::bandCount> _eqParameters;
 }
 - (instancetype)init {
     if ((self = [super init])) {
+        _windCutoff = 120;
         __weak MRRealtimeAudio *weakSelf = self;
         NSMutableArray *tokens = [NSMutableArray array];
         for (NSNotificationName name in @[AVAudioSessionRouteChangeNotification,
@@ -212,6 +242,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     _state.eqSmoothing = 1 - std::exp(-1.0 / (0.005 * sampleRate));
     _state.eqStates = {}; _state.eqWasEnabled = false; _state.eqVersion = UINT64_MAX;
     [self publishEqualizer];
+    _state.windStates = {}; _state.windWasEnabled = false; _state.windVersion = UINT64_MAX;
+    [self publishWindNoise];
     _state.frames.store(0); _state.error.store(0); _state.smoothedGain = 0;
     _state.maxInput.store(0); _state.maxOutput.store(0); _state.waveIndex.store(0);
     _state.waveStride = std::max(UInt32(1), UInt32(sampleRate / 800));
@@ -256,15 +288,18 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 - (uint32_t)currentQuantum { return _state.currentQuantum.load(); }
 - (uint64_t)callbackCount { return _state.callbacks.load(); }
 - (void)publishEqualizer {
-    _state.eqSequence.fetch_add(1, std::memory_order_acq_rel);
-    for (size_t i = 0; i < mr::bandCount; ++i) {
-        const auto c = mr::coefficients(_eqParameters[i], _state.rate);
-        auto &m = _state.eqMailbox[i];
-        m.b0.store(c.b0, std::memory_order_relaxed); m.b1.store(c.b1, std::memory_order_relaxed);
-        m.b2.store(c.b2, std::memory_order_relaxed); m.a1.store(c.a1, std::memory_order_relaxed);
-        m.a2.store(c.a2, std::memory_order_relaxed); m.active.store(c.active, std::memory_order_relaxed);
-    }
-    _state.eqSequence.fetch_add(1, std::memory_order_release);
+    std::array<mr::Coefficients, mr::bandCount> values;
+    for (size_t i = 0; i < mr::bandCount; ++i) values[i] = mr::coefficients(_eqParameters[i], _state.rate);
+    publishFilters(_state.eqSequence, _state.eqMailbox, values);
+}
+- (void)publishWindNoise {
+    publishFilters(_state.windSequence, _state.windMailbox, mr::windCoefficients(_windCutoff, _state.rate));
+}
+- (void)setWindNoiseEnabled:(BOOL)enabled cutoff:(double)cutoff {
+    if (!enabled) _state.windEnabled.store(false, std::memory_order_release);
+    _windCutoff = std::isfinite(cutoff) ? std::clamp(cutoff, 60.0, 600.0) : 120.0;
+    [self publishWindNoise];
+    _state.windEnabled.store(enabled, std::memory_order_release);
 }
 - (void)setEqualizerEnabled:(BOOL)enabled bands:(NSArray<NSDictionary<NSString *,NSNumber *> *> *)bands {
     if (!enabled) _state.eqEnabled.store(false, std::memory_order_release);
@@ -275,6 +310,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
             p.frequency = [band[@"frequency"] doubleValue]; p.gainDB = [band[@"gainDB"] doubleValue];
             p.q = [band[@"q"] doubleValue]; p.type = mr::FilterType([band[@"type"] intValue]);
             p.enabled = [band[@"enabled"] boolValue];
+            p.lowerFrequency = [band[@"lowerFrequency"] doubleValue];
+            p.upperFrequency = [band[@"upperFrequency"] doubleValue];
         } else { p.enabled = false; }
         _eqParameters[i] = p;
     }

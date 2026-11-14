@@ -91,6 +91,19 @@ struct MonitorView: View {
                         Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
                     }
                 }.accessibilityIdentifier("openEqualizer")
+                Toggle(String(localized: "wind.title", defaultValue: "風切り音低減"), isOn: Binding(get: { model.windNoise.enabled }, set: model.setWindNoiseEnabled))
+                    .accessibilityIdentifier("windNoiseToggle")
+                if model.windNoise.enabled {
+                    VStack(alignment: .leading, spacing: 8) {
+                        LabeledContent {
+                            Text("\(Int(model.windNoise.cutoff)) Hz").monospacedDigit().accessibilityIdentifier("windNoiseCutoff")
+                        } label: { Text(String(localized: "wind.cutoff", defaultValue: "低域カット周波数")) }
+                        Slider(value: Binding(get: { model.windNoise.cutoff }, set: model.setWindNoiseCutoff), in: WindNoiseSettings.cutoffRange, step: 10)
+                            .accessibilityLabel(String(localized: "wind.cutoff", defaultValue: "低域カット周波数")).accessibilityIdentifier("windNoiseSlider")
+                        Text(String(localized: "wind.help", defaultValue: "低い周波数の風切り音を減らします。値を上げると声の低音も減ります。"))
+                            .font(.footnote).foregroundStyle(.secondary)
+                    }
+                }
                 VStack(alignment: .leading) {
                     Text(String(localized: "monitor.system_volume", defaultValue: "システム音量"))
                     SystemVolume().frame(height: 32)

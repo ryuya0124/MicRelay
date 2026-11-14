@@ -17,7 +17,7 @@ final class SettingsBackupTests: XCTestCase {
         var json = try JSONSerialization.jsonObject(with: value.encoded()) as! [String: Any]
         json["version"] = 999
         XCTAssertThrowsError(try SettingsBackup.decode(JSONSerialization.data(withJSONObject: json)))
-        json["version"] = 1; json["gain"] = 11
+        json["version"] = 2; json["gain"] = 11
         XCTAssertThrowsError(try SettingsBackup.decode(JSONSerialization.data(withJSONObject: json)))
         XCTAssertThrowsError(try SettingsBackup.decode(Data(repeating: 0, count: 1_048_577)))
         var eq = EqualizerSettings(); eq.bands[1].id = 0

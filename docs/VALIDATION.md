@@ -60,7 +60,7 @@ iPad実機のロック解除後、`artifacts/iPad-HDMI5-Final.xcresult` で29ユ
 
 ## 多言語表示
 
-日本語・英語の146項目（アプリ145、マイク権限説明1）をString Catalogで管理。iPad・Duoシミュレーターの `artifacts/iPad-Localization.xcresult` / `artifacts/Duo-Localization.xcresult` で、日英それぞれのメイン・EQ・ゲイン入力エラー・ライセンス・バックアップ画面が成功。iPhone 17実機の同じ5画面は `artifacts/iPhone17-LocalizationFinal.xcresult` が成功（ゲイン入力エラーのUI操作はシミュレーターで確認）。日英の画面キャプチャも保存して目視確認した。
+日本語・英語の156項目（アプリ155、マイク権限説明1）をString Catalogで管理。以下の初期多言語テスト時点は146項目。iPad・Duoシミュレーターの `artifacts/iPad-Localization.xcresult` / `artifacts/Duo-Localization.xcresult` で、日英それぞれのメイン・EQ・ゲイン入力エラー・ライセンス・バックアップ画面が成功。iPhone 17実機の同じ5画面は `artifacts/iPhone17-LocalizationFinal.xcresult` が成功（ゲイン入力エラーのUI操作はシミュレーターで確認）。日英の画面キャプチャも保存して目視確認した。
 
 コンパイル済みの日本語・英語・マイク権限文、差し込み値、日米独仏の小数点・大きな上限値の往復、入力末尾の不正文字の拒否をSwiftのユニットテストで確認。翻訳交換ツールは標準Pythonの6テストで、形式指定の不一致・空欄・古い原文を拒否し、言語追加を反映することを確認した。
 
@@ -95,3 +95,15 @@ App Store本体はビルド5を選択した `PREPARE_FOR_SUBMISSION` / `MANUAL` 
 ストアのiPhone3枚・iPad3枚・Duo2枚はApple側で `COMPLETE`。日本語説明・サブタイトル・キーワード・サポート/プライバシーURL・年齢区分申告・ユーティリティ/ミュージック分類・自作アイコンとヘッダー/検索用画像を登録。IPA SHA-256：`8b42f61585d1ecc3d54e01b8acf495169ccc5cd03ead62cdc820c149150732cc`。
 
 アイコンはApple Icon Composer形式（2つのSVGレイヤー、屈折・ハイライト・半透明）を採用。Default / Dark / ClearLight / ClearDark / TintedLight / TintedDarkをAppleのictool 27.2で描画して確認。配布アーカイブのAssets.car内にもLight / Dark / TintableのIconImageStackと各レイヤーを確認した。旧OS向けの不透明アイコンも同梱。App Storeのプライバシー回答は「データ収集なし」の下書きで、公開前の宣誓は未実行。無料・日本1地域の提供設定を保存。
+
+## 帯域フィルターと風切り音低減（ビルド6）
+
+バンドストップ／バンドパスに下限・上限の数値入力、スライダー、範囲のハイライトと境界ドラッグを追加。20〜20,000 Hz、最小間隔1 Hz。1段のbiquadで両端約−3 dBとなり、低サンプルレートで表現できない上側は単一のハイ／ローカットへ変換する。既存4種類の番号・設定値は維持した。
+
+独立した風切り音低減を追加。初期OFF・120 Hz、60〜600 Hzの4次Butterworthハイパス。先読み・追加の再生バッファ・OSの声の分離は使わない。OFFは完全バイパス。解析の「処理後」は風切り音低減とEQの両方を通したゲイン前の値となる。バックアップ形式2に追加し、従来の形式1も読み込める。
+
+`artifacts/Duo-Wind6-Units.xcresult` の43テストが成功。帯域フィルターの−3 dB境界・補完応答・実信号の通過／減衰・1 Hzの狭い範囲・ナイキスト周辺を確認。風切り音低減は8〜192 kHzで周波数応答、30 Hz＋1 kHzの混合信号、OFF時の値と状態の完全不変、最初のサンプルで出力すること、カット周波数変更時の安定性を検証。設定保存、形式2往復、旧形式1と保存済みゲイン・EQの互換、不正値の拒否も含む。
+
+iPadシミュレーターで日英の帯域フィルター画面と、日英の風切り音低減ON/OFF・周波数調整・再ON後の値の維持を確認。記録は `artifacts/iPad-Wind6-UI.xcresult`（帯域2件成功）、`artifacts/iPad-Wind6-UI-Final.xcresult`（風切り音2件成功）。前者の風切り音UIテストはスイッチではなく行中央をタップして失敗したため、実際のスイッチ位置をタップするテストへ修正し、後者で成功した。日英156項目と翻訳交換ツール6テストも成功。
+
+ビルド6の実機確認はユーザーの「実機は後で」という指示に従い延期。新フィルターの実マイク音・風音・背景継続・音響総遅延は未検証。シミュレーターと決定的な信号処理テストの結果を、実機音声の確認済みという意味では使わない。
