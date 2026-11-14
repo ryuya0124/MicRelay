@@ -8,7 +8,10 @@ require 'spaceship'
 require 'dotenv'
 require 'json'
 require 'digest'
+require 'yaml'
 ROOT = File.expand_path('..', __dir__)
+PROJECT_BUILD_NUMBER = YAML.safe_load_file(File.join(ROOT, 'project.yml')).dig('targets', 'MicRelay', 'settings', 'base', 'CURRENT_PROJECT_VERSION').to_s
+abort 'Invalid project build number' unless PROJECT_BUILD_NUMBER.match?(/\A[0-9]+\z/)
 if ACTION == 'metadata'
   {'description'=>4000, 'subtitle'=>30, 'keywords'=>100}.each do |name, limit|
     value = File.read(File.join(ROOT, 'store/metadata', LOCALE, name + '.txt')).strip
@@ -68,7 +71,7 @@ when 'screenshots'
     end
   end
 when 'attach'
-  build = Spaceship::ConnectAPI::Build.all(app_id: app.id).find { |b| b.processing_state == 'VALID' && b.version == '4' && b.app_version == '1.0.0' } or abort 'Valid build 4 missing'
+  build = Spaceship::ConnectAPI::Build.all(app_id: app.id).find { |b| b.processing_state == 'VALID' && b.version == PROJECT_BUILD_NUMBER && b.app_version == '1.0.0' } or abort "Valid build #{PROJECT_BUILD_NUMBER} missing"
   version.select_build(build_id: build.id)
   puts "Selected build #{build.id} for draft. No review submission."
 when 'verify'

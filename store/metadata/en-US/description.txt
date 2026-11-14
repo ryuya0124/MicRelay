@@ -1,7 +1,7 @@
-MicRelay lets you hear microphone audio through headphones connected to the same iPhone or iPad.
+MicRelay lets you hear microphone audio through headphones or an HDMI device connected to the same iPhone or iPad.
 
 MICROPHONES AND OUTPUT
-Choose the built-in microphone or a headset or external microphone made available by the OS. Wired, USB, and Bluetooth audio outputs are supported. Monitoring cannot start without headphones and stops when they are disconnected. The built-in speaker is available only when you explicitly enable it.
+Choose the built-in microphone or a headset or external microphone made available by the OS. Wired, USB, Bluetooth, and HDMI audio outputs are supported. Monitoring cannot start without headphones or an HDMI device and stops when the output is disconnected. The built-in speaker is available only when you explicitly enable it.
 
 GAIN AND EQUALIZER
 Set monitor gain and choose the gain slider’s maximum. Your gain settings are kept after restarting the app.

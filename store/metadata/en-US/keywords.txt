@@ -1,1 +1,1 @@
-mic,headphones,audio,equalizer,spectrum,waveform,gain,frequency,notch,headset,background,monitoring
+mic,headphones,audio,equalizer,spectrum,waveform,gain,hdmi,notch,headset,background,monitoring

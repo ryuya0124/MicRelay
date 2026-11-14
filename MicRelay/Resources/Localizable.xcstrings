@@ -1791,13 +1791,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connect headphones or enable the built-in speaker."
+            "value": "Connect headphones or an HDMI device, or enable the built-in speaker."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イヤホンを接続するか、本体スピーカーを有効にしてください。"
+            "value": "イヤホンまたはHDMI機器を接続するか、本体スピーカーを有効にしてください。"
           }
         }
       }
@@ -2029,13 +2029,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connect and confirm your headphones"
+            "value": "Check your headphones or HDMI connection"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イヤホンの接続・確認が必要です"
+            "value": "イヤホン・HDMI機器の接続先を確認してください"
           }
         }
       }
@@ -2057,6 +2057,23 @@
         }
       }
     },
+    "monitor.status.external_outputs": {
+      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switched to headphone and HDMI outputs"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホン・HDMI出力に戻しました"
+          }
+        }
+      }
+    },
     "monitor.status.headphones_confirmed": {
       "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
       "localizations": {
@@ -2074,36 +2091,19 @@
         }
       }
     },
-    "monitor.status.headphones_only": {
-      "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Switched to headphones only"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "イヤホン専用に戻しました"
-          }
-        }
-      }
-    },
     "monitor.status.initial": {
       "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Connect headphones to get started"
+            "value": "Connect headphones or an HDMI device"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イヤホンを接続して始めましょう"
+            "value": "イヤホンまたはHDMI機器を接続してください"
           }
         }
       }
@@ -2159,19 +2159,19 @@
         }
       }
     },
-    "monitor.status.no_headphones": {
+    "monitor.status.no_output": {
       "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stopped because headphones are not connected"
+            "value": "Stopped because a supported output is not connected"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イヤホンが接続されていないため停止しました"
+            "value": "対応する出力先が接続されていないため停止しました"
           }
         }
       }
@@ -2414,19 +2414,19 @@
         }
       }
     },
-    "output.headphones_help": {
+    "output.disconnection_help": {
       "comment": "Output UI or status text. Keep format placeholders and units intact.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Monitoring stops automatically when headphones are disconnected."
+            "value": "Monitoring stops automatically when headphones or HDMI devices are disconnected."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "イヤホンの切断時は自動停止します。"
+            "value": "イヤホン・HDMI機器の切断時は自動停止します。"
           }
         }
       }

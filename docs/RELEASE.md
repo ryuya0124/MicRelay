@@ -67,7 +67,7 @@ bundle exec fastlane ios status
 bundle exec fastlane ios distribute_main
 ```
 
-ユーザーから外部TestFlight公開の指示を受けたため追加した別laneです。`artifacts/release/review-contact.json`（または `BETA_REVIEW_CONTACT_JSON`）から非公開の審査連絡先を読み、処理済みビルド4を外部グループ `main` に割り当て、Beta App Reviewへ提出します。mainは公開リンクを利用します。Appleの承認までは外部インストールできません。App Store本体の審査には提出しません。連絡先・署名・診断ファイルはコミットしません。
+ユーザーから外部TestFlight公開の指示を受けたため追加した別laneです。`artifacts/release/review-contact.json`（または `BETA_REVIEW_CONTACT_JSON`）から非公開の審査連絡先を読み、`project.yml` の `CURRENT_PROJECT_VERSION` に指定した処理済みビルドを外部グループ `main` に割り当て、Beta App Reviewへ提出します。mainは公開リンクを利用します。Appleの承認までは外部インストールできません。App Store本体の審査には提出しません。連絡先・署名・診断ファイルはコミットしません。
 
 ストアの日本語説明・サブタイトル・キーワードは `store/metadata/ja/`、実画面の画像は `store/screenshots/ja/`、自作ヘッダーは `store/header/` にあります。`scripts/store_metadata.rb metadata` は下書きメタデータのみ更新します。`screenshots` は画像をアップロード、`attach` は処理済みビルドを下書きへ選択します。いずれもApp Store Review提出は行いません。
 

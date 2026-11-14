@@ -2,7 +2,7 @@
 
 [Privacy policy](PRIVACY.md) / [Source code](https://github.com/ryuya0124/MicRelay) / [License notices](../../THIRD_PARTY_NOTICES.md)
 
-1. Connect headphones and tap **Refresh connections and microphones** to allow microphone access.
+1. Connect headphones or an HDMI device and tap **Refresh connections and microphones** to allow microphone access.
 2. Choose an input microphone. For USB and Bluetooth devices, confirm that the connected output is headphones if prompted.
 3. Tap **Start monitoring**. Monitor gain is separate from the device’s system volume.
 4. Open **Equalizer** to compare the live input and post-EQ spectra while listening. Turning EQ off bypasses filter processing.

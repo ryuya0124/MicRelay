@@ -7,13 +7,13 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "マイクの音を、この端末に接続したイヤホンでリアルタイムに聞くために使用します。音声は保存・送信しません。"
+            "value": "この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。音声は保存・送信しません。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hear microphone audio through headphones connected to this device in real time. Audio is not saved or transmitted."
+            "value": "Output microphone audio to headphones, HDMI devices, or another enabled output on this device in real time. Audio is not saved or transmitted."
           }
         }
       }

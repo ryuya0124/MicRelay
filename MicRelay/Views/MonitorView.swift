@@ -72,7 +72,7 @@ struct MonitorView: View {
                 }
                 #endif
             } header: { Text(String(localized: "monitor.section", defaultValue: "モニター")) } footer: {
-                if !model.canStart { Text(String(localized: "monitor.connection_help", defaultValue: "イヤホンを接続するか、本体スピーカーを有効にしてください。")) }
+                if !model.canStart { Text(String(localized: "monitor.connection_help", defaultValue: "イヤホンまたはHDMI機器を接続するか、本体スピーカーを有効にしてください。")) }
             }
             Section(String(localized: "monitor.volume_section", defaultValue: "音量と音質")) {
                 VStack(alignment: .leading) {
@@ -136,7 +136,7 @@ struct MonitorView: View {
                 Toggle(String(localized: "output.allow_speaker", defaultValue: "本体スピーカーを使う"), isOn: Binding(get: { model.speakerEnabled }, set: model.setSpeakerEnabled))
                     .disabled(model.isStarting).accessibilityIdentifier("speakerToggle")
             } header: { Text(String(localized: "output.title", defaultValue: "出力")) } footer: {
-                Text(model.speakerEnabled ? String(localized: "output.speaker_help", defaultValue: "スピーカーの音がマイクに入るとハウリングします。") : String(localized: "output.headphones_help", defaultValue: "イヤホンの切断時は自動停止します。"))
+                Text(model.speakerEnabled ? String(localized: "output.speaker_help", defaultValue: "スピーカーの音がマイクに入るとハウリングします。") : String(localized: "output.disconnection_help", defaultValue: "イヤホン・HDMI機器の切断時は自動停止します。"))
             }
             Section {
                 Toggle(String(localized: "background.enabled", defaultValue: "画面を閉じても続ける"), isOn: $model.backgroundEnabled).accessibilityIdentifier("backgroundToggle")

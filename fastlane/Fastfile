@@ -4,6 +4,7 @@ require "base64"
 require "open3"
 require "shellwords"
 require "fileutils"
+require "yaml"
 
 default_platform(:ios)
 
@@ -11,6 +12,8 @@ APP_IDENTIFIER = "net.ryuya-dev.MicRelay"
 PROJECT_ROOT = File.expand_path("..", __dir__)
 RELEASE_DIRECTORY = File.join(PROJECT_ROOT, "artifacts", "release")
 PROFILE_NAME = "MicRelay App Store"
+PROJECT_BUILD_NUMBER = YAML.safe_load_file(File.join(PROJECT_ROOT, "project.yml")).dig("targets", "MicRelay", "settings", "base", "CURRENT_PROJECT_VERSION").to_s
+raise "Invalid project build number" unless PROJECT_BUILD_NUMBER.match?(/\A[0-9]+\z/)
 
 platform :ios do
   private_lane :connect_key do
@@ -136,7 +139,7 @@ platform :ios do
 end
 
 platform :ios do
-  desc "Submit build 4 to Beta App Review and distribute through external TestFlight group main; never submit App Store review"
+  desc "Submit the configured build to Beta App Review and distribute through external TestFlight group main; never submit App Store review"
   lane :distribute_main do
     key = connect_key
     contact_path = ENV.fetch("BETA_REVIEW_CONTACT_JSON", File.join(RELEASE_DIRECTORY, "review-contact.json"))
@@ -144,10 +147,10 @@ platform :ios do
     required = [:contact_first_name, :contact_last_name, :contact_phone, :contact_email]
     UI.user_error!("Complete Beta App Review contact is required") unless required.all? { |field| !contact[field].to_s.empty? }
     contact[:demo_account_required] = false
-    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
+    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones or an HDMI device, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones or HDMI, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass. Settings backup/restore uses local JSON files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
     upload_to_testflight(
       api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
-      app_version: "1.0.0", build_number: "4", app_platform: "ios", distribute_only: true,
+      app_version: "1.0.0", build_number: PROJECT_BUILD_NUMBER, app_platform: "ios", distribute_only: true,
       distribute_external: true, groups: ["main"], submit_beta_review: true,
       skip_submission: false, notify_external_testers: false,
       beta_app_review_info: contact,
@@ -161,8 +164,8 @@ platform :ios do
         }]
       },
       localized_build_info: {
-        "ja" => {whats_new: "実コールバックを比較するI/Oバッファ探索と、日本語・英語表示を追加しました。マイク選択、EQ、ゲイン保存、背景継続、設定バックアップ・復元を確認してください。"},
-        "en-US" => {whats_new: "Added I/O buffer negotiation using actual callbacks and Japanese/English localization. Please test microphone selection, EQ, saved gain, background monitoring, and settings backup and restore."}
+        "ja" => {whats_new: "HDMIをモニター出力先として許可しました。切断時は停止します。マイク選択、EQ、ゲイン保存、背景継続を確認してください。"},
+        "en-US" => {whats_new: "HDMI is now allowed as a monitor output. Monitoring stops when the output is disconnected. Please test microphone selection, EQ, saved gain, and background monitoring."}
       }
 
     )

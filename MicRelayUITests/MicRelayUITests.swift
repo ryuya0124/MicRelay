@@ -16,13 +16,13 @@ final class MicRelayUITests: XCTestCase {
     }
 
     func testEnglishLocalizationAcrossScreens() {
-        checkLocalizedScreens(language: "en", locale: "en_US", start: "Start monitoring", initial: "Connect headphones to get started",
+        checkLocalizedScreens(language: "en", locale: "en_US", start: "Start monitoring", initial: "Connect headphones or an HDMI device",
             equalizer: "Equalizer", bypass: "EQ OFF · Filters bypassed", gain: "Gain limit", save: "Save",
             invalid: "Enter a valid number greater than zero.", licenses: "Licenses", backup: "Backup and restore", export: "Export settings")
     }
 
     func testJapaneseLocalizationAcrossScreens() {
-        checkLocalizedScreens(language: "ja", locale: "ja_JP", start: "モニターを開始", initial: "イヤホンを接続して始めましょう",
+        checkLocalizedScreens(language: "ja", locale: "ja_JP", start: "モニターを開始", initial: "イヤホンまたはHDMI機器を接続してください",
             equalizer: "イコライザー", bypass: "EQ OFF · フィルターをバイパス", gain: "ゲイン上限", save: "保存",
             invalid: "0より大きい有効な数値を入力してください。", licenses: "ライセンス", backup: "バックアップと復元", export: "設定を書き出す")
     }

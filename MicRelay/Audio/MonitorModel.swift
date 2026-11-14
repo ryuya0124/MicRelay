@@ -19,7 +19,7 @@ struct MicrophoneChoice: Identifiable, Equatable {
 final class MonitorModel: ObservableObject {
     @Published private(set) var isRunning = false
     @Published private(set) var isStarting = false
-    @Published private(set) var status = String(localized: "monitor.status.initial", defaultValue: "イヤホンを接続して始めましょう")
+    @Published private(set) var status = String(localized: "monitor.status.initial", defaultValue: "イヤホンまたはHDMI機器を接続してください")
     @Published private(set) var microphones: [MicrophoneChoice] = []
     @Published private(set) var outputs: [OutputPort] = []
     @Published private(set) var activeInput = String(localized: "microphone.unused", defaultValue: "未使用")
@@ -214,7 +214,7 @@ final class MonitorModel: ObservableObject {
     }
 
     func setSpeakerEnabled(_ enabled: Bool) {
-        stop(message: enabled ? String(localized: "monitor.status.speaker_allowed", defaultValue: "スピーカー出力を許可しました") : String(localized: "monitor.status.headphones_only", defaultValue: "イヤホン専用に戻しました"))
+        stop(message: enabled ? String(localized: "monitor.status.speaker_allowed", defaultValue: "スピーカー出力を許可しました") : String(localized: "monitor.status.external_outputs", defaultValue: "イヤホン・HDMI出力に戻しました"))
         speakerEnabled = enabled
         if permissionGranted { configureOnly() }
     }
@@ -343,7 +343,7 @@ final class MonitorModel: ObservableObject {
                 refreshRoute()
                 configuring = false
                 isStarting = false
-                status = canMonitor ? String(localized: "monitor.status.ready", defaultValue: "準備できました") : String(localized: "monitor.status.connection_required", defaultValue: "イヤホンの接続・確認が必要です")
+                status = canMonitor ? String(localized: "monitor.status.ready", defaultValue: "準備できました") : String(localized: "monitor.status.connection_required", defaultValue: "イヤホン・HDMI機器の接続先を確認してください")
                 try? session.setActive(false, options: .notifyOthersOnDeactivation)
             } catch {
                 if token == generation { fail(error) }
@@ -363,7 +363,7 @@ final class MonitorModel: ObservableObject {
             bufferMeasurements = []; minimumObservedFrames = nil
         }
         refreshRoute()
-        guard canStart || diagnosticHeadphones else { status = String(localized: "monitor.status.connection_required", defaultValue: "イヤホンの接続・確認が必要です"); return }
+        guard canStart || diagnosticHeadphones else { status = String(localized: "monitor.status.connection_required", defaultValue: "イヤホン・HDMI機器の接続先を確認してください"); return }
         generation += 1
         let token = generation
         isStarting = true
@@ -393,7 +393,7 @@ final class MonitorModel: ObservableObject {
                 try audio.prepare(withSampleRate: session.sampleRate)
                 // Read the route again after AudioUnit initialization, before opening the gate.
                 refreshRoute()
-                guard canMonitor else { stop(message: String(localized: "monitor.status.no_headphones", defaultValue: "イヤホンが接続されていないため停止しました")); return }
+                guard canMonitor else { stop(message: String(localized: "monitor.status.no_output", defaultValue: "対応する出力先が接続されていないため停止しました")); return }
                 updateGain()
                 applyEqualizer()
                 try audio.start()

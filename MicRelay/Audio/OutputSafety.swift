@@ -16,7 +16,7 @@ enum OutputSafety {
 
     static func allows(_ ports: [OutputPort], confirmed: Set<String>, speakerEnabled: Bool = false) -> Bool {
         !ports.isEmpty && ports.allSatisfy {
-            $0.type == .headphones || (speakerEnabled && $0.type == .builtInSpeaker)
+            $0.type == .headphones || $0.type == .HDMI || (speakerEnabled && $0.type == .builtInSpeaker)
                 || (needsConfirmation($0) && confirmed.contains($0.uid))
         }
     }

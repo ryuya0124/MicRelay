@@ -11,7 +11,7 @@ final class OutputSafetyTests: XCTestCase {
     }
 
     func testBuiltInOutputsAreBlockedByDefault() {
-        for type in [AVAudioSession.Port.builtInSpeaker, .builtInReceiver, .airPlay, .HDMI, .carAudio] {
+        for type in [AVAudioSession.Port.builtInSpeaker, .builtInReceiver, .airPlay, .carAudio] {
             XCTAssertFalse(OutputSafety.allows([port(type)], confirmed: ["test"]))
         }
         XCTAssertFalse(OutputSafety.allows([], confirmed: []))
@@ -34,5 +34,15 @@ final class OutputSafetyTests: XCTestCase {
 
     func testEveryOutputMustBeAllowed() {
         XCTAssertFalse(OutputSafety.allows([port(.headphones), port(.builtInSpeaker)], confirmed: []))
+        XCTAssertFalse(OutputSafety.allows([port(.HDMI), port(.builtInSpeaker)], confirmed: []))
+        XCTAssertFalse(OutputSafety.allows([port(.HDMI), port(.airPlay)], confirmed: [], speakerEnabled: true))
+    }
+
+    func testHDMIIsAllowedWithoutHeadphoneConfirmationOrSpeakerOptIn() {
+        XCTAssertFalse(OutputSafety.needsConfirmation(port(.HDMI)))
+        XCTAssertTrue(OutputSafety.allows([port(.HDMI)], confirmed: []))
+        XCTAssertTrue(OutputSafety.allows([port(.HDMI, uid: "another-display")], confirmed: []))
+        XCTAssertTrue(OutputSafety.allows([port(.HDMI), port(.headphones)], confirmed: []))
+        XCTAssertTrue(OutputSafety.allows([port(.HDMI), port(.builtInSpeaker)], confirmed: [], speakerEnabled: true))
     }
 }
