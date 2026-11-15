@@ -24,6 +24,7 @@ constexpr uint64_t analysisCapacity = 32768;
 struct RealtimeState {
     AudioUnit unit = nullptr;
     std::atomic<bool> open{false};
+    std::atomic<bool> outputMuted{false};
     std::atomic<double> gain{0.5};
     std::atomic<float> peak{0};
     std::atomic<uint64_t> frames{0};
@@ -121,6 +122,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         silence(output, flags); return noErr;
     }
     s.consecutiveMisses = 0;
+    const bool muted = s.outputMuted.load(std::memory_order_acquire);
     const double target = s.gain.load(std::memory_order_relaxed);
     const bool eqOn = s.eqEnabled.load(std::memory_order_acquire);
     if (eqOn) {
@@ -145,7 +147,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         s.smoothedGain += (target - s.smoothedGain) * 0.004f;
         const double reduced = mr::processWindNoise(double(sample), windOn, s.windStates, s.eqSmoothing);
         const double processed = mr::processEqualizer(reduced, eqOn, s.eqStates, s.eqSmoothing);
-        const float value = float(std::clamp(processed * s.smoothedGain, -1.0, 1.0));
+        const float value = muted ? 0 : float(std::clamp(processed * s.smoothedGain, -1.0, 1.0));
         if (capture) {
             const auto slot = (write + frame) & (analysisCapacity - 1);
             s.analysisInput[slot] = sample;
@@ -275,6 +277,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     }
     _state.peak.store(0);
 }
+- (void)setOutputMuted:(BOOL)value { _state.outputMuted.store(value, std::memory_order_release); }
+- (BOOL)outputMuted { return _state.outputMuted.load(std::memory_order_acquire); }
 - (void)setGain:(double)value { _state.gain.store(std::isfinite(value) ? std::max(0.0, value) : 0.0); }
 - (double)gain { return _state.gain.load(); }
 - (float)peak { return _state.peak.load(); }
@@ -285,6 +289,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 - (uint64_t)missedQuanta { return _state.misses.load(); }
 - (uint32_t)minimumQuantum { const auto value = _state.minQuantum.load(); return value == UINT32_MAX ? 0 : value; }
 - (uint32_t)maximumQuantum { return _state.maxQuantum.load(); }
+- (void)resetQuantumStatistics { _state.minQuantum.store(UINT32_MAX); _state.maxQuantum.store(0); }
 - (uint32_t)currentQuantum { return _state.currentQuantum.load(); }
 - (uint64_t)callbackCount { return _state.callbacks.load(); }
 - (void)publishEqualizer {

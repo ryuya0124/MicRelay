@@ -41,6 +41,9 @@ struct SettingsBackupView: View {
                     LabeledContent(String(localized: "wind.title", defaultValue: "風切り音低減"), value: candidate.windNoise?.enabled == true ? "\(Int(candidate.windNoise?.cutoff ?? 120)) Hz" : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "background.title", defaultValue: "バックグラウンド"), value: candidate.backgroundEnabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "audio.mode.title", defaultValue: "音声モード"), value: (candidate.audioMode ?? .automatic).title)
+                    if let manual = candidate.manualAudio {
+                        LabeledContent(String(localized: "manual.title", defaultValue: "手動I/O設定"), value: manual.summary)
+                    }
                     LabeledContent(String(localized: "backup.created_at", defaultValue: "作成日時"), value: candidate.createdAt.formatted())
                     Text(String(localized: "backup.restore_help", defaultValue: "復元時にモニターを停止します。接続されていないマイクは本体マイクへ戻します。"))
                         .font(.footnote).foregroundStyle(.secondary)

@@ -12,6 +12,7 @@ struct MonitorView: View {
     @State private var showsGainSettings = ProcessInfo.processInfo.arguments.contains("--show-gain-settings")
     @State private var showsEqualizer = ProcessInfo.processInfo.arguments.contains("--show-equalizer")
     @State private var showsBackup = false
+    @State private var showsManual = ProcessInfo.processInfo.arguments.contains("--show-manual-io")
 
     var body: some View {
         GeometryReader { geometry in
@@ -28,6 +29,7 @@ struct MonitorView: View {
         .navigationTitle("MicRelay")
         .navigationDestination(isPresented: $showsLicense) { LicenseView() }
         .navigationDestination(isPresented: $showsEqualizer) { EqualizerView(model: model) }
+        .navigationDestination(isPresented: $showsManual) { ManualAudioSettingsView(model: model) }
         .navigationDestination(isPresented: $showsBackup) { SettingsBackupView(model: model) }
         .sheet(isPresented: $showsGainSettings) { GainSettingsView(model: model) }
         .task {
@@ -38,9 +40,17 @@ struct MonitorView: View {
     }
     @ViewBuilder private var controls: some View {
             Section {
-                Picker(String(localized: "audio.mode.title", defaultValue: "音声モード"), selection: Binding(get: { model.modePreference }, set: model.selectAudioMode)) {
+                Picker(String(localized: "audio.mode.title", defaultValue: "音声モード"), selection: Binding(get: { model.modePreference }, set: { value in
+                    if value == .manual { showsManual = true } else { model.selectAudioMode(value) }
+                })) {
                     ForEach(AudioModePreference.allCases) { mode in Text(mode.title).tag(mode) }
                 }.disabled(model.isStarting).accessibilityIdentifier("audioModePicker")
+                if model.modePreference == .manual {
+                    Button { showsManual = true } label: {
+                        LabeledContent(String(localized: "manual.title", defaultValue: "手動I/O設定"), value: model.manualAudio.summary)
+                    }.disabled(model.isStarting).accessibilityIdentifier("openManualAudio")
+                    ManualAudioStatusView(model: model)
+                }
                 HStack {
                     Image(systemName: model.isRunning ? "waveform" : "pause.circle").accessibilityHidden(true)
                     Text(model.status).accessibilityIdentifier("monitorStatus")

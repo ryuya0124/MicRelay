@@ -14,3 +14,5 @@ The app supports Japanese and English and follows the OS language preference. Us
 Report bugs and requests through [GitHub Issues](https://github.com/ryuya0124/MicRelay/issues). Include your device model, OS version, audio hardware, and steps to reproduce the problem. Audio, personal information, and credentials are not needed.
 
 Enable **Wind noise reduction** in the volume and tone section to reduce low-frequency rumble. Raising the low-cut frequency also reduces voice bass. It works independently of EQ and is included in settings backups. It uses no look-ahead audio buffer.
+
+Keep the audio mode on **Automatic** for normal use. **Fully manual** lets you choose a frame count and sample rate from dropdown menus. **Verify and apply** tests the settings silently and saves them only if the actual values match and input is stable. Failed changes show the reason and restore your previous settings. During monitoring, requested and actual values appear side by side. If saved manual settings cannot be used after a device or connection change, monitoring stops; select Automatic or adjust the manual settings.

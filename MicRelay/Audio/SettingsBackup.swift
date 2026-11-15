@@ -13,20 +13,23 @@ struct SettingsBackup: Codable, Equatable {
     let selectedInput: String
     let audioMode: AudioModePreference?
     let windNoise: WindNoiseSettings?
+    let manualAudio: ManualAudioSettings?
 
-    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic, windNoise: WindNoiseSettings = .init()) {
-        format = "net.ryuya-dev.MicRelay.settings"; version = 2; createdAt = Date()
+    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic, windNoise: WindNoiseSettings = .init(), manualAudio: ManualAudioSettings = .init()) {
+        format = "net.ryuya-dev.MicRelay.settings"; version = 3; createdAt = Date()
         self.gain = gain; self.gainLimit = gainLimit; self.equalizer = equalizer
         self.backgroundEnabled = backgroundEnabled; self.selectedInput = selectedInput
-        self.audioMode = audioMode; self.windNoise = windNoise
+        self.audioMode = audioMode; self.windNoise = windNoise; self.manualAudio = manualAudio
     }
 
     func validated() throws -> Self {
-        guard format == "net.ryuya-dev.MicRelay.settings", (1...2).contains(version),
+        guard format == "net.ryuya-dev.MicRelay.settings", (1...3).contains(version),
+              (version >= 3 || (manualAudio == nil && audioMode != .manual)),
               version >= 2 || (windNoise == nil && !equalizer.bands.contains(where: { $0.filter.usesFrequencyRange })) else { throw BackupError.version }
         guard gain.isFinite, gainLimit.isFinite, gain >= 0, gainLimit > 0, gain <= gainLimit,
               !selectedInput.isEmpty, selectedInput.utf8.count <= 1024,
-              equalizer.isValid, windNoise?.isValid != false else { throw BackupError.values }
+              equalizer.isValid, windNoise?.isValid != false, manualAudio?.isValid != false,
+              audioMode != .manual || manualAudio != nil else { throw BackupError.values }
         return self
     }
     func encoded() throws -> Data {

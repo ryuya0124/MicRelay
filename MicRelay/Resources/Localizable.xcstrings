@@ -2,36 +2,36 @@
   "sourceLanguage": "ja",
   "strings": {
     "%": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "%lld": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "%lldk": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "EQ": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "Hz": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "MIT License · Copyright © 2026 ryuya": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "MicRelay": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "Q": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "accessibility.input_peak": {
       "comment": "Accessibility UI or status text. Keep format placeholders and units intact.",
@@ -70,16 +70,16 @@
     "accessibility.spectrum": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "入力と処理後の周波数スペクトラム"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Input and processed frequency spectrum"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力と処理後の周波数スペクトラム"
           }
         }
       }
@@ -148,6 +148,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "自動"
+          }
+        }
+      }
+    },
+    "audio.mode.manual": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fully manual"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完全手動"
           }
         }
       }
@@ -376,16 +393,16 @@
     "backup.help": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Save gain, gain limit, EQ, wind reduction, audio mode, background settings, and the selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmations are not restored."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
           }
         }
       }
@@ -576,6 +593,23 @@
         }
       }
     },
+    "common.ok": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
     "common.on": {
       "localizations": {
         "en": {
@@ -610,8 +644,8 @@
       }
     },
     "dBFS": {
-      "shouldTranslate": false,
-      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged."
+      "comment": "Brand name, original license notice, SI unit, or numeric graph label. Keep unchanged.",
+      "shouldTranslate": false
     },
     "diagnostics.audio_error": {
       "comment": "Diagnostics UI or status text. Keep format placeholders and units intact.",
@@ -904,16 +938,16 @@
     "eq.filter.band_pass": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "バンドパス（範囲だけ通す）"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Band pass (pass a range)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンドパス（範囲だけ通す）"
           }
         }
       }
@@ -921,16 +955,16 @@
     "eq.filter.band_stop": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "バンドストップ（範囲をカット）"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Band stop (cut a range)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バンドストップ（範囲をカット）"
           }
         }
       }
@@ -1108,16 +1142,16 @@
     "eq.post_eq": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "処理後"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Processed"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "処理後"
           }
         }
       }
@@ -1159,16 +1193,16 @@
     "eq.range.graph_help": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "色の付いた範囲が選択中の帯域です。グラフをタップ・ドラッグすると、近い方の境界を調整できます。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "The shaded area is the selected band. Tap or drag the graph to adjust the nearer boundary."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "色の付いた範囲が選択中の帯域です。グラフをタップ・ドラッグすると、近い方の境界を調整できます。"
           }
         }
       }
@@ -1176,16 +1210,16 @@
     "eq.range.lower": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "下限周波数"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Lower frequency"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下限周波数"
           }
         }
       }
@@ -1193,16 +1227,16 @@
     "eq.range.pass_help": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "指定した範囲だけを通し、その外側を減衰します。境界の周波数では約3 dB減衰します。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Passes the selected range and attenuates frequencies outside it. Each boundary is attenuated by about 3 dB."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定した範囲だけを通し、その外側を減衰します。境界の周波数では約3 dB減衰します。"
           }
         }
       }
@@ -1210,16 +1244,16 @@
     "eq.range.stop_help": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "指定した範囲を減衰し、その外側を通します。境界の周波数では約3 dB減衰します。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Attenuates the selected range and passes frequencies outside it. Each boundary is attenuated by about 3 dB."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定した範囲を減衰し、その外側を通します。境界の周波数では約3 dB減衰します。"
           }
         }
       }
@@ -1227,16 +1261,16 @@
     "eq.range.upper": {
       "comment": "Range EQ filter controls. Frequencies are the -3 dB edges.",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "上限周波数"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Upper frequency"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上限周波数"
           }
         }
       }
@@ -1261,16 +1295,16 @@
     "eq.spectrum_help": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "風切り音低減とEQの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Shows the signal before and after wind reduction and EQ, without output gain. Tap or drag the graph to adjust the selected band’s frequency."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "風切り音低減とEQの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
           }
         }
       }
@@ -1679,6 +1713,431 @@
           "stringUnit": {
             "state": "translated",
             "value": "ライセンス"
+          }
+        }
+      }
+    },
+    "manual.actual": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Actual"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実際の値"
+          }
+        }
+      }
+    },
+    "manual.applied": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manual settings applied and verified"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動設定を適用しました（要求どおり）"
+          }
+        }
+      }
+    },
+    "manual.apply": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verify and apply"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認して適用"
+          }
+        }
+      }
+    },
+    "manual.checking": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verifying silently…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無音で適用を確認中…"
+          }
+        }
+      }
+    },
+    "manual.different": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Differs from request"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求と異なる値"
+          }
+        }
+      }
+    },
+    "manual.error.connection": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect headphones or an HDMI device, or enable the built-in speaker before applying."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホン・HDMI機器を接続するか、本体スピーカーを有効にしてから適用してください。"
+          }
+        }
+      }
+    },
+    "manual.error.mismatch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The actual settings differ from your request. Requested: %@. Actual: %@."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求値と実際の値が一致しません。要求: %@。実際: %@。"
+          }
+        }
+      }
+    },
+    "manual.error.permission": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Microphone access is required to verify the settings."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定の適用確認にはマイクへのアクセスが必要です。"
+          }
+        }
+      }
+    },
+    "manual.error.rollback": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Restored the previous settings."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 元の設定に戻しました。"
+          }
+        }
+      }
+    },
+    "manual.error.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not apply settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を適用できませんでした"
+          }
+        }
+      }
+    },
+    "manual.error.unstable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stable audio input could not be verified with the requested settings."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求した設定では安定した音声入力を確認できませんでした。"
+          }
+        }
+      }
+    },
+    "manual.error.unsupported": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This connection could not apply the requested I/O settings. Requested: %@. %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この接続では指定したI/O設定を適用できません。要求: %@。%@"
+          }
+        }
+      }
+    },
+    "manual.error.values": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a positive whole number of frames and a sample rate greater than zero."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フレーム数は正の整数、サンプルレートは0より大きい数値を入力してください。"
+          }
+        }
+      }
+    },
+    "manual.frame_presets": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frame presets"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フレーム数の候補"
+          }
+        }
+      }
+    },
+    "manual.frames": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frames"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フレーム数"
+          }
+        }
+      }
+    },
+    "manual.help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic tuning is disabled. The app tests silently and saves only if the requested settings take effect. Otherwise it restores the previous settings."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動調整は行いません。無音で動作を確認し、要求どおりに適用できた場合だけ保存します。適用できない場合は元の設定へ戻します。"
+          }
+        }
+      }
+    },
+    "manual.last_result": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These values were verified when applying the settings. Live values appear while monitoring."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定時の確認結果です。モニター中は現在の実値を表示します。"
+          }
+        }
+      }
+    },
+    "manual.matched": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matches request"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求どおり"
+          }
+        }
+      }
+    },
+    "manual.rate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample rate (Hz)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルレート（Hz）"
+          }
+        }
+      }
+    },
+    "manual.rate_presets": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample rate presets"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルレートの候補"
+          }
+        }
+      }
+    },
+    "manual.rate_short": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sample rate"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルレート"
+          }
+        }
+      }
+    },
+    "manual.requested": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Requested"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要求値"
+          }
+        }
+      }
+    },
+    "manual.status": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verification"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "適用確認"
+          }
+        }
+      }
+    },
+    "manual.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manual I/O settings"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動I/O設定"
+          }
+        }
+      }
+    },
+    "manual.unverified": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not verified"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未確認"
           }
         }
       }
@@ -2621,16 +3080,16 @@
     "wind.cutoff": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "低域カット周波数"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Low-cut frequency"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低域カット周波数"
           }
         }
       }
@@ -2638,16 +3097,16 @@
     "wind.help": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "低い周波数の風切り音を減らします。値を上げると声の低音も減ります。"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Reduces low-frequency wind rumble. Higher values also reduce the bass in your voice."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "低い周波数の風切り音を減らします。値を上げると声の低音も減ります。"
           }
         }
       }
@@ -2655,16 +3114,16 @@
     "wind.title": {
       "extractionState": "manual",
       "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "風切り音低減"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Wind noise reduction"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "風切り音低減"
           }
         }
       }

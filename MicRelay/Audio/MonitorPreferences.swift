@@ -49,6 +49,10 @@ enum MonitorPreferences {
     }
 
     static func parseGainLimit(_ text: String, locale: Locale = .current) -> Double? {
+        parsePositiveNumber(text, locale: locale)
+    }
+
+    static func parsePositiveNumber(_ text: String, locale: Locale = .current) -> Double? {
         let value = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let formatter = NumberFormatter()
         formatter.locale = locale

@@ -10,7 +10,7 @@ final class RangeEqualizerSettingsTests: XCTestCase {
         let original = SettingsBackup(gain: 2.73888897895813, gainLimit: 4, equalizer: eq, backgroundEnabled: true, selectedInput: "builtin", audioMode: .automatic)
         var json = try JSONSerialization.jsonObject(with: original.encoded()) as! [String: Any]
         json["version"] = 1
-        json.removeValue(forKey: "windNoise")
+        json.removeValue(forKey: "windNoise"); json.removeValue(forKey: "manualAudio")
         var object = json["equalizer"] as! [String: Any]
         object["bands"] = (object["bands"] as! [[String: Any]]).map { band in
             var value = band; value.removeValue(forKey: "lowerFrequency"); value.removeValue(forKey: "upperFrequency"); return value
@@ -34,7 +34,7 @@ final class RangeEqualizerSettingsTests: XCTestCase {
         eq.save(in: isolated)
         XCTAssertEqual(EqualizerSettings.load(in: isolated), eq)
         let backup = SettingsBackup(gain: 3, gainLimit: 20, equalizer: eq, backgroundEnabled: true, selectedInput: "builtin")
-        XCTAssertEqual(backup.version,2)
+        XCTAssertEqual(backup.version,3)
         XCTAssertEqual(try SettingsBackup.decode(backup.encoded()).equalizer,eq)
         var json = try JSONSerialization.jsonObject(with: backup.encoded()) as! [String: Any]; json["version"] = 1
         XCTAssertThrowsError(try SettingsBackup.decode(JSONSerialization.data(withJSONObject: json)))

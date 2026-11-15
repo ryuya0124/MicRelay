@@ -15,6 +15,82 @@ final class MicRelayUITests: XCTestCase {
         return app
     }
 
+    func testJapaneseManualSettingsRejectMismatchAndRestore() throws {
+        try checkManualRejection(language: "ja", locale: "ja_JP", title: "手動I/O設定", manual: "完全手動",
+            automatic: "自動", error: "設定を適用できませんでした", mismatch: "要求値と実際の値が一致しません。", rollback: "元の設定に戻しました。")
+    }
+
+    func testEnglishManualSettingsRejectMismatchAndRestore() throws {
+        try checkManualRejection(language: "en", locale: "en_US", title: "Manual I/O settings", manual: "Fully manual",
+            automatic: "Automatic", error: "Could not apply settings", mismatch: "The actual settings differ from your request.", rollback: "Restored the previous settings.")
+    }
+
+    func testManualMenuPresentation() {
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + ["--show-manual-io"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars["手動I/O設定"].waitForExistence(timeout: 10))
+        XCTAssertTrue(app.buttons["manualFramesPicker"].exists)
+        XCTAssertTrue(app.buttons["manualRatePicker"].exists)
+        XCTAssertTrue(app.buttons["manualModePicker"].exists)
+        XCTAssertFalse(app.textFields.firstMatch.exists)
+        screenshot("manual-device-dropdowns")
+        app.terminate()
+    }
+
+    private func checkManualRejection(language: String, locale: String, title: String, manual: String,
+        automatic: String, error: String, mismatch: String, rollback: String) throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("This test changes simulator audio preferences; physical-device validation is separate.")
+        #else
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale, "--allow-speaker-for-validation"]
+        app.launch()
+        let picker = app.buttons["audioModePicker"]
+        XCTAssertTrue(picker.waitForExistence(timeout: 10))
+        if !picker.label.contains(automatic) && !(picker.value as? String ?? "").contains(automatic) {
+            picker.tap(); app.buttons[automatic].tap()
+        }
+        let gainSlider = app.sliders["gainSlider"]
+        let gain = gainSlider.exists ? gainSlider.value as? String : nil
+        picker.tap(); app.buttons[manual].tap()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 10))
+        let frames = app.buttons["manualFramesPicker"], rate = app.buttons["manualRatePicker"]
+        XCTAssertTrue(frames.waitForExistence(timeout: 5))
+        let oldFrames = frames.label + (frames.value as? String ?? ""), oldRate = rate.label + (rate.value as? String ?? "")
+        XCTAssertFalse(app.textFields.firstMatch.exists)
+        frames.tap()
+        XCTAssertTrue(app.buttons["manualFramesPreset1"].waitForExistence(timeout: 5))
+        app.buttons["manualFramesPreset1"].tap()
+        rate.tap()
+        XCTAssertTrue(app.buttons["manualRatePreset96000"].waitForExistence(timeout: 5))
+        app.buttons["manualRatePreset96000"].tap()
+        let apply = app.buttons["applyManualAudio"]
+        for _ in 0..<8 where !apply.isHittable {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.15, dy: 0.8)).press(forDuration: 0.05,
+                thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.15, dy: 0.35)))
+        }
+        apply.tap()
+        let alert = app.alerts[error]
+        XCTAssertTrue(alert.waitForExistence(timeout: 15))
+        XCTAssertTrue(alert.staticTexts.containing(NSPredicate(format: "label CONTAINS %@ AND label CONTAINS %@", mismatch, rollback)).firstMatch.exists)
+        screenshot("manual-\(language)-mismatch-rollback")
+        alert.buttons["OK"].tap()
+        for _ in 0..<8 where !frames.isHittable {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.15, dy: 0.35)).press(forDuration: 0.05,
+                thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.15, dy: 0.8)))
+        }
+        XCTAssertEqual(frames.label + (frames.value as? String ?? ""), oldFrames)
+        XCTAssertEqual(rate.label + (rate.value as? String ?? ""), oldRate)
+        screenshot("manual-\(language)-restored-fields")
+        app.buttons["BackButton"].tap()
+        XCTAssertTrue(picker.waitForExistence(timeout: 5))
+        XCTAssertTrue(picker.label.contains(automatic) || (picker.value as? String ?? "").contains(automatic))
+        if let gain { XCTAssertEqual(gainSlider.value as? String, gain) }
+        app.terminate()
+        #endif
+    }
+
     func testEnglishLocalizationAcrossScreens() {
         checkLocalizedScreens(language: "en", locale: "en_US", start: "Start monitoring", initial: "Connect headphones or an HDMI device",
             equalizer: "Equalizer", bypass: "EQ OFF · Filters bypassed", gain: "Gain limit", save: "Save",

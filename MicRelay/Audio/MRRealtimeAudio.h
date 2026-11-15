@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) uint32_t maximumQuantum;
 @property(nonatomic, readonly) uint32_t currentQuantum;
 @property(nonatomic, readonly) uint64_t callbackCount;
+@property(nonatomic) BOOL outputMuted;
+- (void)resetQuantumStatistics;
 - (void)setWindNoiseEnabled:(BOOL)enabled cutoff:(double)cutoff;
 - (void)setEqualizerEnabled:(BOOL)enabled bands:(NSArray<NSDictionary<NSString *, NSNumber *> *> *)bands;
 @property(nonatomic) BOOL analysisEnabled;
