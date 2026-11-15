@@ -11,7 +11,6 @@ Adjust wind noise reduction to soften low wind rumble. Switch the equalizer and 
 
 LISTEN WHILE USING OTHER APPS
 Keep monitoring with the screen locked or while using a game or another app.
-On iPad and iPhone Duo, the layout adapts to the available screen space.
 
 SAVE AND RESTORE SETTINGS
 Your volume and sound settings are kept when you reopen the app. Save your settings to a file and restore them together whenever you need them.
