@@ -275,24 +275,33 @@ final class MicRelayUITests: XCTestCase {
     }
 
 
-    func testEnglishStoreScreenshots() {
+    func testEnglishStoreScreenshots() { captureStoreScreenshots(language: "en", locale: "en_US") }
+    func testStoreScreenshots() { captureStoreScreenshots(language: "ja", locale: "ja_JP") }
+
+    private func captureStoreScreenshots(language: String, locale: String) {
+        let device = XCUIDevice.shared
+        let previousOrientation = device.orientation
+        defer { device.orientation = previousOrientation }
+        device.orientation = UIDevice.current.userInterfaceIdiom == .pad ? .landscapeLeft : .portrait
         let app = XCUIApplication()
         for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer"]), ("store-03-gain", ["--show-gain-settings"])] {
-            app.launchArguments = ["-AppleLanguages", "(en)", "-AppleLocale", "en_US", "--store-capture"] + extra
+            // Capture the real, stopped app in a consistent appearance; never synthesize audio values.
+            app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale,
+                "-AppleInterfaceStyle", "Dark", "--store-capture"] + extra
             app.launch()
             XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 10))
-            screenshot(name)
-            app.terminate()
-        }
-    }
-
-    func testStoreScreenshots() {
-        let app = japaneseApp()
-        for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer", "--validate-eq"]), ("store-03-gain", ["--show-gain-settings"])] {
-            app.launchArguments = japaneseArguments + [UIDevice.current.userInterfaceIdiom == .pad ? "--validate-headphones" : "--validate-speaker", "--store-capture"] + extra
-            app.launch()
-            Thread.sleep(forTimeInterval: 10)
-            screenshot(name)
+            let capture = XCUIScreen.main.screenshot()
+            let image = capture.image
+            // UIImage drawing applies imageOrientation before PNG encoding strips that metadata.
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = image.scale; format.opaque = true
+            let normalized = UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
+                image.draw(in: CGRect(origin: .zero, size: image.size))
+            }
+            let attachment = XCTAttachment(data: normalized.pngData()!, uniformTypeIdentifier: "public.png")
+            attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+            let metadata = XCTAttachment(string: "orientation=\(image.imageOrientation.rawValue), size=\(image.size), scale=\(image.scale), deviceOrientation=\(device.orientation.rawValue)")
+            metadata.name = "capture-info-\(name)"; metadata.lifetime = .keepAlways; add(metadata)
             app.terminate()
         }
     }

@@ -113,3 +113,12 @@ iPadシミュレーターで日英の帯域フィルター画面と、日英の�
 Apple Distribution署名を検証した1.0.0（ビルド6）をFastlaneでアップロードし、Apple側の `VALID` を確認。ビルド5のBeta App Reviewを取り下げてmainから外し、ビルド6だけを外部mainへ割り当てた。状態は `WAITING_FOR_BETA_REVIEW` / `WAITING_FOR_REVIEW`。日英のBeta説明・テスト項目とストア説明・キーワードを読み戻して確認した。外部インストールはAppleのBeta承認後。
 
 App Store本体はビルド6を選択した `PREPARE_FOR_SUBMISSION` / `MANUAL` の下書きで、App Review提出0件。IPA SHA-256：`816a6bc977a141bf9548eee3ffd7213dcd02890d94b53991d09ae0d2897d8ff8`。非公開の確認記録は `artifacts/wind-release-final.json`、画面は `artifacts/testflight-main-build6.jpg`。実装コミット `02b600b` の [Localization CI](https://github.com/ryuya0124/MicRelay/actions/runs/43635470010) も成功。
+
+
+## ストア画像の向き・テーマ修正
+
+iPad画像の文字が横倒しになり、Duo画像がライト表示のままだったことを確認。撮影したUIImageの向きを反映せずにPNGへ変換していたことと、撮影テーマを固定していなかったことが原因だった。撮影時の描画で向きを反映し、ダーク表示を指定した。書き出しでも画像の向きを考慮し、iPadの縦横比を維持する。旧アセット生成処理からは、過去の撮影画像を再利用してストア画像を上書きする経路を取り除いた。
+
+`artifacts/iPad-StoreDark-Corrected.xcresult` と `artifacts/Duo-StoreDark-Corrected.xcresult` で日英の撮影テスト各2件が成功。iPadは2752×2064、Duoは現在の外側画面の2034×1398で、文字が正立したダーク表示を保存。モニター・EQ・ゲイン設定を各3枚、日英・2機種の計12枚を確認した。音声は停止状態の実画面で、波形等の合成はない。撮影後のシミュレーターの外観は元のライトへ戻した。実機は操作していない。
+
+App Store Connectの対象4セットを新画像に差し替え、12枚すべての `COMPLETE`・順序・ソースチェックサムを読み戻して一致を確認。旧画像を外し、iPhoneの既存画像IDは維持した。Appleの配信用画像も取得して向きとテーマを確認した。記録は非公開の `artifacts/store-shots-after-correction.json`、`artifacts/screenshots-*-verified.json`。

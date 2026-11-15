@@ -82,3 +82,8 @@ bundle exec ruby scripts/store_metadata.rb verify en-US
 ```
 
 英語スクリーンショットは `MicRelayUITests/testEnglishStoreScreenshots` で撮影し、`xcresulttool export attachments` の出力から `swift scripts/export-localized-screenshots.swift en-US <iphone|ipad|duo> <出力ディレクトリ>` で書き出せます。実画面を使用し、波形・スペクトラム・遅延値を合成しません。英語ローカライズの追加は、配信地域やApp Store本体の審査・公開を変更しません。
+
+
+スクリーンショットの差し替えは `bundle exec ruby scripts/sync-store-screenshots.rb <ja|en-US> <ipad|duo|iphone>` で対象セットだけを更新できます。新しい画像がすべて `COMPLETE` になった後に古い画像を外し、順序とチェックサムを読み戻します。元画像はHEADから復元できることを確認し、`artifacts/` にも控えを保存します。画像のGitコミットは差し替え後に行います。
+
+撮影テストはダーク表示を指定し、iPadでは横向きを指定します。`UIImage.imageOrientation` を描画へ反映したPNGを保存し、書き出し側も画像の向きを反映します。各言語のテスト記録だけを含むmanifestを渡してください。`generate-store-assets.swift` はヘッダー等の自作画像だけを生成し、過去のキャプチャでスクリーンショットを上書きしません。

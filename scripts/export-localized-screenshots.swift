@@ -22,7 +22,15 @@ for record in records {
         let name = attachment["suggestedHumanReadableName"] as! String
         guard name.hasPrefix("store-") else { continue }
         let input = captures.appendingPathComponent(attachment["exportedFileName"] as! String)
-        guard let source = CGImageSourceCreateWithURL(input as CFURL, nil), let image = CGImageSourceCreateImageAtIndex(source, 0, nil) else { fatalError("Cannot read capture") }
+        guard let source = CGImageSourceCreateWithURL(input as CFURL, nil),
+              let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any],
+              let rawWidth = properties[kCGImagePropertyPixelWidth] as? Int,
+              let rawHeight = properties[kCGImagePropertyPixelHeight] as? Int,
+              let image = CGImageSourceCreateThumbnailAtIndex(source, 0, [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceThumbnailMaxPixelSize: max(rawWidth, rawHeight)
+              ] as CFDictionary) else { fatalError("Cannot read capture") }
         let width = device == "ipad" ? (image.width > image.height ? 2752 : 2064) : image.width
         let height = device == "ipad" ? (image.width > image.height ? 2064 : 2752) : image.height
         guard abs(Double(width) / Double(height) - Double(image.width) / Double(image.height)) < 0.001 else { fatalError("Capture aspect ratio does not match the store dimensions") }

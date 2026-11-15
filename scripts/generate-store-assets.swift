@@ -19,32 +19,8 @@ func write(_ image: CGImage, _ path: String) throws {
     CGImageDestinationAddImage(out, image, nil)
     guard CGImageDestinationFinalize(out) else { throw NSError(domain: "StoreAssets", code: 1) }
 }
-func saveRGB(_ image: CGImage, width: Int, height: Int, to path: String) throws {
-    let ctx = context(width, height); ctx.interpolationQuality = .high
-    ctx.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
-    try write(ctx.makeImage()!, path)
-}
-// Native screenshots only. iPad captures are scaled uniformly to Apple's 13-inch dimensions.
-for device in ["iphone", "ipad"] {
-    let root = "artifacts/store-\(device)-captures"
-    let records = try JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: root + "/manifest.json"))) as! [[String: Any]]
-    for record in records {
-        for item in record["attachments"] as! [[String: Any]] {
-            let name = item["suggestedHumanReadableName"] as! String
-            guard name.hasPrefix("store-") else { continue }
-            let path = root + "/" + (item["exportedFileName"] as! String)
-            let source = load(path)
-            let rep = load(path)
-            let width = device == "ipad" ? 2752 : rep.width
-            let height = device == "ipad" ? 2064 : rep.height
-            try saveRGB(source, width: width, height: height, to: "store/screenshots/ja/\(device)/" + name.components(separatedBy: "_").first! + ".png")
-        }
-    }
-}
-for (name, path) in [("01-outer", "artifacts/duo-native-closed-final.png"), ("02-inner", "artifacts/duo-native-landscape.png")] {
-    let rep = load(path)
-    try saveRGB(load(path), width: rep.width, height: rep.height, to: "store/screenshots/ja/duo/\(name).png")
-}
+// Native screenshots are exported separately with export-localized-screenshots.swift.
+// Never overwrite them from older captures when rebuilding the artwork below.
 // Own artwork matching the icon, with the app name only.
 let header = context(3840, 1646)
 header.setFillColor(CGColor(red: 0.035, green: 0.065, blue: 0.095, alpha: 1))
