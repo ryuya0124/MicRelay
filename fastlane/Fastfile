@@ -164,8 +164,8 @@ platform :ios do
         }]
       },
       localized_build_info: {
-        "ja" => {whats_new: "バンドストップ／バンドパスと、先読みなしの風切り音低減を追加しました。周波数範囲・低域カット調整、独立したON/OFF、設定の保持と旧バックアップの読み込みを確認してください。"},
-        "en-US" => {whats_new: "Added band-stop/band-pass filters and wind rumble reduction without look-ahead buffering. Please test frequency bounds, low-cut adjustment, independent bypass switches, saved settings, and legacy backup imports."}
+        "ja" => {whats_new: "指定した音域を減らす・その音域だけを聞く調整と、風切り音低減を追加しました。聞こえ方の調整、それぞれのON/OFF、設定の保存・復元をお試しください。"},
+        "en-US" => {whats_new: "Added controls to reduce a selected range of sounds or listen only to that range, plus wind noise reduction. Please try adjusting the sound, switching each feature on or off, and saving and restoring your settings."}
       }
 
     )

@@ -1,25 +1,21 @@
-MicRelay lets you hear microphone audio through headphones or an HDMI device connected to the same iPhone or iPad.
+MicRelay lets you hear sound picked up by your iPhone or iPad’s microphone through headphones or an HDMI device connected to the same device.
 
-MICROPHONES AND OUTPUT
-Choose the built-in microphone or a headset or external microphone made available by the OS. Wired, USB, Bluetooth, and HDMI audio outputs are supported. Monitoring cannot start without headphones or an HDMI device and stops when the output is disconnected. The built-in speaker is available only when you explicitly enable it.
+LISTEN TO YOUR MICROPHONE
+Choose your device’s built-in microphone, a headset microphone, or a connected external microphone. Listen through wired, USB, or Bluetooth headphones, or an HDMI device.
+Monitoring stops automatically when you disconnect the headphones or HDMI device. You can also choose to listen through the built-in speaker.
 
-GAIN AND EQUALIZER
-Set monitor gain and choose the gain slider’s maximum. Your gain settings are kept after restarting the app.
-The six-band equalizer lets you adjust each band’s frequency, gain, and Q. Notch, low-cut, and high-cut filters are also available. Band-stop and band-pass filters let you set lower and upper frequencies to attenuate a range or pass only that range. Compare the live input and post-EQ frequency spectra while adjusting the filters. Turning EQ off bypasses filter processing.
+ADJUST VOLUME AND SOUND
+Set the monitoring volume and choose your own maximum for the volume slider.
+Use the equalizer to adjust bass, midrange, and treble, or turn down sounds at a particular pitch. You can reduce a selected range of sounds or listen only to that range. Watch a graph of sound levels across different pitches as you make adjustments.
+Adjust wind noise reduction to soften low wind rumble. Switch the equalizer and wind noise reduction on or off independently.
 
-MONITORING AND DISPLAY
-Audio mode and I/O buffer settings adapt to your device and connection. You can also choose Automatic, Standard, or Measurement mode manually. View the input waveform, input level, and input/output latency reported by the OS. With background monitoring enabled, audio continues while the screen is locked or another app is open.
-The layout adapts to the available screen width on iPad and iPhone Duo.
+LISTEN WHILE USING OTHER APPS
+Keep monitoring with the screen locked or while using a game or another app.
+On iPad and iPhone Duo, the layout adapts to the available screen space.
 
-SETTINGS BACKUP
-Export settings to a JSON file and restore them using the Files app. Review the imported settings before restoring gain, gain limit, EQ, audio mode, and other preferences together.
+SAVE AND RESTORE SETTINGS
+Your volume and sound settings are kept when you reopen the app. Save your settings to a file and restore them together whenever you need them.
 
-LIMITATIONS
-Actual latency depends on your device, OS, and connected hardware. Bluetooth adds wireless transmission and codec latency. Some microphone and output combinations cannot be selected together by the OS. Exclusive microphone use by another app and system interruptions can stop monitoring.
-Using the speaker can cause feedback. Amplification beyond audio full scale is clipped.
+Audio is not recorded or sent anywhere. No account is required. Available in Japanese and English.
 
-Audio is processed on your device. It is not recorded or sent to a server. No account is required. Source code and license notices are available from a dedicated screen in the app.
-
-Available in Japanese and English.
-
-Wind noise reduction has an independent on/off switch and an adjustable low-cut frequency. It adds no look-ahead audio buffer. Higher settings also reduce voice bass.
+The time it takes to hear sound and the microphones you can choose depend on your device and connected equipment. Monitoring may be interrupted when another app uses the microphone. When using the speaker, start at a low volume to avoid feedback. Stronger wind noise reduction also reduces the bass in your voice.
