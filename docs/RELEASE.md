@@ -53,7 +53,7 @@ bundle exec fastlane ios status
 
 `status` で処理済みビルド、Appバージョンの状態、レビュー提出の有無を読み取り、`artifacts/release/appstore-status.json` に保存します。再アップロードするときは `project.yml` の `CURRENT_PROJECT_VERSION` を増やしてください。
 
-初回レコード作成済みなら、`bundle exec fastlane ios prepare` で登録確認・署名・アーカイブ・アップロードを順に行えます。App Store本体の審査提出・公開のlaneは用意していません。
+初回レコード作成済みなら、`bundle exec fastlane ios prepare` で登録確認・署名・アーカイブ・アップロードを順に行えます。App Store本体の審査提出は、下記の専用laneを明示的に実行する場合だけ行います。
 
 ## 参考
 
@@ -87,3 +87,14 @@ bundle exec ruby scripts/store_metadata.rb verify en-US
 スクリーンショットの差し替えは `bundle exec ruby scripts/sync-store-screenshots.rb <ja|en-US> <ipad|duo|iphone>` で対象セットだけを更新できます。新しい画像がすべて `COMPLETE` になった後に古い画像を外し、順序とチェックサムを読み戻します。元画像はHEADから復元できることを確認し、`artifacts/` にも控えを保存します。画像のGitコミットは差し替え後に行います。
 
 撮影テストはダーク表示を指定し、iPadでは横向きを指定します。`UIImage.imageOrientation` を描画へ反映したPNGを保存し、書き出し側も画像の向きを反映します。各言語のテスト記録だけを含むmanifestを渡してください。`generate-store-assets.swift` はヘッダー等の自作画像だけを生成し、過去のキャプチャでスクリーンショットを上書きしません。
+
+
+## App Store本体の審査（明示的に依頼された場合）
+
+```sh
+bundle exec fastlane ios submit_store_review
+```
+
+ユーザーの審査提出指示に合わせて追加したlaneです。`project.yml` のバージョンとビルド、署名済みアップロードの `VALID`、日英の説明・画像のチェックサムと登録完了、審査用の連絡先・操作案内を確認して、対応するバージョンだけをApp Reviewへ提出します。既存の同一バージョンの提出は重複させず、別の審査項目がある場合は停止します。ビルドの再アップロードは行いません。
+
+公開方法は `store/release-policy.json` を使用します。現在はユーザーの指示で `AFTER_APPROVAL`（承認後に自動公開）。`MANUAL` への変更にも対応します。メタデータ更新でも同じ設定を読み、自動公開の指定を手動に戻しません。プライバシー回答の公開はこのlaneでは行いません。Appleの公開確認に表示される、回答の正確性・ガイドラインと法令への適合・変更時の更新に対する同意は、実行時に別途確認します。

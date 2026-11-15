@@ -183,3 +183,11 @@ platform :ios do
     status
   end
 end
+
+
+platform :ios do
+  desc "Submit the configured build to App Store Review using the configured release policy; only on explicit request"
+  lane :submit_store_review do
+    sh("cd #{Shellwords.escape(PROJECT_ROOT)} && bundle exec ruby scripts/submit-store-review.rb")
+  end
+end

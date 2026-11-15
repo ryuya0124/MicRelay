@@ -51,7 +51,9 @@ when 'metadata'
     %w(advertising age_assurance gambling health_or_wellness_topics loot_box messaging_and_chat parental_controls social_media social_media_age_restricted unrestricted_web_access user_generated_content).each { |k| attrs[k.to_sym] = false }
     attrs[:age_rating_override_v2] = 'NONE'
     rating.update(attributes: attrs)
-    version.update(attributes: {copyright: '2026 ryuya', release_type: 'MANUAL'})
+    release_type = JSON.parse(File.read(File.join(ROOT, 'store/release-policy.json'))).fetch('release_type')
+    abort 'Unsupported release policy' unless ['MANUAL', 'AFTER_APPROVAL'].include?(release_type)
+    version.update(attributes: {copyright: '2026 ryuya', release_type: release_type})
   end
   puts "#{LOCALE} metadata saved to draft."
 when 'screenshots'
