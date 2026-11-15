@@ -122,3 +122,11 @@ iPad画像の文字が横倒しになり、Duo画像がライト表示のまま�
 `artifacts/iPad-StoreDark-Corrected.xcresult` と `artifacts/Duo-StoreDark-Corrected.xcresult` で日英の撮影テスト各2件が成功。iPadは2752×2064、Duoは現在の外側画面の2034×1398で、文字が正立したダーク表示を保存。モニター・EQ・ゲイン設定を各3枚、日英・2機種の計12枚を確認した。音声は停止状態の実画面で、波形等の合成はない。撮影後のシミュレーターの外観は元のライトへ戻した。実機は操作していない。
 
 App Store Connectの対象4セットを新画像に差し替え、12枚すべての `COMPLETE`・順序・ソースチェックサムを読み戻して一致を確認。旧画像を外し、iPhoneの既存画像IDは維持した。Appleの配信用画像も取得して向きとテーマを確認した。記録は非公開の `artifacts/store-shots-after-correction.json`、`artifacts/screenshots-*-verified.json`。
+
+## App Store本体の審査提出
+
+ユーザーの指示で、1.0.0（ビルド6）をApp Store本体の審査へ提出。2026-11-15 12:50 JSTに `WAITING_FOR_REVIEW` をAPIとApp Review画面で確認した。承認後の公開方法も、追加指示に従って `AFTER_APPROVAL`（自動公開）に変更し、提出後に読み戻した。公開方法は `store/release-policy.json` に記録し、以後のメタデータ更新でもこの設定を使う。
+
+事前に日英の説明、全18枚の画像の登録完了・順序・チェックサム、選択ビルド、輸出コンプライアンス、審査用連絡先・操作案内を確認した。最初の提出検証ではプライバシー回答の未公開が不足項目として返った。Appleの公開確認文を提示してユーザーの明示的な同意を受け、「データ収集なし」を公開。その後にFastlaneの `ios submit_store_review` が成功した。これは審査承認やストア公開の完了ではない。
+
+非公開の提出記録は `artifacts/release/appstore-review-submission.json`、確認画面は `artifacts/appstore-review-submitted.jpg`、プライバシー回答の公開画面は `artifacts/app-privacy-published.jpg`。審査連絡先などはリポジトリに含めない。
