@@ -14,6 +14,7 @@ struct MonitorView: View {
     @State private var showsBackup = false
     @State private var showsManual = ProcessInfo.processInfo.arguments.contains("--show-manual-io")
 
+
     var body: some View {
         GeometryReader { geometry in
             if geometry.size.width >= 760 {
@@ -63,18 +64,7 @@ struct MonitorView: View {
                     .accessibilityIdentifier("inputWaveform")
                 LabeledContent(String(localized: "monitor.input_level", defaultValue: "入力レベル"), value: "\(db(model.peak)) dBFS")
                     .monospacedDigit()
-                Button {
-                    if model.isRunning || model.isStarting { model.stop() } else { model.start() }
-                } label: {
-                    HStack {
-                        Label(model.isRunning ? String(localized: "monitor.action.stop", defaultValue: "モニターを停止") : model.isStarting ? String(localized: "monitor.action.cancel", defaultValue: "接続をキャンセル") : String(localized: "monitor.action.start", defaultValue: "モニターを開始"),
-                              systemImage: model.isRunning ? "stop.fill" : "play.fill")
-                        Spacer()
-                        if model.isStarting { ProgressView() }
-                    }
-                }
-                .disabled(!model.isRunning && !model.isStarting && !model.canStart)
-                .accessibilityIdentifier("monitorToggle")
+                MonitorStartButton(model: model)
                 #if DEBUG
                 if !ProcessInfo.processInfo.arguments.contains("--store-capture"), ProcessInfo.processInfo.arguments.contains("--validate-speaker") || ProcessInfo.processInfo.arguments.contains("--validate-headphones") {
                     Text(String(localized: "diagnostics.live_summary", defaultValue: "入力ピーク \(db(model.maximumInputPeak))、出力ピーク \(db(model.maximumOutputPeak))、処理フレーム \(model.frames)、背景フレーム \(model.backgroundFrames)、エラー \(model.renderError)、量子 \(model.minimumQuantum)、サンプルレート \(Int(model.sampleRate))"))

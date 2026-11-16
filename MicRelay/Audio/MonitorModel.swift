@@ -192,7 +192,10 @@ final class MonitorModel: ObservableObject {
 
     var canMonitor: Bool { OutputSafety.allows(outputs, confirmed: confirmedOutputs, speakerEnabled: speakerEnabled) }
     var canStart: Bool {
-        canMonitor || (speakerEnabled && !outputs.isEmpty && outputs.allSatisfy { $0.type == .builtInReceiver })
+        startRequirement == .ready
+    }
+    var startRequirement: OutputSafety.StartRequirement {
+        OutputSafety.startRequirement(outputs, confirmed: confirmedOutputs, speakerEnabled: speakerEnabled)
     }
     var isSpeaker: Bool { outputs.contains { $0.type == .builtInSpeaker } }
     var unconfirmedOutputs: [OutputPort] {
@@ -203,6 +206,9 @@ final class MonitorModel: ObservableObject {
     var reportedLatency: Double { inputLatency + outputLatency + bufferDuration + (unitProcessingLatency ?? 0) }
 
     init() {
+        #if DEBUG
+        diagnosticMutedOutput = ProcessInfo.processInfo.arguments.contains("--mute-output-for-validation")
+        #endif
         #if DEBUG && targetEnvironment(simulator)
         // Native I/O tests opt into a speaker route without starting audible monitoring.
         speakerEnabled = ProcessInfo.processInfo.arguments.contains("--allow-speaker-for-validation")
@@ -249,6 +255,9 @@ final class MonitorModel: ObservableObject {
         applyEqualizer()
         applyWindNoise()
         applyTapGate()
+        #if DEBUG
+        if diagnosticMutedOutput { writeDiagnostics() }
+        #endif
         let center = NotificationCenter.default
         observers.append(center.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: .main) { [weak self] note in
             let reason = (note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt) ?? 0
@@ -284,6 +293,20 @@ final class MonitorModel: ObservableObject {
     func confirmExternalOutput() {
         confirmedOutputs.formUnion(unconfirmedOutputs.map(\.uid))
         status = String(localized: "monitor.status.headphones_confirmed", defaultValue: "イヤホンを確認しました。開始できます。")
+    }
+
+    func startAfterOutputApproval(speaker: Bool, expectedIDs: Set<String>) {
+        guard !isStarting, !isRunning else { return }
+        refreshRoute()
+        guard Set(outputs.map(\.uid)) == expectedIDs,
+              startRequirement == (speaker ? .speakerPermission : .externalConfirmation) else {
+            status = String(localized: "monitor.status.route_changed", defaultValue: "音声の接続が変わったため停止しました。確認して開始してください。")
+            return
+        }
+        if speaker { speakerEnabled = true }
+        else { confirmedOutputs.formUnion(unconfirmedOutputs.map(\.uid)) }
+        // Begin one transition. setSpeakerEnabled also prepares the session, which would block start().
+        start()
     }
 
     func setSpeakerEnabled(_ enabled: Bool) {

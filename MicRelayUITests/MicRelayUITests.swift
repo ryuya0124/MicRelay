@@ -317,18 +317,63 @@ final class MicRelayUITests: XCTestCase {
         app.terminate()
     }
 
-    func testLaunchAndSafeDefault() {
+    func testLaunchAndSafeDefault() throws {
+        try checkStartOutputExplanation(language: "ja", locale: "ja_JP", title: "出力先を確認", cancel: "キャンセル")
+    }
+    func testEnglishStartOutputExplanation() throws {
+        try checkStartOutputExplanation(language: "en", locale: "en_US", title: "Check audio output", cancel: "Cancel")
+    }
+    func testEqualizerStartOutputExplanation() throws {
+        try checkStartOutputExplanation(language: "ja", locale: "ja_JP", title: "出力先を確認", cancel: "キャンセル", equalizer: true)
+    }
+    func testSpeakerApprovalStartsMonitoringPreparationAndCanBeCancelled() throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("This fixture requires the simulator's built-in output.")
+        #else
         let app = japaneseApp()
+        app.launchArguments.append("--mute-output-for-validation")
         app.launch()
-        XCTAssertTrue(app.staticTexts["MicRelay"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.buttons["monitorToggle"].exists)
+        let start = app.buttons["monitorToggle"]
+        XCTAssertTrue(start.waitForExistence(timeout: 10))
+        start.tap()
+        let approval = app.alerts.buttons["approveSpeakerStart"].firstMatch
+        XCTAssertTrue(approval.waitForExistence(timeout: 5))
+        approval.tap()
+        // Reaching buffer probing distinguishes a real start from configureOnly(), which ends at Ready.
+        let status = app.staticTexts["monitorStatus"]
+        expectation(for: NSPredicate { _, _ in status.label.contains("音声設定を確認中") }, evaluatedWith: status)
+        waitForExpectations(timeout: 6)
+        XCTAssertEqual(app.switches["speakerToggle"].value as? String,"1")
+        XCTAssertTrue(start.label.contains("キャンセル"))
+        start.tap()
+        XCTAssertTrue(start.label.contains("モニターを開始"))
+        screenshot("speaker-approved-start-cancelled")
+        app.terminate()
+        #endif
+    }
+    private func checkStartOutputExplanation(language: String, locale: String, title: String, cancel: String, equalizer: Bool = false) throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("Use the simulator for the disconnected-output fixture; physical-button validation is separate.")
+        #else
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale]
+        if equalizer { app.launchArguments.append("--show-equalizer") }
+        app.launch()
+        let button = app.buttons[equalizer ? "equalizerMonitorToggle" : "monitorToggle"]
+        XCTAssertTrue(button.waitForExistence(timeout: 10))
         // No headphones are attached in this validation environment.
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            XCTAssertFalse(app.buttons["monitorToggle"].isEnabled)
-        } else {
-            XCTAssertFalse(app.switches["speakerToggle"].value as? String == "1")
-        }
+        XCTAssertTrue(button.isEnabled)
+        if !equalizer { XCTAssertFalse(app.switches["speakerToggle"].value as? String == "1") }
+        button.tap()
+        XCTAssertTrue(app.alerts.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.alerts[title].exists)
+        XCTAssertTrue(app.buttons["approveSpeakerStart"].exists)
+        screenshot("start-output-explanation-\(language)")
+        app.alerts.buttons[cancel].tap()
+        if !equalizer { XCTAssertFalse(app.switches["speakerToggle"].value as? String == "1") }
         screenshot("01-default-headphone-guard")
+        app.terminate()
+        #endif
     }
 
     func testLiveMicrophoneAndBackground() throws {

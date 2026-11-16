@@ -6,6 +6,23 @@ import AVFAudio
 @testable import MicRelay
 
 final class OutputSafetyTests: XCTestCase {
+    func testStartExplainsSpeakerPermissionWithoutAllowingPlayback() {
+        for type in [AVAudioSession.Port.builtInSpeaker, .builtInReceiver] {
+            XCTAssertEqual(OutputSafety.startRequirement([port(type)],confirmed:[],speakerEnabled:false),.speakerPermission)
+            XCTAssertEqual(OutputSafety.startRequirement([port(type)],confirmed:[],speakerEnabled:true),.ready)
+        }
+        XCTAssertFalse(OutputSafety.allows([port(.builtInSpeaker)],confirmed:[]))
+        XCTAssertEqual(OutputSafety.startRequirement([port(.HDMI)],confirmed:[],speakerEnabled:false),.ready)
+    }
+    func testStartApprovalIsSpecificToAnExternalRouteAndRejectsUnsupportedMixedOutputs() {
+        let usb=port(.usbAudio)
+        XCTAssertEqual(OutputSafety.startRequirement([usb],confirmed:[],speakerEnabled:false),.externalConfirmation)
+        XCTAssertEqual(OutputSafety.startRequirement([usb],confirmed:[usb.uid],speakerEnabled:false),.ready)
+        XCTAssertEqual(OutputSafety.startRequirement([port(.usbAudio,uid:"replacement")],confirmed:[usb.uid],speakerEnabled:false),.externalConfirmation)
+        for ports in [[],[port(.airPlay)],[port(.usbAudio),port(.airPlay)],[port(.HDMI),port(.carAudio)]] {
+            XCTAssertEqual(OutputSafety.startRequirement(ports,confirmed:[],speakerEnabled:true),.unavailable)
+        }
+    }
     private func port(_ type: AVAudioSession.Port, uid: String = "test") -> OutputPort {
         OutputPort(uid: uid, type: type, name: "Test")
     }

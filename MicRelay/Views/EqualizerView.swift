@@ -18,9 +18,7 @@ struct EqualizerView: View {
                     Toggle("EQ", isOn: Binding(get: { model.equalizer.enabled }, set: model.setEqualizerEnabled))
                         .font(.headline).accessibilityIdentifier("equalizerEnabled")
                     Spacer(minLength: 30)
-                    Button(model.isRunning ? String(localized: "eq.action.stop", defaultValue: "モニター停止") : String(localized: "eq.action.start", defaultValue: "モニター開始")) {
-                        if model.isRunning { model.stop() } else { model.start() }
-                    }.buttonStyle(.bordered).disabled(model.isStarting || (!model.isRunning && !model.canStart))
+                    MonitorStartButton(model: model, compact: true).buttonStyle(.bordered)
                 }
                 Text(model.equalizer.enabled ? String(localized: "eq.enabled", defaultValue: "EQ ON") : String(localized: "eq.bypass", defaultValue: "EQ OFF · フィルターをバイパス"))
                     .font(.caption).foregroundStyle(model.equalizer.enabled ? Color.teal : .secondary)

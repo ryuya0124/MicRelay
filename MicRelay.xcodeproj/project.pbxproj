@@ -43,6 +43,7 @@
 		BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */; };
 		BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048B12B882B5CAFCAA660AA /* MonitorView.swift */; };
 		D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */; };
+		D0EA3E304D52FA31087E7602 /* MonitorStartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F102FF2665B4A0C5D5931BD /* MonitorStartButton.swift */; };
 		D37FB316610FF8DD2B263E7D /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B5DC2C5C89B7151EE98BC9DC /* AppIcon.icon */; };
 		D4FD2EC0054610714F6F8772 /* MRRealtimeAudio.mm in Sources */ = {isa = PBXBuildFile; fileRef = A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */; };
 		D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D14E373F9952C1EF310111 /* BufferTunerTests.swift */; };
@@ -96,6 +97,7 @@
 		4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ThirdPartyLicenses.json; sourceTree = "<group>"; };
 		51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupView.swift; sourceTree = "<group>"; };
 		58CD4B8F685964930CD845C6 /* TapGateSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGateSettings.swift; sourceTree = "<group>"; };
+		5F102FF2665B4A0C5D5931BD /* MonitorStartButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorStartButton.swift; sourceTree = "<group>"; };
 		6248BDEAB1B4807474861504 /* StartupIOProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupIOProbe.swift; sourceTree = "<group>"; };
 		750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPreferencesTests.swift; sourceTree = "<group>"; };
 		75E25510BCD9A01659968AE0 /* WindNoiseDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WindNoiseDSPTests.mm; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */,
 				7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */,
 				126CD1982092E2287B3B2022 /* ManualAudioSettingsView.swift */,
+				5F102FF2665B4A0C5D5931BD /* MonitorStartButton.swift */,
 				4048B12B882B5CAFCAA660AA /* MonitorView.swift */,
 				51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */,
 				0501C4FB824E4A36B3FCE639 /* TapGateControls.swift */,
@@ -408,6 +411,7 @@
 				1FE225C839BBA1A66ECD2214 /* MicRelayApp.swift in Sources */,
 				E50088294D8C507892BDABE1 /* MonitorModel.swift in Sources */,
 				A94D7DC24F61A268A858DA8E /* MonitorPreferences.swift in Sources */,
+				D0EA3E304D52FA31087E7602 /* MonitorStartButton.swift in Sources */,
 				BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */,
 				6C3A200AC5BEA2BBA8FAF08C /* OutputSafety.swift in Sources */,
 				180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */,
@@ -476,7 +480,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -693,7 +697,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

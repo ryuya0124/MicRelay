@@ -2618,6 +2618,108 @@
         }
       }
     },
+    "monitor.start.connection_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No supported output is available. Connect headphones or an HDMI device, then refresh the connection and microphone."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対応する出力先を確認できません。イヤホン・HDMI機器を接続し、接続とマイクを更新してください。"
+          }
+        }
+      }
+    },
+    "monitor.start.headphones": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm headphones and start"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イヤホンとして開始"
+          }
+        }
+      }
+    },
+    "monitor.start.headphones_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm that the connected output is headphones before starting."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この接続先がイヤホンであることを確認してから開始してください。"
+          }
+        }
+      }
+    },
+    "monitor.start.output_title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check audio output"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "出力先を確認"
+          }
+        }
+      }
+    },
+    "monitor.start.speaker": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start with built-in speaker"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本体スピーカーで開始"
+          }
+        }
+      }
+    },
+    "monitor.start.speaker_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Built-in speaker output is off. Allow it to start through the speaker. Sound picked up by the microphone can cause feedback."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "本体スピーカーの使用がOFFです。スピーカーで開始する場合は許可してください。スピーカーの音がマイクに入るとハウリングします。"
+          }
+        }
+      }
+    },
     "monitor.state.stopped": {
       "comment": "Monitor UI or status text. Keep format placeholders and units intact.",
       "localizations": {
