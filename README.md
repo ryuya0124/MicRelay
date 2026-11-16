@@ -86,3 +86,5 @@ Debugビルドは停止時・バックグラウンド復帰時にアプリ内 `D
 [サポート](docs/SUPPORT.md) / [プライバシーポリシー](docs/PRIVACY.md)
 
 外部TestFlight： [mainへ参加](https://testflight.apple.com/join/57HvuCWz)（初回Beta App Reviewの承認後にインストール可能）。
+
+周波数解析・表示転送の負荷削減と、Mac上で再現できる補助測定は [docs/PERFORMANCE.md](docs/PERFORMANCE.md) を参照してください。

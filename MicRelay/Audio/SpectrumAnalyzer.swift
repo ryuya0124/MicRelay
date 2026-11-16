@@ -18,11 +18,12 @@ final class SpectrumAnalyzer: @unchecked Sendable {
     private let queue = DispatchQueue(label: "net.ryuya-dev.MicRelay.spectrum", qos: .userInitiated)
     private var timer: DispatchSourceTimer?
     private var audio: MRRealtimeAudio?
-    private let fft = SpectrumFFT()
-    private var input = [Float](repeating: 0, count: 4096)
-    private var output = [Float](repeating: 0, count: 4096)
-    private var ringInput = [Float](repeating: 0, count: 4096)
-    private var ringOutput = [Float](repeating: 0, count: 4096)
+    // Queue-confined lazy storage: opening the app does not allocate the FFT workspace.
+    private lazy var fft = SpectrumFFT()
+    private var input: [Float] = []
+    private var output: [Float] = []
+    private var ringInput: [Float] = []
+    private var ringOutput: [Float] = []
     private var cursor = 0
     private var filled = 0
 
@@ -32,6 +33,13 @@ final class SpectrumAnalyzer: @unchecked Sendable {
             self.audio?.analysisEnabled = false
             self.audio = audio
             cursor = 0; filled = 0
+            // Allocate once on first use; stored buffers stay uniquely owned for in-place filling.
+            if input.isEmpty {
+                input = [Float](repeating: 0, count: 4096)
+                output = [Float](repeating: 0, count: 4096)
+                ringInput = [Float](repeating: 0, count: 4096)
+                ringOutput = [Float](repeating: 0, count: 4096)
+            }
             audio.discardAnalysisSamples()
             audio.analysisEnabled = true
             let timer = DispatchSource.makeTimerSource(queue: queue)
@@ -52,14 +60,8 @@ final class SpectrumAnalyzer: @unchecked Sendable {
                     filled = min(4096, filled + read)
                 }
                 guard filled == 4096 else { return }
-                var orderedInput = [Float](repeating: 0, count: 4096)
-                var orderedOutput = orderedInput
-                for i in 0..<4096 {
-                    orderedInput[i] = ringInput[(cursor + i) % 4096]
-                    orderedOutput[i] = ringOutput[(cursor + i) % 4096]
-                }
-                let first = fft.spectrum(orderedInput, sampleRate: sampleRate)
-                let second = fft.spectrum(orderedOutput, sampleRate: sampleRate)
+                let first = fft.spectrum(ringInput, startingAt: cursor, sampleRate: sampleRate)
+                let second = fft.spectrum(ringOutput, startingAt: cursor, sampleRate: sampleRate)
                 onFrame(SpectrumFrame(frequencies: first.frequencies, inputDB: first.db,
                     equalizedDB: second.db, dominantFrequency: first.dominantFrequency, sampleRate: sampleRate))
             }
@@ -89,12 +91,31 @@ final class SpectrumFFT {
     private var imaginary = [Float](repeating: 0, count: 2048)
     private var power = [Float](repeating: 0, count: 2048)
 
+    private var plannedRate: Double = 0
+    private var frequencies: [Double] = []
+    private var bins: [ClosedRange<Int>] = []
+
     init() { vDSP_hann_window(&window, vDSP_Length(count), Int32(vDSP_HANN_DENORM)) }
     deinit { vDSP_destroy_fftsetup(setup) }
 
-    func spectrum(_ samples: [Float], sampleRate: Double) -> (frequencies: [Double], db: [Float], dominantFrequency: Double) {
-        precondition(samples.count == count && sampleRate > 0)
-        vDSP_vmul(samples, 1, window, 1, &work, 1, vDSP_Length(count))
+    func spectrum(_ samples: [Float], startingAt cursor: Int = 0, sampleRate: Double) -> (frequencies: [Double], db: [Float], dominantFrequency: Double) {
+        precondition(samples.count == count && sampleRate > 0 && (0..<count).contains(cursor))
+        prepareBins(sampleRate: sampleRate)
+        // Window the circular data directly into the existing FFT scratch space.
+        // There is no temporary ordered copy of either signal.
+        samples.withUnsafeBufferPointer { source in
+            window.withUnsafeBufferPointer { hann in
+                work.withUnsafeMutableBufferPointer { destination in
+                    let first = count - cursor
+                    vDSP_vmul(source.baseAddress! + cursor, 1, hann.baseAddress!, 1,
+                              destination.baseAddress!, 1, vDSP_Length(first))
+                    if cursor > 0 {
+                        vDSP_vmul(source.baseAddress!, 1, hann.baseAddress! + first, 1,
+                                  destination.baseAddress! + first, 1, vDSP_Length(cursor))
+                    }
+                }
+            }
+        }
         for i in 0..<2048 { real[i] = work[2 * i]; imaginary[i] = work[2 * i + 1] }
         real.withUnsafeMutableBufferPointer { r in
             imaginary.withUnsafeMutableBufferPointer { im in
@@ -103,20 +124,29 @@ final class SpectrumFFT {
                 vDSP_zvmags(&split, 1, &power, 1, 2048)
             }
         }
-        let maxHz = min(20000, sampleRate * 0.499)
-        let frequencies = (0..<128).map { 20 * pow(maxHz / 20, Double($0) / 127) }
         var db = [Float](repeating: -120, count: 128)
-        for i in 0..<128 {
-            let low = i == 0 ? 20 : sqrt(frequencies[i - 1] * frequencies[i])
-            let high = i == 127 ? maxHz : sqrt(frequencies[i] * frequencies[i + 1])
-            let center = max(1, min(2047, Int((frequencies[i] * Double(count) / sampleRate).rounded())))
-            let start = max(1, min(2047, Int(ceil(low * Double(count) / sampleRate))))
-            let end = max(1, min(2047, Int(floor(high * Double(count) / sampleRate))))
-            let value = start <= end ? power[start...end].max()! : power[center]
+        for i in bins.indices {
+            let value = power[bins[i]].max()!
             let amplitude = sqrt(max(0, value)) * (2 / Float(count))
             db[i] = max(-120, 20 * log10(max(amplitude, 1e-6)))
         }
         let peakIndex = (1..<2048).max { power[$0] < power[$1] } ?? 1
         return (frequencies, db, Double(peakIndex) * sampleRate / Double(count))
     }
+
+    private func prepareBins(sampleRate: Double) {
+        guard plannedRate != sampleRate else { return }
+        let maxHz = min(20000, sampleRate * 0.499)
+        frequencies = (0..<128).map { 20 * pow(maxHz / 20, Double($0) / 127) }
+        bins = frequencies.indices.map { i in
+            let low = i == 0 ? 20 : sqrt(frequencies[i - 1] * frequencies[i])
+            let high = i == 127 ? maxHz : sqrt(frequencies[i] * frequencies[i + 1])
+            let center = max(1, min(2047, Int((frequencies[i] * Double(count) / sampleRate).rounded())))
+            let start = max(1, min(2047, Int(ceil(low * Double(count) / sampleRate))))
+            let end = max(1, min(2047, Int(floor(high * Double(count) / sampleRate))))
+            return start <= end ? start...end : center...center
+        }
+        plannedRate = sampleRate
+    }
+
 }

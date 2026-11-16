@@ -164,7 +164,7 @@ struct EqualizerView: View {
 
     private var spectralDifference: Int {
         guard let frame = model.spectrum else { return 0 }
-        return Int(zip(frame.inputDB, frame.equalizedDB).map { abs($0 - $1) }.max() ?? 0)
+        return Int(zip(frame.inputDB, frame.equalizedDB).lazy.map { abs($0 - $1) }.max() ?? 0)
     }
 }
 

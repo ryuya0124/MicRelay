@@ -17,6 +17,15 @@ struct ManualAudioSettings: Codable, Equatable {
     static func durationLabel(_ seconds: Double) -> String { String(format: "%.3f ms", locale: .current, seconds * 1000) }
     static let frameChoices: [UInt32] = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
     static let sampleRateChoices: [Double] = [8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000]
+    // Reuse the static arrays for ordinary settings. Only an imported nonstandard value needs a new list.
+    var frameOptions: [UInt32] {
+        guard frames > 0, !Self.frameChoices.contains(frames) else { return Self.frameChoices }
+        return (Self.frameChoices + [frames]).sorted()
+    }
+    var sampleRateOptions: [Double] {
+        guard sampleRate.isFinite, sampleRate > 0, !Self.sampleRateChoices.contains(sampleRate) else { return Self.sampleRateChoices }
+        return (Self.sampleRateChoices + [sampleRate]).sorted()
+    }
     @discardableResult
     static func commitVerified(_ observation: ManualIOObservation, in defaults: UserDefaults = .standard) -> Bool {
         guard observation.accepted, observation.request.isValid else { return false }

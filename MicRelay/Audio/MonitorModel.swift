@@ -979,7 +979,11 @@ final class MonitorModel: ObservableObject {
                 guard let self, isRunning else { return }
                 peak = max(audio.peak, peak * 0.65)
                 captureCounters()
-                waveform = audio.waveform().map(\.floatValue)
+                var nextWaveform = [Float](repeating: 0, count: 128)
+                nextWaveform.withUnsafeMutableBufferPointer { buffer in
+                    _ = audio.readWaveform(buffer.baseAddress!, capacity: UInt(buffer.count))
+                }
+                waveform = nextWaveform
             }
         }
     }

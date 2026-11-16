@@ -3,6 +3,18 @@
 import XCTest
 @testable import MicRelay
 final class ManualAudioTests: XCTestCase {
+    func testMenuOptionsKeepImportedSettingsAndAvoidDuplicates() {
+        let standard = ManualAudioSettings()
+        XCTAssertEqual(standard.frameOptions, ManualAudioSettings.frameChoices)
+        XCTAssertEqual(standard.sampleRateOptions, ManualAudioSettings.sampleRateChoices)
+        let restored = ManualAudioSettings(frames:123,sampleRate:50000)
+        XCTAssertTrue(restored.frameOptions.contains(123))
+        XCTAssertTrue(restored.sampleRateOptions.contains(50000))
+        XCTAssertEqual(restored.frameOptions.count, ManualAudioSettings.frameChoices.count + 1)
+        XCTAssertEqual(restored.sampleRateOptions.count, ManualAudioSettings.sampleRateChoices.count + 1)
+        XCTAssertEqual(restored.frameOptions, restored.frameOptions.sorted())
+        XCTAssertEqual(restored.sampleRateOptions, restored.sampleRateOptions.sorted())
+    }
     private func observation(_ request: ManualAudioSettings = .init(), rate: Double = 48000, low: UInt32 = 16, high: UInt32 = 16,
                              mode: AudioModePreference = .standard, misses: UInt64 = 0, frames: UInt64 = 9600) -> ManualIOObservation {
         .init(request:request,sampleRate:rate,minimumFrames:low,maximumFrames:high,ioDuration:Double(high)/rate,mode:mode,

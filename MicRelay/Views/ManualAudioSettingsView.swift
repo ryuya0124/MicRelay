@@ -18,12 +18,12 @@ struct ManualAudioSettingsView: View {
                     Text(AudioModePreference.measurement.title).tag(AudioModePreference.measurement)
                 }.accessibilityIdentifier("manualModePicker")
                 Picker(String(localized: "manual.frames", defaultValue: "フレーム数"), selection: $frames) {
-                    ForEach(Array(Set(ManualAudioSettings.frameChoices + [model.manualAudio.frames])).sorted(), id: \.self) { value in
+                    ForEach(model.manualAudio.frameOptions, id: \.self) { value in
                         Text("\(value) frames").tag(value).accessibilityIdentifier("manualFramesPreset\(value)")
                     }
                 }.pickerStyle(.menu).accessibilityIdentifier("manualFramesPicker")
                 Picker(String(localized: "manual.rate", defaultValue: "サンプルレート（Hz）"), selection: $sampleRate) {
-                    ForEach(Array(Set(ManualAudioSettings.sampleRateChoices + [model.manualAudio.sampleRate])).sorted(), id: \.self) { value in
+                    ForEach(model.manualAudio.sampleRateOptions, id: \.self) { value in
                         Text("\(String(format: "%.9g", locale: .current, value)) Hz").tag(value).accessibilityIdentifier("manualRatePreset\(String(format: "%.17g", locale: Locale(identifier: "en_US_POSIX"), value))")
                     }
                 }.pickerStyle(.menu).accessibilityIdentifier("manualRatePicker")

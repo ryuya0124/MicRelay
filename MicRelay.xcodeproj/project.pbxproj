@@ -28,6 +28,7 @@
 		960EE7809A626CDE3DED4ECD /* ManualAudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126CD1982092E2287B3B2022 /* ManualAudioSettingsView.swift */; };
 		9BE9862503FC774C469ADD32 /* EqualizerDSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */; };
 		A09CB65CF0D2ED0B6EF72223 /* LatencyModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */; };
+		A4386862C04DE1E279DCEC23 /* BufferCopyTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2B0AEE3B1FAD9B5261DA3BF /* BufferCopyTests.mm */; };
 		A94D7DC24F61A268A858DA8E /* MonitorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */; };
 		A963391724D82F8061432C5B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = AB4AB63514CAEA45221EA6CF /* LICENSE */; };
 		ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9272F8683052DEC295B606 /* SpectrumTests.swift */; };
@@ -102,6 +103,7 @@
 		A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MRRealtimeAudio.mm; sourceTree = "<group>"; };
 		A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPreferences.swift; sourceTree = "<group>"; };
 		A4A20D08C6E2F1B36821987C /* MREqualizerDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MREqualizerDSP.hpp; sourceTree = "<group>"; };
+		A566F8EC32AF2817E6A17684 /* MRBufferCopy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MRBufferCopy.hpp; sourceTree = "<group>"; };
 		AB4AB63514CAEA45221EA6CF /* LICENSE */ = {isa = PBXFileReference; path = LICENSE; sourceTree = "<group>"; };
 		B1B67D88328C490111931D3C /* EqualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerView.swift; sourceTree = "<group>"; };
 		B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRRealtimeAudio.h; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 		B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelectorTests.swift; sourceTree = "<group>"; };
 		BAEAEF20AAA107377CB57217 /* MicRelay.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MicRelay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2A61DFC38B6927EAEF8149C /* RangeEqualizerSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeEqualizerSettingsTests.swift; sourceTree = "<group>"; };
+		C2B0AEE3B1FAD9B5261DA3BF /* BufferCopyTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BufferCopyTests.mm; sourceTree = "<group>"; };
 		C735ADF1A37C633D8A927E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C81F55D808A8508BD64D0277 /* BufferPreferenceSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPreferenceSelectorTests.swift; sourceTree = "<group>"; };
 		C8831F17C2EDA33156C6E0F6 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
@@ -147,6 +150,7 @@
 				0DE8F83909758BA654D0C8A9 /* MicRelay-Bridging-Header.h */,
 				DA213495E52FBFD468662CA6 /* MonitorModel.swift */,
 				A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */,
+				A566F8EC32AF2817E6A17684 /* MRBufferCopy.hpp */,
 				A4A20D08C6E2F1B36821987C /* MREqualizerDSP.hpp */,
 				B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */,
 				A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */,
@@ -219,6 +223,7 @@
 		F409F7D9D643A7DAD0874BAA /* MicRelayTests */ = {
 			isa = PBXGroup;
 			children = (
+				C2B0AEE3B1FAD9B5261DA3BF /* BufferCopyTests.mm */,
 				C81F55D808A8508BD64D0277 /* BufferPreferenceSelectorTests.swift */,
 				09D14E373F9952C1EF310111 /* BufferTunerTests.swift */,
 				CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */,
@@ -390,6 +395,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A4386862C04DE1E279DCEC23 /* BufferCopyTests.mm in Sources */,
 				E988674E442233415500474E /* BufferPreferenceSelectorTests.swift in Sources */,
 				D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */,
 				9BE9862503FC774C469ADD32 /* EqualizerDSPTests.mm in Sources */,
@@ -436,7 +442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -653,7 +659,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

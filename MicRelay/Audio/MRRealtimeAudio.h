@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, readonly) float peak;
 @property(nonatomic, readonly) uint64_t renderedFrames;
 @property(nonatomic, readonly) int32_t renderError;
-- (NSArray<NSNumber *> *)waveform;
+- (NSUInteger)readWaveform:(float *)samples capacity:(NSUInteger)capacity;
 @property(nonatomic, readonly) float maximumInputPeak;
 @property(nonatomic, readonly) float maximumOutputPeak;
 @property(nonatomic, readonly) uint64_t missedQuanta;

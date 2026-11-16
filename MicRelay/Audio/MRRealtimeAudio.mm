@@ -10,6 +10,7 @@
 #include <vector>
 #include <array>
 #include "MRWindNoiseDSP.hpp"
+#include "MRBufferCopy.hpp"
 
 static_assert(std::atomic<float>::is_always_lock_free);
 static_assert(std::atomic<double>::is_always_lock_free);
@@ -330,19 +331,15 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     const uint64_t read = _state.analysisRead.load(std::memory_order_relaxed);
     const uint64_t write = _state.analysisWrite.load(std::memory_order_acquire);
     const NSUInteger count = NSUInteger(std::min(uint64_t(capacity), write - read));
-    for (NSUInteger i = 0; i < count; ++i) {
-        const auto slot = (read + i) & (analysisCapacity - 1);
-        input[i] = _state.analysisInput[slot]; output[i] = _state.analysisOutput[slot];
-    }
+    const auto start = size_t(read & (analysisCapacity - 1));
+    mr::copyCircularSamples(_state.analysisInput.data(), input, analysisCapacity, start, count);
+    mr::copyCircularSamples(_state.analysisOutput.data(), output, analysisCapacity, start, count);
     _state.analysisRead.store(read + count, std::memory_order_release);
     return count;
 }
 - (uint64_t)analysisDroppedFrames { return _state.analysisDrops.load(); }
-- (NSArray<NSNumber *> *)waveform {
+- (NSUInteger)readWaveform:(float *)samples capacity:(NSUInteger)capacity {
     const auto end = _state.waveIndex.load(std::memory_order_acquire);
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:128];
-    for (uint32_t i = 0; i < 128; ++i)
-        [values addObject:@(_state.wave[(end + i) % 128].load(std::memory_order_relaxed))];
-    return values;
+    return mr::readWaveform(_state.wave, end, samples, capacity);
 }
 @end
