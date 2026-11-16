@@ -155,6 +155,87 @@ final class MicRelayUITests: XCTestCase {
     }
 
     func testJapaneseWindControls() { checkWindControls(language: "ja", locale: "ja_JP", title: "風切り音低減") }
+    func testJapaneseTapGateControls() { checkTapGateControls(language: "ja", locale: "ja_JP", title: "タップ音ゲート") }
+    func testEnglishTapGateControls() { checkTapGateControls(language: "en", locale: "en_US", title: "Tap gate") }
+    private func checkTapGateControls(language: String, locale: String, title: String) {
+        let app = XCUIApplication()
+        app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale, "--show-equalizer", "--validate-tap-gate"]
+        app.launch()
+        let toggle = app.switches["tapGateToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 10))
+        let bandBeforeScroll = app.buttons["equalizerBand0"].label
+        revealEqualizerControl(toggle, app: app)
+        XCTAssertTrue(toggle.isHittable)
+        XCTAssertEqual(app.buttons["equalizerBand0"].label, bandBeforeScroll)
+        XCTAssertTrue(toggle.label.contains(title))
+        XCTAssertEqual(toggle.value as? String,"0")
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String,"1")
+        let source = app.buttons["tapGateDetectionSource"]
+        revealEqualizerControl(source, app: app)
+        let beforeFilter = language == "ja" ? "フィルター前の入力" : "Input before filters"
+        source.tap()
+        XCTAssertTrue(app.buttons[beforeFilter].waitForExistence(timeout: 5))
+        app.buttons[beforeFilter].tap()
+        XCTAssertTrue(source.label.contains(beforeFilter) || (source.value as? String ?? "").contains(beforeFilter))
+        let duration = app.sliders["tapGateDurationSlider"]
+        revealEqualizerControl(duration, app: app)
+        duration.adjust(toNormalizedSliderPosition: 0.6)
+        let field = app.textFields["tapGateDuration"]
+        let time = field.value as? String
+        let rise = app.sliders["tapGateRiseSlider"]
+        revealEqualizerControl(rise, app: app)
+        rise.adjust(toNormalizedSliderPosition: 0.7)
+        let difference = app.staticTexts["tapGateRiseValue"].label
+        revealEqualizerControl(toggle, app: app)
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String,"0")
+        XCTAssertFalse(duration.exists)
+        revealEqualizerControl(toggle, app: app)
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String,"1")
+        revealEqualizerControl(rise, app: app)
+        XCTAssertEqual(field.value as? String,time)
+        XCTAssertEqual(app.staticTexts["tapGateRiseValue"].label,difference)
+        XCTAssertTrue(source.label.contains(beforeFilter) || (source.value as? String ?? "").contains(beforeFilter))
+        screenshot("tap-gate-\(language)-controls")
+        app.terminate()
+    }
+    private func revealEqualizerControl(_ element: XCUIElement, app: XCUIApplication) {
+        // isHittable can remain true after a fast flick overshoots a row on the short Duo screen.
+        for _ in 0..<24 {
+            let bounds = app.frame, target = element.frame
+            if target.minY >= bounds.minY + 100 && target.maxY <= bounds.maxY - 40 { return }
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.55))
+            let end = start.withOffset(CGVector(dx: 0, dy: target.midY > bounds.midY ? -80 : 80))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.15)
+        }
+        screenshot("unrevealed-equalizer-control")
+        XCTFail("Could not reveal the equalizer control: \(element.frame), viewport: \(app.frame)")
+    }
+    func testSpectrumTapHorizontalDragAndVerticalScroll() {
+        let app = japaneseApp()
+        app.launchArguments += ["--show-equalizer", "--validate-tap-gate"]
+        app.launch()
+        let plot = app.otherElements["frequencySpectrum"], band = app.buttons["equalizerBand0"]
+        XCTAssertTrue(plot.waitForExistence(timeout: 10))
+        revealEqualizerControl(plot, app: app)
+        let initial = band.label
+        plot.coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.5)).tap()
+        let afterTap = band.label
+        XCTAssertNotEqual(afterTap,initial)
+        plot.coordinate(withNormalizedOffset: CGVector(dx: 0.3, dy: 0.5)).press(forDuration: 0.05,
+            thenDragTo: plot.coordinate(withNormalizedOffset: CGVector(dx: 0.55, dy: 0.5)), withVelocity: .slow, thenHoldForDuration: 0.15)
+        let afterDrag = band.label, beforeY = plot.frame.minY
+        XCTAssertNotEqual(afterDrag,afterTap)
+        plot.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.75)).press(forDuration: 0.05,
+            thenDragTo: plot.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)), withVelocity: .slow, thenHoldForDuration: 0.15)
+        XCTAssertEqual(band.label,afterDrag)
+        // The large iPad can fit the whole collapsed page; the short phone viewport must scroll.
+        if UIDevice.current.userInterfaceIdiom != .pad { XCTAssertLessThan(plot.frame.minY,beforeY) }
+        screenshot("spectrum-vertical-scroll-keeps-frequency")
+        app.terminate()
+    }
     func testEnglishWindControls() { checkWindControls(language: "en", locale: "en_US", title: "Wind noise reduction") }
     private func checkWindControls(language: String, locale: String, title: String) {
         let app = XCUIApplication()

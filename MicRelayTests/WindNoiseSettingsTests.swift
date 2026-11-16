@@ -22,7 +22,7 @@ final class WindNoiseSettingsTests: XCTestCase {
         XCTAssertEqual(restored.windNoise, wind)
         XCTAssertEqual(restored.gain, backup.gain); XCTAssertEqual(restored.gainLimit, backup.gainLimit)
         var json = try JSONSerialization.jsonObject(with: backup.encoded()) as! [String: Any]
-        json.removeValue(forKey: "windNoise"); json.removeValue(forKey: "manualAudio"); json["version"] = 1
+        json.removeValue(forKey: "windNoise"); json.removeValue(forKey: "manualAudio"); json.removeValue(forKey: "tapGate"); json["version"] = 1
         let legacy = try SettingsBackup.decode(JSONSerialization.data(withJSONObject: json))
         XCTAssertNil(legacy.windNoise)
         XCTAssertFalse((legacy.windNoise ?? .init()).enabled)

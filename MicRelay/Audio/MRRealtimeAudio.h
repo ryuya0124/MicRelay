@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic) BOOL outputMuted;
 - (void)resetQuantumStatistics;
 - (void)setWindNoiseEnabled:(BOOL)enabled cutoff:(double)cutoff;
+- (void)setTapGateEnabled:(BOOL)enabled duration:(double)duration minimumDB:(double)minimumDB riseDB:(double)riseDB afterFilters:(BOOL)afterFilters;
+@property(nonatomic, readonly) uint64_t tapGateDetections;
+@property(nonatomic, readonly) BOOL tapGateOpen;
 - (void)setEqualizerEnabled:(BOOL)enabled bands:(NSArray<NSDictionary<NSString *, NSNumber *> *> *)bands;
 @property(nonatomic) BOOL analysisEnabled;
 - (NSUInteger)readAnalysisInput:(float *)input output:(float *)output capacity:(NSUInteger)capacity;

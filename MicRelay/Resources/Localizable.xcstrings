@@ -396,13 +396,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Save gain, gain limit, EQ, wind reduction, audio mode, background settings, and the selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmations are not restored."
+            "value": "Save gain, gain limit, EQ, wind noise reduction, tap gate, audio mode, background settings, and selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmation are not restored."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
+            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・タップ音ゲート・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
           }
         }
       }
@@ -1298,13 +1298,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Shows the signal before and after wind reduction and EQ, without output gain. Tap or drag the graph to adjust the selected band’s frequency."
+            "value": "Shows the signal before and after wind noise reduction, EQ, and the tap gate, before output gain. Tap or drag on the graph to adjust the selected band’s frequency."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "風切り音低減とEQの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
+            "value": "風切り音低減・EQ・タップ音ゲートの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"
           }
         }
       }
@@ -3090,6 +3090,261 @@
           "stringUnit": {
             "state": "translated",
             "value": "音声はこの端末内で処理します。録音・送信はしません。"
+          }
+        }
+      }
+    },
+    "tap.adjustment_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower the level or rise to detect quieter taps; raise them to reject more noise. Longer durations also pass more decay and background sound."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拾いにくいときはレベルや差を下げ、雑音にも反応するときは上げます。時間を長くすると余韻や背景音も通りやすくなります。"
+          }
+        }
+      }
+    },
+    "tap.detections": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detections"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "検出回数"
+          }
+        }
+      }
+    },
+    "tap.duration": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass duration"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通す時間"
+          }
+        }
+      }
+    },
+    "tap.help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass sound for a set time after an onset. Each new onset extends the window, including rapid taps. Other sudden sounds can also trigger it."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音の立ち上がりから指定時間だけ通します。連打では次の立ち上がりから時間を延長します。タップ以外の急な音にも反応します。"
+          }
+        }
+      }
+    },
+    "tap.latency_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "With no look-ahead, sound passes from the threshold crossing. Quiet starts may be cut off."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先読みなしで、しきい値を超えたところから通します。小さい立ち上がりは欠ける場合があります。"
+          }
+        }
+      }
+    },
+    "tap.minimum": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimum input level"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最小入力レベル"
+          }
+        }
+      }
+    },
+    "tap.open": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開いています"
+          }
+        }
+      }
+    },
+    "tap.rise": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rise above background"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景音との差"
+          }
+        }
+      }
+    },
+    "tap.source.after": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sound after filters"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルター後の音"
+          }
+        }
+      }
+    },
+    "tap.source.before": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Input before filters"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルター前の入力"
+          }
+        }
+      }
+    },
+    "tap.source.help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before filters detects the original microphone signal; after filters detects the signal processed by EQ and wind noise reduction. Output follows your EQ and wind noise settings in both cases."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルター前は元のマイク音、フィルター後はEQ・風切り音低減で処理した音で判定します。出力はどちらもEQ・風切り音低減の設定に従います。"
+          }
+        }
+      }
+    },
+    "tap.source.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detection signal"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "検出に使う音"
+          }
+        }
+      }
+    },
+    "tap.state": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gate"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゲート"
+          }
+        }
+      }
+    },
+    "tap.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap gate"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップ音ゲート"
+          }
+        }
+      }
+    },
+    "tap.waiting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待機中"
           }
         }
       }

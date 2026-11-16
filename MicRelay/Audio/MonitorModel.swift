@@ -55,6 +55,11 @@ final class MonitorModel: ObservableObject {
     @Published private(set) var windNoise = WindNoiseSettings.load() {
         didSet { if !diagnosticProcessingSettings { windNoise.save() }; applyWindNoise() }
     }
+    @Published private(set) var tapGate = TapGateSettings.load() {
+        didSet { if !diagnosticProcessingSettings { tapGate.save() }; applyTapGate() }
+    }
+    @Published private(set) var tapGateOpen = false
+    @Published private(set) var tapGateDetections: UInt64 = 0
     @Published private(set) var manualAudio = ManualAudioSettings.load()
     @Published private(set) var spectrum: SpectrumFrame?
     @Published private(set) var spectrumFrameCount: UInt64 = 0
@@ -220,6 +225,12 @@ final class MonitorModel: ObservableObject {
             windNoise = .init(enabled: true, cutoff: 300)
         }
         #endif
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--validate-tap-gate") {
+            diagnosticProcessingSettings = true
+            equalizer = .init(); windNoise = .init(); tapGate = .init()
+        }
+        #endif
         if UserDefaults.standard.object(forKey: "backgroundEnabled") != nil {
             backgroundEnabled = UserDefaults.standard.bool(forKey: "backgroundEnabled")
         }
@@ -228,6 +239,7 @@ final class MonitorModel: ObservableObject {
         refreshRoute()
         applyEqualizer()
         applyWindNoise()
+        applyTapGate()
         let center = NotificationCenter.default
         observers.append(center.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: .main) { [weak self] note in
             let reason = (note.userInfo?[AVAudioSessionRouteChangeReasonKey] as? UInt) ?? 0
@@ -281,6 +293,17 @@ final class MonitorModel: ObservableObject {
 
     private func applyWindNoise() {
         audio.setWindNoiseEnabled(windNoise.enabled, cutoff: windNoise.cutoff)
+    }
+    private func applyTapGate(enabled: Bool? = nil) {
+        audio.setTapGateEnabled(enabled ?? tapGate.enabled, duration: tapGate.duration, minimumDB: tapGate.minimumDB, riseDB: tapGate.riseDB,
+            afterFilters: tapGate.detectionSource == .afterFilters)
+        if !(enabled ?? tapGate.enabled) { tapGateOpen = false; tapGateDetections = 0 }
+    }
+    func updateTapGate(_ update: (inout TapGateSettings) -> Void) {
+        var value = tapGate
+        update(&value)
+        guard value.isValid else { return }
+        tapGate = value
     }
     func setWindNoiseEnabled(_ enabled: Bool) {
         var value = windNoise; value.enabled = enabled; windNoise = value
@@ -346,7 +369,7 @@ final class MonitorModel: ObservableObject {
 
     func settingsBackup() -> SettingsBackup {
         SettingsBackup(gain: gain, gainLimit: gainLimit, equalizer: equalizer,
-            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference, windNoise: windNoise, manualAudio: manualAudio)
+            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference, windNoise: windNoise, manualAudio: manualAudio, tapGate: tapGate)
     }
 
     func restoreSettings(_ backup: SettingsBackup) throws -> Bool {
@@ -357,6 +380,7 @@ final class MonitorModel: ObservableObject {
         gain = value.gain
         equalizer = value.equalizer
         windNoise = value.windNoise ?? .init()
+        tapGate = value.tapGate ?? .init()
         manualAudio = value.manualAudio ?? .init()
         manualAudio.save()
         backgroundEnabled = value.backgroundEnabled
@@ -399,6 +423,7 @@ final class MonitorModel: ObservableObject {
             audio.gain = 0
             audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
             audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
+            applyTapGate(enabled: false)
             try audio.start()
             let observation = try await observeManualIO(value, token: token, outputIDs: outputIDs)
             guard token == generation, !Task.isCancelled else { throw CancellationError() }
@@ -570,6 +595,7 @@ final class MonitorModel: ObservableObject {
                     audio.gain = 0
                     audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
                     audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
+                    applyTapGate(enabled: false)
                     try audio.start()
                     lastManualObservation = try await observeManualIO(activeManualAudio, token: token, outputIDs: Set(outputs.map(\.uid)))
                     guard token == generation, !Task.isCancelled else { throw CancellationError() }
@@ -602,6 +628,7 @@ final class MonitorModel: ObservableObject {
         updateGain()
         applyEqualizer()
         applyWindNoise()
+        applyTapGate()
         audio.outputMuted = false
         try audio.start()
     }
@@ -673,6 +700,7 @@ final class MonitorModel: ObservableObject {
                 try audio.prepare(withSampleRate: session.sampleRate)
                 audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
                 audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
+                applyTapGate(enabled: false)
                 // Compare active hardware paths without changing the saved/user-facing gain.
                 audio.outputMuted = true
                 audio.gain = 0
@@ -764,6 +792,7 @@ final class MonitorModel: ObservableObject {
         try audio.prepare(withSampleRate: session.sampleRate)
         audio.setEqualizerEnabled(false, bands: equalizer.bands.map(\.native))
         audio.setWindNoiseEnabled(false, cutoff: windNoise.cutoff)
+        applyTapGate(enabled: false)
         audio.outputMuted = true; audio.gain = 0
         try audio.start()
         try await Task.sleep(for: .milliseconds(100))
@@ -983,6 +1012,7 @@ final class MonitorModel: ObservableObject {
         isRunning = false
         isStarting = false
         peak = 0
+        tapGateOpen = false
         status = message
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
         try? session.setActive(false, options: .notifyOthersOnDeactivation)
@@ -1106,6 +1136,8 @@ final class MonitorModel: ObservableObject {
         inputLatency = session.inputLatency
         outputLatency = session.outputLatency
         unitProcessingLatency = audio.processingLatency?.doubleValue
+        tapGateOpen = audio.tapGateOpen
+        tapGateDetections = audio.tapGateDetections
     }
 
     private func writeDiagnostics() {
@@ -1135,6 +1167,10 @@ final class MonitorModel: ObservableObject {
             "gain": gain,
             "gainLimit": gainLimit,
             "windNoiseEnabled": windNoise.enabled, "windNoiseCutoff": windNoise.cutoff,
+            "tapGateEnabled": tapGate.enabled, "tapGateDuration": tapGate.duration,
+            "tapGateMinimumDB": tapGate.minimumDB, "tapGateRiseDB": tapGate.riseDB,
+            "tapGateDetectionSource": tapGate.detectionSource.rawValue,
+            "tapGateDetections": tapGateDetections, "tapGateOpen": tapGateOpen,
             "equalizerEnabled": equalizer.enabled, "spectrumFrames": spectrumFrameCount,
             "analysisDroppedFrames": audio.analysisDroppedFrames,
             "modeCandidates": modeMeasurements.map { ["mode": $0.mode, "inputLatency": $0.inputLatency,

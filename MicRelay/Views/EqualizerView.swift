@@ -49,8 +49,9 @@ struct EqualizerView: View {
                 }.font(.caption)
                 Text(band.filter.usesFrequencyRange
                     ? String(localized: "eq.range.graph_help", defaultValue: "色の付いた範囲が選択中の帯域です。グラフをタップ・ドラッグすると、近い方の境界を調整できます。")
-                    : String(localized: "eq.spectrum_help", defaultValue: "風切り音低減とEQの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"))
+                    : String(localized: "eq.spectrum_help", defaultValue: "風切り音低減・EQ・タップ音ゲートの前後を表示します。出力ゲインは含みません。グラフ上をタップ・ドラッグすると、選択中バンドの周波数を調整できます。"))
                     .font(.caption).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                TapGateControls(model: model)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(Array(model.equalizer.bands.enumerated()), id: \.element.id) { index, value in
@@ -61,7 +62,7 @@ struct EqualizerView: View {
                                 }.padding(.horizontal, 16).padding(.vertical, 11)
                                     .foregroundStyle(selected == index ? Color.black : Color.primary)
                                     .background(selected == index ? Color.teal : Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 13))
-                            }.buttonStyle(.plain)
+                            }.buttonStyle(.plain).accessibilityIdentifier("equalizerBand\(index)")
                         }
                     }
                 }
@@ -219,11 +220,18 @@ private struct SpectrumPlot: View {
                 }
                 context.draw(Text("dBFS").font(.system(size: 9, design: .monospaced)).foregroundColor(.gray), at: CGPoint(x: 22, y: 5))
             }
-            .gesture(DragGesture(minimumDistance: 0).onChanged { value in
+            .simultaneousGesture(DragGesture(minimumDistance: 30).onChanged { value in
+                // Let the surrounding ScrollView handle vertical drags without changing the EQ.
+                guard abs(value.translation.width) >= abs(value.translation.height) else { return }
                 let fraction = min(1, max(0, (value.location.x - 36) / max(1, geometry.size.width - 50)))
                 let frequency = 20 * pow(maximumFrequency / 20, Double(fraction))
                 let initialFraction = min(1, max(0, (value.startLocation.x - 36) / max(1, geometry.size.width - 50)))
                 selectFrequency(frequency, 20 * pow(maximumFrequency / 20, Double(initialFraction)))
+            })
+            .simultaneousGesture(SpatialTapGesture().onEnded { value in
+                let fraction = min(1, max(0, (value.location.x - 36) / max(1, geometry.size.width - 50)))
+                let frequency = 20 * pow(maximumFrequency / 20, Double(fraction))
+                selectFrequency(frequency, frequency)
             })
         }
         .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))

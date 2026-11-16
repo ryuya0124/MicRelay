@@ -10,6 +10,7 @@
 #include <vector>
 #include <array>
 #include "MRWindNoiseDSP.hpp"
+#include "MRTapGateDSP.hpp"
 #include "MRBufferCopy.hpp"
 
 static_assert(std::atomic<float>::is_always_lock_free);
@@ -54,6 +55,16 @@ struct RealtimeState {
     std::array<mr::BiquadState, mr::windStageCount> windStates;
     uint64_t windVersion = UINT64_MAX;
     bool windWasEnabled = false;
+    std::atomic<bool> tapEnabled{false}, tapOpen{false};
+    std::atomic<uint64_t> tapSequence{0}, tapDetections{0};
+    std::atomic<double> tapMinimum{0}, tapRatio{1}, tapRearm{1}, tapBackgroundAlpha{0}, tapPeakDecay{0};
+    std::atomic<uint32_t> tapDuration{1}, tapFade{1};
+    std::atomic<bool> tapPostFiltersMailbox{true};
+    bool tapPostFilters = true;
+    mr::TapGateParameters tapParameters;
+    mr::TapGateState tapState;
+    uint64_t tapVersion = UINT64_MAX;
+    bool tapWasEnabled = false;
     double eqSmoothing = 0.004, rate = 48000;
     std::array<float, analysisCapacity> analysisInput{}, analysisOutput{};
     std::atomic<uint64_t> analysisRead{0}, analysisWrite{0}, analysisDrops{0};
@@ -137,6 +148,25 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         syncFilters(s.windSequence, s.windMailbox, s.windStates, s.windVersion);
     }
     s.windWasEnabled = windOn;
+    const bool tapOn = s.tapEnabled.load(std::memory_order_acquire);
+    if (tapOn) {
+        if (!s.tapWasEnabled) { s.tapState = {}; s.tapVersion = UINT64_MAX; }
+        const auto version = s.tapSequence.load(std::memory_order_acquire);
+        if (!(version & 1) && version != s.tapVersion) {
+            mr::TapGateParameters p;
+            p.minimumPower = s.tapMinimum.load(std::memory_order_relaxed);
+            p.onsetRatio = s.tapRatio.load(std::memory_order_relaxed); p.rearmRatio = s.tapRearm.load(std::memory_order_relaxed);
+            p.backgroundAlpha = s.tapBackgroundAlpha.load(std::memory_order_relaxed); p.peakDecay = s.tapPeakDecay.load(std::memory_order_relaxed);
+            p.duration = s.tapDuration.load(std::memory_order_relaxed); p.fade = s.tapFade.load(std::memory_order_relaxed);
+            const bool postFilters = s.tapPostFiltersMailbox.load(std::memory_order_relaxed);
+            std::atomic_thread_fence(std::memory_order_acquire);
+            if (s.tapSequence.load(std::memory_order_relaxed) == version) {
+                if (postFilters != s.tapPostFilters) s.tapState = {}; // Noise statistics belong to the selected signal.
+                s.tapPostFilters = postFilters; s.tapParameters = p; s.tapVersion = version;
+            }
+        }
+    }
+    s.tapWasEnabled = tapOn;
     const uint64_t write = s.analysisWrite.load(std::memory_order_relaxed);
     const bool wantsAnalysis = s.analysisEnabled.load(std::memory_order_relaxed);
     const bool capture = wantsAnalysis && write - s.analysisRead.load(std::memory_order_acquire) + count <= analysisCapacity;
@@ -147,7 +177,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         peak = std::max(peak, std::abs(sample));
         s.smoothedGain += (target - s.smoothedGain) * 0.004f;
         const double reduced = mr::processWindNoise(double(sample), windOn, s.windStates, s.eqSmoothing);
-        const double processed = mr::processEqualizer(reduced, eqOn, s.eqStates, s.eqSmoothing);
+        const double equalized = mr::processEqualizer(reduced, eqOn, s.eqStates, s.eqSmoothing);
+        const double processed = mr::processTapGateWithSidechain(double(sample), equalized, s.tapPostFilters, tapOn, s.tapParameters, s.tapState);
         const float value = muted ? 0 : float(std::clamp(processed * s.smoothedGain, -1.0, 1.0));
         if (capture) {
             const auto slot = (write + frame) & (analysisCapacity - 1);
@@ -171,6 +202,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         }
     }
     if (capture) s.analysisWrite.store(write + count, std::memory_order_release);
+    s.tapOpen.store(tapOn && s.tapState.remaining > 0, std::memory_order_relaxed);
+    s.tapDetections.store(tapOn ? s.tapState.detections : 0, std::memory_order_relaxed);
     // A route/interruption notification can close the gate while input is rendering.
     if (!s.open.load(std::memory_order_acquire)) silence(output, flags);
     s.peak.store(peak, std::memory_order_relaxed);
@@ -184,12 +217,16 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     RealtimeState _state;
     NSArray *_observers;
     double _windCutoff;
+    double _tapDuration, _tapMinimum, _tapRise;
+    BOOL _tapPostFilters;
     std::array<mr::BandParameters, mr::bandCount> _eqParameters;
     NSDictionary<NSString *, id> *_ioConfiguration;
 }
 - (instancetype)init {
     if ((self = [super init])) {
         _windCutoff = 120;
+        _tapDuration = 0.012; _tapMinimum = -42; _tapRise = 16;
+        _tapPostFilters = YES;
         __weak MRRealtimeAudio *weakSelf = self;
         NSMutableArray *tokens = [NSMutableArray array];
         for (NSNotificationName name in @[AVAudioSessionRouteChangeNotification,
@@ -249,6 +286,10 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     [self publishEqualizer];
     _state.windStates = {}; _state.windWasEnabled = false; _state.windVersion = UINT64_MAX;
     [self publishWindNoise];
+    _state.tapState = {}; _state.tapWasEnabled = false; _state.tapVersion = UINT64_MAX;
+    _state.tapParameters = mr::tapGateParameters(sampleRate, _tapDuration, _tapMinimum, _tapRise);
+    _state.tapOpen.store(false); _state.tapDetections.store(0);
+    [self publishTapGate];
     _state.frames.store(0); _state.error.store(0); _state.smoothedGain = 0;
     _state.maxInput.store(0); _state.maxOutput.store(0); _state.waveIndex.store(0);
     _state.waveStride = std::max(UInt32(1), UInt32(sampleRate / 800));
@@ -302,11 +343,14 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
         _state.unit = nullptr;
     }
     _state.peak.store(0);
+    _state.tapOpen.store(false, std::memory_order_relaxed);
 }
 - (void)setOutputMuted:(BOOL)value { _state.outputMuted.store(value, std::memory_order_release); }
 - (BOOL)outputMuted { return _state.outputMuted.load(std::memory_order_acquire); }
 - (void)setGain:(double)value { _state.gain.store(std::isfinite(value) ? std::max(0.0, value) : 0.0); }
 - (double)gain { return _state.gain.load(); }
+- (uint64_t)tapGateDetections { return _state.tapDetections.load(std::memory_order_relaxed); }
+- (BOOL)tapGateOpen { return _state.tapOpen.load(std::memory_order_relaxed); }
 - (NSDictionary<NSString *, id> *)ioConfiguration { return _ioConfiguration ?: @{}; }
 - (NSNumber *)processingLatency { return _ioConfiguration[@"processingLatency"]; }
 - (float)peak { return _state.peak.load(); }
@@ -333,6 +377,24 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     _windCutoff = std::isfinite(cutoff) ? std::clamp(cutoff, 60.0, 600.0) : 120.0;
     [self publishWindNoise];
     _state.windEnabled.store(enabled, std::memory_order_release);
+}
+- (void)publishTapGate {
+    const auto p = mr::tapGateParameters(_state.rate, _tapDuration, _tapMinimum, _tapRise);
+    _state.tapSequence.fetch_add(1, std::memory_order_acq_rel);
+    _state.tapMinimum.store(p.minimumPower, std::memory_order_relaxed);
+    _state.tapRatio.store(p.onsetRatio, std::memory_order_relaxed); _state.tapRearm.store(p.rearmRatio, std::memory_order_relaxed);
+    _state.tapBackgroundAlpha.store(p.backgroundAlpha, std::memory_order_relaxed); _state.tapPeakDecay.store(p.peakDecay, std::memory_order_relaxed);
+    _state.tapDuration.store(p.duration, std::memory_order_relaxed); _state.tapFade.store(p.fade, std::memory_order_relaxed);
+    _state.tapPostFiltersMailbox.store(_tapPostFilters, std::memory_order_relaxed);
+    _state.tapSequence.fetch_add(1, std::memory_order_release);
+}
+- (void)setTapGateEnabled:(BOOL)enabled duration:(double)duration minimumDB:(double)minimumDB riseDB:(double)riseDB afterFilters:(BOOL)afterFilters {
+    if (!enabled) _state.tapEnabled.store(false, std::memory_order_release);
+    _tapDuration = duration; _tapMinimum = minimumDB; _tapRise = riseDB;
+    _tapPostFilters = afterFilters;
+    [self publishTapGate];
+    _state.tapEnabled.store(enabled, std::memory_order_release);
+    if (!enabled) { _state.tapOpen.store(false); _state.tapDetections.store(0); }
 }
 - (void)setEqualizerEnabled:(BOOL)enabled bands:(NSArray<NSDictionary<NSString *,NSNumber *> *> *)bands {
     if (!enabled) _state.eqEnabled.store(false, std::memory_order_release);

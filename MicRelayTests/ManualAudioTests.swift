@@ -65,14 +65,15 @@ final class ManualAudioTests: XCTestCase {
         XCTAssertFalse(ManualAudioSettings(mode:.automatic).isValid)
         XCTAssertFalse(ManualAudioSettings(mode:.manual).isValid)
     }
-    func testBackupV3PreservesManualSettingsAndLegacyV2StillLoads() throws {
+    func testBackupV4PreservesManualSettingsAndLegacyV2StillLoads() throws {
         let manual=ManualAudioSettings(frames:32,sampleRate:96000,mode:.measurement)
         let backup=SettingsBackup(gain:2.5,gainLimit:4,equalizer:.init(),backgroundEnabled:true,selectedInput:"builtin",audioMode:.manual,manualAudio:manual)
         let decoded=try SettingsBackup.decode(backup.encoded())
-        XCTAssertEqual(decoded.version,3); XCTAssertEqual(decoded.manualAudio,manual); XCTAssertEqual(decoded.audioMode,.manual)
+        XCTAssertEqual(decoded.version,4); XCTAssertEqual(decoded.manualAudio,manual); XCTAssertEqual(decoded.audioMode,.manual)
         var json=try JSONSerialization.jsonObject(with:backup.encoded()) as! [String:Any]
         json.removeValue(forKey:"manualAudio")
         XCTAssertThrowsError(try SettingsBackup.decode(JSONSerialization.data(withJSONObject:json)))
+        json.removeValue(forKey:"tapGate")
         json["version"]=2;json["audioMode"]="automatic"
         let legacy=try SettingsBackup.decode(JSONSerialization.data(withJSONObject:json))
         XCTAssertNil(legacy.manualAudio);XCTAssertEqual(legacy.gain,2.5)

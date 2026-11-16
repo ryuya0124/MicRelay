@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05D48A259579D155A7748D58 /* TapGateSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9782D331D614106EA3217C1F /* TapGateSettingsTests.swift */; };
 		0AEB72B3F332AB46DEEA520C /* ManualAudioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC89D540E314AE7794F33FF /* ManualAudioSettings.swift */; };
 		180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782ECECA29FCAC581171B62D /* SettingsBackup.swift */; };
 		1FE225C839BBA1A66ECD2214 /* MicRelayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */; };
@@ -15,6 +16,7 @@
 		430D478ECAB64EC972C0D2A0 /* OutputSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */; };
 		4626AD3D7594DC20E9EBA625 /* ManualAudioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD618135F979274906BE31E /* ManualAudioTests.swift */; };
 		4DEAE71C919DB09A6EEEB179 /* SettingsBackupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */; };
+		5026F480E1426C60C87BFDC3 /* TapGateSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CD4B8F685964930CD845C6 /* TapGateSettings.swift */; };
 		51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */; };
 		5251976D04C2918CA0A49961 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */; };
 		52524E8FD4921FB51A3715D7 /* LatencyReprobeTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA0ECBC1463DA219890D07 /* LatencyReprobeTrigger.swift */; };
@@ -32,8 +34,10 @@
 		A4386862C04DE1E279DCEC23 /* BufferCopyTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C2B0AEE3B1FAD9B5261DA3BF /* BufferCopyTests.mm */; };
 		A94D7DC24F61A268A858DA8E /* MonitorPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = A27CDE00FFDCDFBB299E0DAC /* MonitorPreferences.swift */; };
 		A963391724D82F8061432C5B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = AB4AB63514CAEA45221EA6CF /* LICENSE */; };
+		AB5A748F80AAEB7EEAC6F3D8 /* TapGateControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0501C4FB824E4A36B3FCE639 /* TapGateControls.swift */; };
 		ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9272F8683052DEC295B606 /* SpectrumTests.swift */; };
 		AEC172BD79167E055B2AC6C0 /* WindNoiseSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D221F7F70DAD9AB3D2974C1 /* WindNoiseSettings.swift */; };
+		AF81B799CA8EBCD275634003 /* TapGateDSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B4659B51FD44E0EF3BA1AF0 /* TapGateDSPTests.mm */; };
 		BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */; };
 		BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048B12B882B5CAFCAA660AA /* MonitorView.swift */; };
 		D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */; };
@@ -73,6 +77,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0501C4FB824E4A36B3FCE639 /* TapGateControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGateControls.swift; sourceTree = "<group>"; };
 		09D14E373F9952C1EF310111 /* BufferTunerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferTunerTests.swift; sourceTree = "<group>"; };
 		0B5FCA5DE29A76AD989241B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0DE8F83909758BA654D0C8A9 /* MicRelay-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MicRelay-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -81,12 +86,14 @@
 		2D221F7F70DAD9AB3D2974C1 /* WindNoiseSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindNoiseSettings.swift; sourceTree = "<group>"; };
 		2EEE309F551FE97448404D23 /* MicRelayTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MicRelayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSafety.swift; sourceTree = "<group>"; };
+		3B4659B51FD44E0EF3BA1AF0 /* TapGateDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TapGateDSPTests.mm; sourceTree = "<group>"; };
 		3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelector.swift; sourceTree = "<group>"; };
 		4048B12B882B5CAFCAA660AA /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		42AA0ECBC1463DA219890D07 /* LatencyReprobeTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyReprobeTrigger.swift; sourceTree = "<group>"; };
 		495E9CFDF1A45FF88A0AEA24 /* MicRelayUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicRelayUITests.swift; sourceTree = "<group>"; };
 		4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ThirdPartyLicenses.json; sourceTree = "<group>"; };
 		51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupView.swift; sourceTree = "<group>"; };
+		58CD4B8F685964930CD845C6 /* TapGateSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGateSettings.swift; sourceTree = "<group>"; };
 		750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPreferencesTests.swift; sourceTree = "<group>"; };
 		75E25510BCD9A01659968AE0 /* WindNoiseDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = WindNoiseDSPTests.mm; sourceTree = "<group>"; };
 		766D4F82677C61DDB1960B36 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -97,10 +104,12 @@
 		8B91EE04626ACCCE8E195E26 /* MRWindNoiseDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MRWindNoiseDSP.hpp; sourceTree = "<group>"; };
 		8BAD6CFED6A6761CC4847069 /* BufferPreferenceSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPreferenceSelector.swift; sourceTree = "<group>"; };
 		8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumAnalyzer.swift; sourceTree = "<group>"; };
+		8D50783B7FDA94370C40589A /* MRTapGateDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MRTapGateDSP.hpp; sourceTree = "<group>"; };
 		8EC89D540E314AE7794F33FF /* ManualAudioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAudioSettings.swift; sourceTree = "<group>"; };
 		92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupTests.swift; sourceTree = "<group>"; };
 		93DA98C9699BF09F544CEF62 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		9780AF3899DA7721B617ABE3 /* AudioModePreference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioModePreference.swift; sourceTree = "<group>"; };
+		9782D331D614106EA3217C1F /* TapGateSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGateSettingsTests.swift; sourceTree = "<group>"; };
 		98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyLicense.swift; sourceTree = "<group>"; };
 		9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicRelayApp.swift; sourceTree = "<group>"; };
 		A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MRRealtimeAudio.mm; sourceTree = "<group>"; };
@@ -159,10 +168,12 @@
 				A4A20D08C6E2F1B36821987C /* MREqualizerDSP.hpp */,
 				B2D55124C9C650F71B44D0F0 /* MRRealtimeAudio.h */,
 				A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */,
+				8D50783B7FDA94370C40589A /* MRTapGateDSP.hpp */,
 				8B91EE04626ACCCE8E195E26 /* MRWindNoiseDSP.hpp */,
 				2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */,
 				782ECECA29FCAC581171B62D /* SettingsBackup.swift */,
 				8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */,
+				58CD4B8F685964930CD845C6 /* TapGateSettings.swift */,
 				2D221F7F70DAD9AB3D2974C1 /* WindNoiseSettings.swift */,
 			);
 			path = Audio;
@@ -210,6 +221,7 @@
 				126CD1982092E2287B3B2022 /* ManualAudioSettingsView.swift */,
 				4048B12B882B5CAFCAA660AA /* MonitorView.swift */,
 				51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */,
+				0501C4FB824E4A36B3FCE639 /* TapGateControls.swift */,
 				98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */,
 			);
 			path = Views;
@@ -242,6 +254,8 @@
 				C2A61DFC38B6927EAEF8149C /* RangeEqualizerSettingsTests.swift */,
 				92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */,
 				FD9272F8683052DEC295B606 /* SpectrumTests.swift */,
+				3B4659B51FD44E0EF3BA1AF0 /* TapGateDSPTests.mm */,
+				9782D331D614106EA3217C1F /* TapGateSettingsTests.swift */,
 				75E25510BCD9A01659968AE0 /* WindNoiseDSPTests.mm */,
 				79BB43C81F04083D539A3DF5 /* WindNoiseSettingsTests.swift */,
 			);
@@ -393,6 +407,8 @@
 				180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */,
 				4DEAE71C919DB09A6EEEB179 /* SettingsBackupView.swift in Sources */,
 				51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */,
+				AB5A748F80AAEB7EEAC6F3D8 /* TapGateControls.swift in Sources */,
+				5026F480E1426C60C87BFDC3 /* TapGateSettings.swift in Sources */,
 				E6BB94CE605A289A4C0BF060 /* ThirdPartyLicense.swift in Sources */,
 				AEC172BD79167E055B2AC6C0 /* WindNoiseSettings.swift in Sources */,
 			);
@@ -416,6 +432,8 @@
 				F6848B8A3617B9AD79884F17 /* RangeEqualizerSettingsTests.swift in Sources */,
 				83B6D8AF6C03BE0D33639BAA /* SettingsBackupTests.swift in Sources */,
 				ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */,
+				AF81B799CA8EBCD275634003 /* TapGateDSPTests.mm in Sources */,
+				05D48A259579D155A7748D58 /* TapGateSettingsTests.swift in Sources */,
 				939E1919C3F7DDF030246742 /* WindNoiseDSPTests.mm in Sources */,
 				78883CA24B45E96B5049B048 /* WindNoiseSettingsTests.swift in Sources */,
 			);
@@ -450,7 +468,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -667,7 +685,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
