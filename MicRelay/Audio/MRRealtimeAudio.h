@@ -31,5 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSUInteger)readAnalysisInput:(float *)input output:(float *)output capacity:(NSUInteger)capacity;
 - (void)discardAnalysisSamples;
 @property(nonatomic, readonly) uint64_t analysisDroppedFrames;
+@property(nonatomic, readonly, copy) NSDictionary<NSString *, id> *ioConfiguration;
+@property(nonatomic, readonly, nullable) NSNumber *processingLatency;
 @end
 NS_ASSUME_NONNULL_END

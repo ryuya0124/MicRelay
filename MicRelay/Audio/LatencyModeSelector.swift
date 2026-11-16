@@ -10,10 +10,12 @@ struct ModeLatencyMeasurement: Codable, Equatable {
     let ioBufferDuration: Double
     let sampleRate: Double
     let quantum: UInt32
+    var processingLatency: Double? = nil
 
-    var score: Double { inputLatency + outputLatency + max(ioBufferDuration, Double(quantum) / sampleRate) }
+    var score: Double { inputLatency + outputLatency + max(ioBufferDuration, Double(quantum) / sampleRate) + (processingLatency ?? 0) }
     var isValid: Bool {
-        sampleRate.isFinite && sampleRate > 0 && quantum > 0 &&
+        sampleRate.isFinite && sampleRate > 0 && quantum > 0 && score.isFinite &&
+        (processingLatency.map { $0.isFinite && $0 >= 0 } ?? true) &&
         [inputLatency, outputLatency, ioBufferDuration].allSatisfy { $0.isFinite && $0 >= 0 }
     }
 }

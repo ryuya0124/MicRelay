@@ -172,6 +172,8 @@ struct MonitorView: View {
                 LabeledContent(String(localized: "latency.io_buffer", defaultValue: "I/Oバッファ"), value: milliseconds(model.bufferDuration))
                 LabeledContent(String(localized: "audio.input", defaultValue: "入力"), value: milliseconds(model.inputLatency))
                 LabeledContent(String(localized: "output.title", defaultValue: "出力"), value: milliseconds(model.outputLatency))
+                LabeledContent(String(localized: "latency.unit_processing", defaultValue: "Audio Unit処理"),
+                    value: model.unitProcessingLatency.map(milliseconds) ?? "—")
                 LabeledContent(String(localized: "audio.sample_rate", defaultValue: "サンプルレート"), value: model.sampleRate > 0 ? String(format: "%.1f kHz", locale: Locale.current, model.sampleRate / 1000) : "—")
                 LabeledContent(String(localized: "audio.active_mode", defaultValue: "動作中のモード"), value: model.selectedModeLabel)
                 Text(model.tuningNote).font(.caption).foregroundStyle(.secondary)

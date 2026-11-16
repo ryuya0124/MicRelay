@@ -15,7 +15,9 @@ struct ManualAudioSettings: Codable, Equatable {
     var summary: String { "\(frames) frames · \(String(format: "%.9g", locale: .current, sampleRate)) Hz" }
     var verificationSummary: String { "\(summary) · I/O \(Self.durationLabel(bufferDuration))" }
     static func durationLabel(_ seconds: Double) -> String { String(format: "%.3f ms", locale: .current, seconds * 1000) }
-    static let frameChoices: [UInt32] = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
+    static let frameChoices: [UInt32] = Array(Set(BufferPreferenceSelector.requests.map { UInt32($0) } +
+        [5, 11, 20, 22, 23, 40, 44, 45, 60, 80, 88, 89, 110, 111, 120, 160, 220, 221, 240, 320,
+         330, 331, 360, 441, 480, 661, 662, 720, 882, 960, 1440, 1764, 1920, 4096])).sorted()
     static let sampleRateChoices: [Double] = [8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000, 88200, 96000, 176400, 192000, 352800, 384000]
     // Reuse the static arrays for ordinary settings. Only an imported nonstandard value needs a new list.
     var frameOptions: [UInt32] {

@@ -17,13 +17,27 @@ final class HardwareRateProbeTests: XCTestCase {
         XCTAssertEqual(BufferPreferenceSelector.best([normal,fast,expensiveInput]),fast)
         XCTAssertEqual(BufferPreferenceSelector.best([normal,sample(96000,frames:16,misses:1)]),normal)
     }
+    func testKnownAudioUnitProcessingDelayIsIncludedInRanking() {
+        let normal = sample(48000,frames:16)
+        var converted = sample(192000,frames:16)
+        converted.processingLatency = 0.004
+        XCTAssertEqual(BufferPreferenceSelector.best([normal,converted]),normal)
+        XCTAssertEqual(LatencyModeSelector.best([normal.latencyMeasurement,converted.latencyMeasurement]),normal.latencyMeasurement)
+        XCTAssertFalse(normal.reproduces(converted))
+        var sameRate = normal; sameRate.processingLatency = 0
+        var slower = sameRate; slower.processingLatency = 0.004
+        XCTAssertFalse(slower.reproduces(sameRate))
+        converted.processingLatency = -1
+        XCTAssertFalse(converted.isStable)
+        XCTAssertFalse(converted.latencyMeasurement.isValid)
+    }
     func testIgnoredRateHintsReuseOnlyStableActualConfigurations() {
         let baseline = sample(48000,frames:16)
-        let completed: Set<HardwareRateProbeKey> = [HardwareRateProbeKey(baseline)]
-        XCTAssertTrue(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,hint:192000),completed:completed))
-        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,misses:1,hint:192000),completed:completed))
-        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(96000,frames:16),completed:completed))
-        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,mode:"measurement"),completed:completed))
+        XCTAssertTrue(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,hint:192000),reference:baseline))
+        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,misses:1,hint:192000),reference:baseline))
+        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(96000,frames:16),reference:baseline))
+        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,mode:"measurement"),reference:baseline))
+        XCTAssertFalse(HardwareRateProbePlanner.canReuse(sample(48000,frames:16,output:0.017),reference:baseline))
     }
     func testObservedFloorIsScopedToTheWinningModeAndActualRate() {
         let values = [sample(48000,frames:8), sample(96000,frames:32), sample(96000,frames:16,mode:"measurement")]
@@ -35,6 +49,7 @@ final class HardwareRateProbeTests: XCTestCase {
         let values = HardwareRateProbePlanner.requests(current:44100,preferred:44100)
         XCTAssertEqual(values.first,44100); XCTAssertEqual(Set(values).count,values.count)
         XCTAssertTrue(values.contains(48000)); XCTAssertTrue(values.contains(96000)); XCTAssertTrue(values.contains(192000))
+        XCTAssertTrue(values.contains(352800))
         XCTAssertEqual(HardwareRateProbePlanner.requests(current:48000,preferred:48000,fixed:96000),[96000])
         XCTAssertTrue(HardwareRateProbePlanner.requests(current:.nan,preferred:.infinity).allSatisfy { $0.isFinite && $0 > 0 })
     }

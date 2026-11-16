@@ -1519,13 +1519,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Adjusting automatically · Requested %lld frames"
+            "value": "Adjusting automatically · Requested %@ frames"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "自動調整 · %lldフレームを要求"
+            "value": "自動調整 · %@フレームを要求"
           }
         }
       }
@@ -1570,13 +1570,30 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Automatic · Requested %lld frames after comparing callbacks"
+            "value": "Automatic · Requested %@ frames after comparing callbacks"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "自動 · 実コールバックを比較して%lldフレームを要求"
+            "value": "自動 · 実コールバックを比較して%@フレームを要求"
+          }
+        }
+      }
+    },
+    "latency.unit_processing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio Unit processing"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio Unit処理"
           }
         }
       }

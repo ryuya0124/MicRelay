@@ -185,6 +185,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     NSArray *_observers;
     double _windCutoff;
     std::array<mr::BandParameters, mr::bandCount> _eqParameters;
+    NSDictionary<NSString *, id> *_ioConfiguration;
 }
 - (instancetype)init {
     if ((self = [super init])) {
@@ -212,6 +213,7 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 }
 - (BOOL)prepareWithSampleRate:(double)sampleRate error:(NSError **)error {
     [self stop];
+    _ioConfiguration = @{};
     AudioComponentDescription desc = {kAudioUnitType_Output, kAudioUnitSubType_RemoteIO,
         kAudioUnitManufacturer_Apple, 0, 0};
     AudioComponent component = AudioComponentFindNext(nullptr, &desc);
@@ -259,6 +261,29 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
     if ([self fail:AudioUnitSetProperty(_state.unit, kAudioUnitProperty_SetRenderCallback,
         kAudioUnitScope_Input, 0, &callback, sizeof(callback)) error:error]) return NO;
     if ([self fail:AudioUnitInitialize(_state.unit) error:error]) return NO;
+    // Read once before rendering; property queries never run on the audio callback.
+    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    struct StreamQuery { NSString *__unsafe_unretained name; AudioUnitScope scope; UInt32 bus; };
+    const StreamQuery queries[] = {
+        {@"hardwareInput", kAudioUnitScope_Input, 1}, {@"hardwareOutput", kAudioUnitScope_Output, 0},
+        {@"clientInput", kAudioUnitScope_Output, 1}, {@"clientOutput", kAudioUnitScope_Input, 0}
+    };
+    for (const auto &query : queries) {
+        AudioStreamBasicDescription stream = {};
+        UInt32 bytes = sizeof(stream);
+        if (AudioUnitGetProperty(_state.unit, kAudioUnitProperty_StreamFormat, query.scope, query.bus, &stream, &bytes) == noErr &&
+            std::isfinite(stream.mSampleRate) && stream.mSampleRate > 0 && stream.mChannelsPerFrame > 0) {
+            info[query.name] = @{@"sampleRate": @(stream.mSampleRate), @"channels": @(stream.mChannelsPerFrame),
+                @"formatID": @(stream.mFormatID), @"formatFlags": @(stream.mFormatFlags),
+                @"bytesPerFrame": @(stream.mBytesPerFrame),
+                @"interleaved": @((stream.mFormatFlags & kAudioFormatFlagIsNonInterleaved) == 0)};
+        }
+    }
+    Float64 latency = 0;
+    UInt32 bytes = sizeof(latency);
+    if (AudioUnitGetProperty(_state.unit, kAudioUnitProperty_Latency, kAudioUnitScope_Global, 0, &latency, &bytes) == noErr &&
+        std::isfinite(latency) && latency >= 0) info[@"processingLatency"] = @(latency);
+    _ioConfiguration = [info copy]; // Unsupported values remain absent, rather than being reported as zero latency.
     return YES;
 }
 - (BOOL)startWithError:(NSError **)error {
@@ -282,6 +307,8 @@ static OSStatus render(void *context, AudioUnitRenderActionFlags *flags,
 - (BOOL)outputMuted { return _state.outputMuted.load(std::memory_order_acquire); }
 - (void)setGain:(double)value { _state.gain.store(std::isfinite(value) ? std::max(0.0, value) : 0.0); }
 - (double)gain { return _state.gain.load(); }
+- (NSDictionary<NSString *, id> *)ioConfiguration { return _ioConfiguration ?: @{}; }
+- (NSNumber *)processingLatency { return _ioConfiguration[@"processingLatency"]; }
 - (float)peak { return _state.peak.load(); }
 - (uint64_t)renderedFrames { return _state.frames.load(); }
 - (int32_t)renderError { return _state.error.load(); }
