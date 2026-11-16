@@ -391,18 +391,17 @@
       }
     },
     "backup.help": {
-      "extractionState": "manual",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save gain, gain limit, EQ, wind noise reduction, tap gate, audio mode, background settings, and selected microphone to a JSON file. Audio is not included. Speaker permission and output confirmation are not restored."
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・タップ音ゲート・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"
+            "value": "ゲイン・ゲイン上限・EQ・風切り音低減・タップ音ゲート・音声モード・バックグラウンド設定・選択マイク・画面録画の音声除外設定をJSONファイルに保存します。音声・動画は含みません。スピーカーの許可と接続先の確認は復元しません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save gain, gain limit, EQ, wind noise reduction, tap gate, audio mode, background monitoring, microphone, and recording audio exclusion settings as JSON. Audio and video are not included. Speaker permission and output confirmation are not restored."
           }
         }
       }
@@ -1740,13 +1739,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This app uses Apple frameworks provided by the OS, including SwiftUI, AVFAudio, AudioToolbox, Accelerate, AVKit, MediaPlayer, and Foundation. No third-party runtime libraries are bundled."
+            "value": "This app uses Apple frameworks provided by the OS, including SwiftUI, AVFAudio, AudioToolbox, Accelerate, AVKit, MediaPlayer, and Foundation, ScreenCaptureKit, Photos. No third-party runtime libraries are bundled."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundationなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"
+            "value": "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundation、ScreenCaptureKit、Photosなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"
           }
         }
       }
@@ -3265,18 +3264,577 @@
       }
     },
     "privacy.local_audio": {
-      "comment": "Privacy UI or status text. Keep format placeholders and units intact.",
       "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Audio is processed on this device. It is not recorded or transmitted."
-          }
-        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "音声はこの端末内で処理します。録音・送信はしません。"
+            "value": "音声は端末内で処理します。画面録画を開始した場合だけ動画を保存します。開発者への送信はありません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Audio is processed on this device. Videos are saved only when you start a screen recording. Nothing is sent to the developer."
+          }
+        }
+      }
+    },
+    "recording.applied": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今回の録画"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This recording"
+          }
+        }
+      }
+    },
+    "recording.audio": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画する音声"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording audio"
+          }
+        }
+      }
+    },
+    "recording.delete": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内の動画を削除"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete video from this app"
+          }
+        }
+      }
+    },
+    "recording.delete_confirm": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内の動画を削除しますか？"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete the video from this app?"
+          }
+        }
+      }
+    },
+    "recording.delete_help": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真アプリの動画は削除しません。このアプリ内に保存されている動画だけを削除します。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only the copy stored in this app will be deleted. The video in Photos will remain."
+          }
+        }
+      }
+    },
+    "recording.empty": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内の動画はありません。保存が完了した動画は写真アプリで見られます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No videos are stored in this app. Successfully saved videos are available in Photos."
+          }
+        }
+      }
+    },
+    "recording.error.microphone": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画用マイクが有効なため開始できませんでした。録画用マイクをOFFにしてお試しください。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording could not start because direct microphone recording is enabled. Turn it off and try again."
+          }
+        }
+      }
+    },
+    "recording.error.simulator": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画面録画は実機で利用してください。シミュレーターでは利用できません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a physical device for screen recording. It is unavailable in Simulator."
+          }
+        }
+      }
+    },
+    "recording.error.timeout": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画の応答がありません。録画を終了しました。もう一度お試しください。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording did not respond and has been stopped. Please try again."
+          }
+        }
+      }
+    },
+    "recording.error.unavailable": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在、画面録画を利用できません。別の録画や画面共有を終了して、もう一度お試しください。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen recording is currently unavailable. Stop any other recording or screen sharing session and try again."
+          }
+        }
+      }
+    },
+    "recording.exclude": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画からモニター音を除外"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exclude monitor audio from recordings"
+          }
+        }
+      }
+    },
+    "recording.exclude_help": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ONではイヤホンのモニター音を聞きながら、その音を動画から除外します。OFFではモニター音も録画します。録画中は変更できません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When on, you can hear the monitor through headphones while excluding it from the video. When off, the video includes monitor audio. Stop recording before changing this setting."
+          }
+        }
+      }
+    },
+    "recording.excluded": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター音を除外"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitor audio excluded"
+          }
+        }
+      }
+    },
+    "recording.help": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この画面から開始する録画だけに適用されます。コントロールセンターの画面録画には適用されません。ゲームなどを録画する場合は、選択画面で画面全体を選んでください。録画用マイクはOFFです。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These settings apply only to recordings started here, not to Control Center recordings. Choose the entire screen in the picker to record games or other apps. Direct microphone recording is off."
+          }
+        }
+      }
+    },
+    "recording.included": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モニター音を含む"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monitor audio included"
+          }
+        }
+      }
+    },
+    "recording.incomplete": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未完了の動画"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incomplete recording"
+          }
+        }
+      }
+    },
+    "recording.open_settings": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を開く"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        }
+      }
+    },
+    "recording.photos.cleanup_failed": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真への保存は完了しましたが、アプリ内のコピーを削除できませんでした。一覧からアプリ内の動画を削除できます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The video was saved to Photos, but its app copy could not be removed. You can delete the app copy from the list."
+          }
+        }
+      }
+    },
+    "recording.photos.permission": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真への追加が許可されていません。動画はアプリ内に残っています。設定で写真への追加を許可してから、もう一度保存してください。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adding to Photos is not allowed. Your video is still in this app. Allow additions to Photos in Settings, then save it again."
+          }
+        }
+      }
+    },
+    "recording.photos.save": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真に保存"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save to Photos"
+          }
+        }
+      }
+    },
+    "recording.photos.save_all": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未保存の動画をまとめて写真に保存"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save remaining videos to Photos"
+          }
+        }
+      }
+    },
+    "recording.photos.saved": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真に保存済み"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved to Photos"
+          }
+        }
+      }
+    },
+    "recording.requires_update": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS／iPadOS 27以降にアップデートすると利用できます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update to iOS or iPadOS 27 or later to use this feature."
+          }
+        }
+      }
+    },
+    "recording.saved": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画を写真アプリに保存し、アプリ内のコピーを削除しました。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video saved to Photos. The copy in this app has been removed."
+          }
+        }
+      }
+    },
+    "recording.share": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画を共有・書き出す"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share or export video"
+          }
+        }
+      }
+    },
+    "recording.start": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画面録画を開始"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Start screen recording"
+          }
+        }
+      }
+    },
+    "recording.status.idle": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "停止中"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped"
+          }
+        }
+      }
+    },
+    "recording.status.recording": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画中"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording"
+          }
+        }
+      }
+    },
+    "recording.status.selecting": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画する画面を選択してください"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the screen to record"
+          }
+        }
+      }
+    },
+    "recording.status.starting": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画を開始しています…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting recording…"
+          }
+        }
+      }
+    },
+    "recording.status.stopping": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画を保存しています…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving video…"
+          }
+        }
+      }
+    },
+    "recording.stop": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "録画を停止して保存"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop and save recording"
+          }
+        }
+      }
+    },
+    "recording.storage": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内の動画の使用量"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video storage in this app"
+          }
+        }
+      }
+    },
+    "recording.title": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画面録画"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Screen recording"
+          }
+        }
+      }
+    },
+    "recording.videos": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ内の動画"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Videos in this app"
           }
         }
       }

@@ -15,6 +15,81 @@ final class MicRelayUITests: XCTestCase {
         return app
     }
 
+    func testJapaneseRecordingSettingsPersistAndRequireOSUpdate() {
+        checkRecordingSettings(language: "ja", locale: "ja_JP", title: "画面録画")
+    }
+
+    func testRecordingEntryOpensFromSettings() {
+        let app = japaneseApp()
+        app.launch()
+        let entry = app.buttons["openScreenRecording"]
+        for _ in 0..<8 where !entry.isHittable {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.8)).press(forDuration: 0.05,
+                thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.3)))
+        }
+        XCTAssertTrue(entry.exists); XCTAssertTrue(entry.isHittable)
+        XCTAssertTrue(entry.label.contains("画面録画"))
+        screenshot("recording-main-entry")
+        entry.tap()
+        XCTAssertTrue(app.navigationBars["画面録画"].waitForExistence(timeout: 5))
+        app.terminate()
+    }
+
+    func testAppRecordingDeletionRequiresConfirmationAndCancelKeepsFile() {
+        let app = japaneseApp()
+        app.launchArguments = japaneseArguments + ["--show-screen-recording"]
+        app.launch()
+        let remove = app.buttons["deleteRecording-UI-Storage-Fixture.mp4"]
+        for _ in 0..<8 where !remove.isHittable { app.swipeUp() }
+        XCTAssertTrue(remove.waitForExistence(timeout: 5))
+        remove.tap()
+        let cancel = app.buttons["cancelDeleteRecording"]
+        XCTAssertTrue(app.sheets["アプリ内の動画を削除しますか？"].waitForExistence(timeout: 5))
+        if cancel.exists { cancel.tap() }
+        else { app.otherElements["PopoverDismissRegion"].tap() }
+        XCTAssertTrue(remove.exists)
+        remove.tap()
+        let confirm = app.buttons.matching(identifier: "confirmDeleteRecording").firstMatch
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5))
+        confirm.tap()
+        XCTAssertFalse(remove.exists)
+        screenshot("recording-app-copy-deleted")
+        app.terminate()
+    }
+
+    func testEnglishRecordingSettingsPersistAndRequireOSUpdate() {
+        checkRecordingSettings(language: "en", locale: "en_US", title: "Screen recording")
+    }
+
+    private func checkRecordingSettings(language: String, locale: String, title: String) {
+        let app = XCUIApplication()
+        let arguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale, "--show-screen-recording"]
+        app.launchArguments = arguments
+        app.launch()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 10))
+        let toggle = app.switches["excludeMonitorAudioToggle"]
+        XCTAssertTrue(toggle.waitForExistence(timeout: 5)); XCTAssertTrue(toggle.isEnabled)
+        XCTAssertEqual(toggle.value as? String, "1")
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String, "0")
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 10))
+        XCTAssertEqual(toggle.value as? String, "0")
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap()
+        XCTAssertEqual(toggle.value as? String, "1")
+        screenshot("recording-\(language)-enabled")
+        app.terminate()
+        app.launchArguments = arguments + ["--recording-requires-update"]
+        app.launch()
+        XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 10))
+        XCTAssertFalse(toggle.isEnabled)
+        XCTAssertFalse(app.buttons["startScreenRecording"].isEnabled)
+        XCTAssertTrue(app.staticTexts["screenRecordingRequiresUpdate"].exists)
+        XCTAssertEqual(toggle.value as? String, "1")
+        screenshot("recording-\(language)-requires-update")
+        app.terminate()
+    }
+
     func testJapaneseManualSettingsRejectMismatchAndRestore() throws {
         try checkManualRejection(language: "ja", locale: "ja_JP", title: "手動I/O設定", manual: "完全手動",
             automatic: "自動", error: "設定を適用できませんでした", mismatch: "要求値と実際の値が一致しません。", rollback: "元の設定に戻しました。")

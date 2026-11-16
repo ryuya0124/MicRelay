@@ -15,6 +15,6 @@ Keep monitoring with the screen locked or while using a game or another app.
 SAVE AND RESTORE SETTINGS
 Your volume and sound settings are kept when you reopen the app. Save your settings to a file and restore them together whenever you need them.
 
-Audio is not recorded or sent anywhere.
+On iOS and iPadOS 27 or later, record your screen while choosing whether to include or exclude monitor audio from the video. Videos are saved on your device for you to share or export. Audio and video are not sent to the developer.
 
 The time it takes to hear sound and the microphones you can choose depend on your device and connected equipment. Monitoring may be interrupted when another app uses the microphone. When using the speaker, start at a low volume to avoid feedback. Stronger wind noise reduction also reduces the bass in your voice.

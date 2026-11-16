@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05D48A259579D155A7748D58 /* TapGateSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9782D331D614106EA3217C1F /* TapGateSettingsTests.swift */; };
 		0AEB72B3F332AB46DEEA520C /* ManualAudioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC89D540E314AE7794F33FF /* ManualAudioSettings.swift */; };
+		136A4EABCEA5C404273EE54F /* ScreenRecordingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8CF322B2C6F781F73E15B0 /* ScreenRecordingTests.swift */; };
 		180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782ECECA29FCAC581171B62D /* SettingsBackup.swift */; };
 		1FE225C839BBA1A66ECD2214 /* MicRelayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */; };
 		2F151558ABA3E041232F7AF2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 766D4F82677C61DDB1960B36 /* Localizable.xcstrings */; };
@@ -20,6 +21,8 @@
 		51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */; };
 		5251976D04C2918CA0A49961 /* LicenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FA67C0F4CC1CB5757C41F4A /* LicenseView.swift */; };
 		52524E8FD4921FB51A3715D7 /* LatencyReprobeTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA0ECBC1463DA219890D07 /* LatencyReprobeTrigger.swift */; };
+		542201580D1C455E78E934AC /* ScreenRecordingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB82D4382B833F402ED0A5C /* ScreenRecordingView.swift */; };
+		56A5CDAF41D531C0DDC696A8 /* ScreenCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB06454AE46D198BFACE2902 /* ScreenCaptureSession.swift */; };
 		572EDB2468E3A9283F80CDA8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C735ADF1A37C633D8A927E64 /* Assets.xcassets */; };
 		5A8FB1D73E6648FB98A3D258 /* BufferTuner.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13536138464F07466D76E0D /* BufferTuner.swift */; };
 		6C3A200AC5BEA2BBA8FAF08C /* OutputSafety.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */; };
@@ -40,10 +43,12 @@
 		ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD9272F8683052DEC295B606 /* SpectrumTests.swift */; };
 		AEC172BD79167E055B2AC6C0 /* WindNoiseSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D221F7F70DAD9AB3D2974C1 /* WindNoiseSettings.swift */; };
 		AF81B799CA8EBCD275634003 /* TapGateDSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3B4659B51FD44E0EF3BA1AF0 /* TapGateDSPTests.mm */; };
+		BEA0895D6EBEA10C58F178A0 /* RecordingPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C8CEFC99E809289112BA0 /* RecordingPhotoLibrary.swift */; };
 		BF79B8C5941C084101BD1C50 /* GainSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */; };
 		BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4048B12B882B5CAFCAA660AA /* MonitorView.swift */; };
 		D0E20454CAB27FDEE9A3C0F5 /* ThirdPartyLicenses.json in Resources */ = {isa = PBXBuildFile; fileRef = 4AC09E9EF743CC1298E6318E /* ThirdPartyLicenses.json */; };
 		D0EA3E304D52FA31087E7602 /* MonitorStartButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F102FF2665B4A0C5D5931BD /* MonitorStartButton.swift */; };
+		D2E2DD2AC20E7251F9312BD9 /* ScreenRecordingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B52A117D7A53805C6FCB5D /* ScreenRecordingSettings.swift */; };
 		D37FB316610FF8DD2B263E7D /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = B5DC2C5C89B7151EE98BC9DC /* AppIcon.icon */; };
 		D4FD2EC0054610714F6F8772 /* MRRealtimeAudio.mm in Sources */ = {isa = PBXBuildFile; fileRef = A03175466596F4B47F6661C4 /* MRRealtimeAudio.mm */; };
 		D6F628D5C20115CB1F31E66C /* BufferTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D14E373F9952C1EF310111 /* BufferTunerTests.swift */; };
@@ -57,6 +62,7 @@
 		E6BB94CE605A289A4C0BF060 /* ThirdPartyLicense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */; };
 		E729398FDC4222D1DCFA4A2D /* EqualizerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBD46E9BA194D4E3C39D701 /* EqualizerSettings.swift */; };
 		E988674E442233415500474E /* BufferPreferenceSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81F55D808A8508BD64D0277 /* BufferPreferenceSelectorTests.swift */; };
+		F2572667BCE2D115A772965B /* ScreenRecordingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33C57D79156E4B4AE0EF721 /* ScreenRecordingModel.swift */; };
 		F2C0B68A1C2E2A098824A968 /* BufferPreferenceSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD6CFED6A6761CC4847069 /* BufferPreferenceSelector.swift */; };
 		F520A8AE3D1C73F5DC20026C /* LatencyModeSelectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69EA71F1F15406219F065AB /* LatencyModeSelectorTests.swift */; };
 		F6848B8A3617B9AD79884F17 /* RangeEqualizerSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A61DFC38B6927EAEF8149C /* RangeEqualizerSettingsTests.swift */; };
@@ -89,6 +95,7 @@
 		2D221F7F70DAD9AB3D2974C1 /* WindNoiseSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindNoiseSettings.swift; sourceTree = "<group>"; };
 		2EEE309F551FE97448404D23 /* MicRelayTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MicRelayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F337FCAE9C8B77BC46B630C /* OutputSafety.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSafety.swift; sourceTree = "<group>"; };
+		31B52A117D7A53805C6FCB5D /* ScreenRecordingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingSettings.swift; sourceTree = "<group>"; };
 		3B4659B51FD44E0EF3BA1AF0 /* TapGateDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TapGateDSPTests.mm; sourceTree = "<group>"; };
 		3FEAD0ADE29F9F53E0112092 /* LatencyModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatencyModeSelector.swift; sourceTree = "<group>"; };
 		4048B12B882B5CAFCAA660AA /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
@@ -108,6 +115,7 @@
 		88CBA9C00107199AADFA8F34 /* MicRelayUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MicRelayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B91EE04626ACCCE8E195E26 /* MRWindNoiseDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MRWindNoiseDSP.hpp; sourceTree = "<group>"; };
 		8BAD6CFED6A6761CC4847069 /* BufferPreferenceSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPreferenceSelector.swift; sourceTree = "<group>"; };
+		8BB82D4382B833F402ED0A5C /* ScreenRecordingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingView.swift; sourceTree = "<group>"; };
 		8BE264D6B2C5A93F7219901A /* SpectrumAnalyzer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumAnalyzer.swift; sourceTree = "<group>"; };
 		8D50783B7FDA94370C40589A /* MRTapGateDSP.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MRTapGateDSP.hpp; sourceTree = "<group>"; };
 		8EC89D540E314AE7794F33FF /* ManualAudioSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAudioSettings.swift; sourceTree = "<group>"; };
@@ -131,21 +139,36 @@
 		BAEAEF20AAA107377CB57217 /* MicRelay.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MicRelay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2A61DFC38B6927EAEF8149C /* RangeEqualizerSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeEqualizerSettingsTests.swift; sourceTree = "<group>"; };
 		C2B0AEE3B1FAD9B5261DA3BF /* BufferCopyTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BufferCopyTests.mm; sourceTree = "<group>"; };
+		C33C57D79156E4B4AE0EF721 /* ScreenRecordingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingModel.swift; sourceTree = "<group>"; };
 		C735ADF1A37C633D8A927E64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C81F55D808A8508BD64D0277 /* BufferPreferenceSelectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferPreferenceSelectorTests.swift; sourceTree = "<group>"; };
 		C8831F17C2EDA33156C6E0F6 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		CB3229854C14F0E58B6228E5 /* EqualizerDSPTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EqualizerDSPTests.mm; sourceTree = "<group>"; };
 		CCD618135F979274906BE31E /* ManualAudioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualAudioTests.swift; sourceTree = "<group>"; };
 		D3D5FA7FBB4CE5B5AD9BD2C3 /* GainSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GainSettingsView.swift; sourceTree = "<group>"; };
+		D60C8CEFC99E809289112BA0 /* RecordingPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingPhotoLibrary.swift; sourceTree = "<group>"; };
 		D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSafetyTests.swift; sourceTree = "<group>"; };
 		DA213495E52FBFD468662CA6 /* MonitorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorModel.swift; sourceTree = "<group>"; };
 		E833E32100AA35345F473015 /* HardwareRateProbeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardwareRateProbeTests.swift; sourceTree = "<group>"; };
+		EB06454AE46D198BFACE2902 /* ScreenCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenCaptureSession.swift; sourceTree = "<group>"; };
 		F13536138464F07466D76E0D /* BufferTuner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BufferTuner.swift; sourceTree = "<group>"; };
+		FB8CF322B2C6F781F73E15B0 /* ScreenRecordingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecordingTests.swift; sourceTree = "<group>"; };
 		FBD33F578D3F6F5221EF26A7 /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		FD9272F8683052DEC295B606 /* SpectrumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		1E0BAD8C4B6077530F7E6AE0 /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				D60C8CEFC99E809289112BA0 /* RecordingPhotoLibrary.swift */,
+				EB06454AE46D198BFACE2902 /* ScreenCaptureSession.swift */,
+				C33C57D79156E4B4AE0EF721 /* ScreenRecordingModel.swift */,
+				31B52A117D7A53805C6FCB5D /* ScreenRecordingSettings.swift */,
+			);
+			path = Recording;
+			sourceTree = "<group>";
+		};
 		1E9B03146DD48D8A09CD5B6B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +225,7 @@
 				9935B3DE14B9E3CEFBF369B8 /* MicRelayApp.swift */,
 				93DA98C9699BF09F544CEF62 /* PrivacyInfo.xcprivacy */,
 				468977C07F06B8B914AAD556 /* Audio */,
+				1E0BAD8C4B6077530F7E6AE0 /* Recording */,
 				1E9B03146DD48D8A09CD5B6B /* Resources */,
 				D215F5E3E67CCEAC6A82BC6E /* Views */,
 			);
@@ -228,6 +252,7 @@
 				126CD1982092E2287B3B2022 /* ManualAudioSettingsView.swift */,
 				5F102FF2665B4A0C5D5931BD /* MonitorStartButton.swift */,
 				4048B12B882B5CAFCAA660AA /* MonitorView.swift */,
+				8BB82D4382B833F402ED0A5C /* ScreenRecordingView.swift */,
 				51FD37BC3E0D13C81148C289 /* SettingsBackupView.swift */,
 				0501C4FB824E4A36B3FCE639 /* TapGateControls.swift */,
 				98BEF90153240890D898BA02 /* ThirdPartyLicense.swift */,
@@ -260,6 +285,7 @@
 				750B4BDE41EAE1F763C778A5 /* MonitorPreferencesTests.swift */,
 				D8F40A4AF52D564E5DF109B8 /* OutputSafetyTests.swift */,
 				C2A61DFC38B6927EAEF8149C /* RangeEqualizerSettingsTests.swift */,
+				FB8CF322B2C6F781F73E15B0 /* ScreenRecordingTests.swift */,
 				92CFFA291181C5DF47B969C3 /* SettingsBackupTests.swift */,
 				FD9272F8683052DEC295B606 /* SpectrumTests.swift */,
 				9ECD44C0D3F3D77FE150A1D5 /* StartupIOProbeTests.swift */,
@@ -414,6 +440,11 @@
 				D0EA3E304D52FA31087E7602 /* MonitorStartButton.swift in Sources */,
 				BFD7EAC1CBD1A067A1B8CCD4 /* MonitorView.swift in Sources */,
 				6C3A200AC5BEA2BBA8FAF08C /* OutputSafety.swift in Sources */,
+				BEA0895D6EBEA10C58F178A0 /* RecordingPhotoLibrary.swift in Sources */,
+				56A5CDAF41D531C0DDC696A8 /* ScreenCaptureSession.swift in Sources */,
+				F2572667BCE2D115A772965B /* ScreenRecordingModel.swift in Sources */,
+				D2E2DD2AC20E7251F9312BD9 /* ScreenRecordingSettings.swift in Sources */,
+				542201580D1C455E78E934AC /* ScreenRecordingView.swift in Sources */,
 				180AA1301C2E8A2FFEA06AAC /* SettingsBackup.swift in Sources */,
 				4DEAE71C919DB09A6EEEB179 /* SettingsBackupView.swift in Sources */,
 				51CDDDA76ABF4060DAF6B6F4 /* SpectrumAnalyzer.swift in Sources */,
@@ -441,6 +472,7 @@
 				837F8E44FC90FAF6296AA909 /* MonitorPreferencesTests.swift in Sources */,
 				430D478ECAB64EC972C0D2A0 /* OutputSafetyTests.swift in Sources */,
 				F6848B8A3617B9AD79884F17 /* RangeEqualizerSettingsTests.swift in Sources */,
+				136A4EABCEA5C404273EE54F /* ScreenRecordingTests.swift in Sources */,
 				83B6D8AF6C03BE0D33639BAA /* SettingsBackupTests.swift in Sources */,
 				ADD95F0A4C2257B84B791B9A /* SpectrumTests.swift in Sources */,
 				89A544C740EF13234AEC357C /* StartupIOProbeTests.swift in Sources */,
@@ -480,7 +512,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -697,7 +729,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = MicRelay/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

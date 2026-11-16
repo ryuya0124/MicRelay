@@ -35,7 +35,7 @@ targets:
         SUPPORTS_MACCATALYST: NO
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
         MARKETING_VERSION: '1.0.0'
-        CURRENT_PROJECT_VERSION: '12'
+        CURRENT_PROJECT_VERSION: '14'
     info:
       path: MicRelay/Info.plist
       properties:
@@ -44,8 +44,10 @@ targets:
         CFBundleDisplayName: MicRelay
         ITSAppUsesNonExemptEncryption: false
         NSHumanReadableCopyright: Copyright © 2026 ryuya
-        NSMicrophoneUsageDescription: この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。音声は保存・送信しません。
-        UIBackgroundModes: [audio]
+        NSMicrophoneUsageDescription: この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。画面録画で音声を含める場合は動画にも保存します。開発者への送信はありません。
+        NSScreenCaptureUsageDescription: 選択した画面と音声を動画として端末内に保存するために使用します。録画からモニター音を除外するか選択できます。
+        NSPhotoLibraryAddUsageDescription: 画面録画した動画を写真ライブラリへ保存するために使用します。写真の閲覧は行いません。
+        UIBackgroundModes: [audio, screen-capture]
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
         UISupportedInterfaceOrientations~ipad: [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]

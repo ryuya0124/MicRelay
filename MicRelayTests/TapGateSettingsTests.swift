@@ -22,10 +22,10 @@ final class TapGateSettingsTests: XCTestCase {
         let value = TapGateSettings(enabled: true, duration: 0.003, minimumDB: -45, riseDB: 12, detectionSource: .beforeFilters)
         let backup = SettingsBackup(gain: 2.75, gainLimit: 4, equalizer: .init(), backgroundEnabled: true, selectedInput: "builtin", tapGate: value)
         let decoded = try SettingsBackup.decode(backup.encoded())
-        XCTAssertEqual(decoded.version,4); XCTAssertEqual(decoded.tapGate,value)
+        XCTAssertEqual(decoded.version,5); XCTAssertEqual(decoded.tapGate,value)
         for version in 1...3 {
             var json = try JSONSerialization.jsonObject(with: backup.encoded()) as! [String: Any]
-            json["version"] = version; json.removeValue(forKey: "tapGate")
+            json["version"] = version; json.removeValue(forKey: "tapGate"); json.removeValue(forKey: "screenRecording")
             if version < 3 { json.removeValue(forKey: "manualAudio") }
             if version < 2 { json.removeValue(forKey: "windNoise") }
             let old = try SettingsBackup.decode(JSONSerialization.data(withJSONObject: json))

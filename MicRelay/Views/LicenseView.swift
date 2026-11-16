@@ -29,7 +29,7 @@ struct LicenseView: View {
                 Link(String(localized: "licenses.github", defaultValue: "GitHub ソースコード"), destination: URL(string: "https://github.com/ryuya0124/MicRelay")!)
             }
             Section(String(localized: "licenses.frameworks", defaultValue: "実行時のフレームワーク")) {
-                Text(String(localized: "licenses.frameworks_help", defaultValue: "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundationなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"))
+                Text(String(localized: "licenses.frameworks_help", defaultValue: "SwiftUI、AVFAudio、AudioToolbox、Accelerate、AVKit、MediaPlayer、Foundation、ScreenCaptureKit、Photosなど、OSが提供するApple標準フレームワークを使用しています。第三者製の実行時ライブラリは同梱していません。"))
                     .font(.footnote)
             }
             Section {

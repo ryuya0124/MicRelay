@@ -2,18 +2,49 @@
   "sourceLanguage": "ja",
   "strings": {
     "NSMicrophoneUsageDescription": {
-      "comment": "System microphone permission prompt. Audio is processed locally.",
       "localizations": {
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。音声は保存・送信しません。"
+            "value": "この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。画面録画で音声を含める場合は動画にも保存します。開発者への送信はありません。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Output microphone audio to headphones, HDMI devices, or another enabled output on this device in real time. Audio is not saved or transmitted."
+            "value": "Output microphone audio to headphones, HDMI devices, or another enabled output on this device in real time. Screen recordings can include this audio when you choose to include it. Nothing is sent to the developer."
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryAddUsageDescription": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画面録画した動画を写真ライブラリへ保存するために使用します。写真の閲覧は行いません。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save your screen recordings to your photo library. This does not allow the app to view your photos."
+          }
+        }
+      }
+    },
+    "NSScreenCaptureUsageDescription": {
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した画面と音声を動画として端末内に保存するために使用します。録画からモニター音を除外するか選択できます。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save the selected screen and audio as a video on this device. You can choose whether to exclude monitor audio from the recording."
           }
         }
       }

@@ -15,17 +15,20 @@ struct SettingsBackup: Codable, Equatable {
     let windNoise: WindNoiseSettings?
     let manualAudio: ManualAudioSettings?
     let tapGate: TapGateSettings?
+    let screenRecording: ScreenRecordingSettings?
 
-    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic, windNoise: WindNoiseSettings = .init(), manualAudio: ManualAudioSettings = .init(), tapGate: TapGateSettings = .init()) {
-        format = "net.ryuya-dev.MicRelay.settings"; version = 4; createdAt = Date()
+    init(gain: Double, gainLimit: Double, equalizer: EqualizerSettings, backgroundEnabled: Bool, selectedInput: String, audioMode: AudioModePreference = .automatic, windNoise: WindNoiseSettings = .init(), manualAudio: ManualAudioSettings = .init(), tapGate: TapGateSettings = .init(), screenRecording: ScreenRecordingSettings = .init()) {
+        format = "net.ryuya-dev.MicRelay.settings"; version = 5; createdAt = Date()
         self.gain = gain; self.gainLimit = gainLimit; self.equalizer = equalizer
         self.backgroundEnabled = backgroundEnabled; self.selectedInput = selectedInput
         self.audioMode = audioMode; self.windNoise = windNoise; self.manualAudio = manualAudio
         self.tapGate = tapGate
+        self.screenRecording = screenRecording
     }
 
     func validated() throws -> Self {
-        guard format == "net.ryuya-dev.MicRelay.settings", (1...4).contains(version),
+        guard format == "net.ryuya-dev.MicRelay.settings", (1...5).contains(version),
+              (version >= 5 || screenRecording == nil),
               (version >= 4 || tapGate == nil),
               (version >= 3 || (manualAudio == nil && audioMode != .manual)),
               version >= 2 || (windNoise == nil && !equalizer.bands.contains(where: { $0.filter.usesFrequencyRange })) else { throw BackupError.version }

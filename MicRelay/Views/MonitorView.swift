@@ -6,6 +6,7 @@ import MediaPlayer
 
 struct MonitorView: View {
     @ObservedObject var model: MonitorModel
+    @ObservedObject var recorder: ScreenRecordingModel
     @Environment(\.openURL) private var openURL
     @State private var diagnosticsExpanded = ProcessInfo.processInfo.arguments.contains("--expand-diagnostics")
     @State private var showsLicense = ProcessInfo.processInfo.arguments.contains("--show-licenses")
@@ -13,6 +14,7 @@ struct MonitorView: View {
     @State private var showsEqualizer = ProcessInfo.processInfo.arguments.contains("--show-equalizer")
     @State private var showsBackup = false
     @State private var showsManual = ProcessInfo.processInfo.arguments.contains("--show-manual-io")
+    @State private var showsRecording = ProcessInfo.processInfo.arguments.contains("--show-screen-recording")
 
 
     var body: some View {
@@ -32,6 +34,7 @@ struct MonitorView: View {
         .navigationDestination(isPresented: $showsEqualizer) { EqualizerView(model: model) }
         .navigationDestination(isPresented: $showsManual) { ManualAudioSettingsView(model: model) }
         .navigationDestination(isPresented: $showsBackup) { SettingsBackupView(model: model) }
+        .navigationDestination(isPresented: $showsRecording) { ScreenRecordingView(recorder: recorder) }
         .sheet(isPresented: $showsGainSettings) { GainSettingsView(model: model) }
         .task {
             #if DEBUG
@@ -188,9 +191,17 @@ struct MonitorView: View {
     }
     @ViewBuilder private var licenses: some View {
             Section {
+                Button { showsRecording = true } label: {
+                    HStack {
+                        Label(String(localized: "recording.title", defaultValue: "画面録画"), systemImage: "record.circle")
+                        Spacer()
+                        if recorder.state.isBusy { Text(recorder.status).font(.caption).foregroundStyle(.red) }
+                        Image(systemName: "chevron.right").font(.caption.weight(.semibold)).foregroundStyle(.tertiary)
+                    }
+                }.accessibilityIdentifier("openScreenRecording")
                 NavigationLink(String(localized: "backup.navigation", defaultValue: "設定のバックアップと復元")) { SettingsBackupView(model: model) }
                 Button(String(localized: "licenses.navigation", defaultValue: "ライセンスとソースコード")) { showsLicense = true }.accessibilityIdentifier("licensesButton")
-            } footer: { Text(String(localized: "privacy.local_audio", defaultValue: "音声はこの端末内で処理します。録音・送信はしません。")) }    }
+            } footer: { Text(String(localized: "privacy.local_audio", defaultValue: "音声は端末内で処理します。画面録画を開始した場合だけ動画を保存します。開発者への送信はありません。")) }    }
     private func milliseconds(_ value: Double) -> String { model.permissionGranted ? String(format: "%.2f ms", locale: Locale.current, value * 1000) : "—" }
     private func diagnostic(_ title: String, _ value: String, _ id: String) -> some View {
         LabeledContent(title) { Text(value).monospacedDigit().accessibilityIdentifier(id) }.font(.caption)

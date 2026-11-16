@@ -31,7 +31,7 @@ struct SettingsBackupView: View {
                 Button(String(localized: "backup.import", defaultValue: "ファイルから読み込む"), systemImage: "square.and.arrow.down") { importing = true }
                     .accessibilityIdentifier("importSettings")
             } footer: {
-                Text(String(localized: "backup.help", defaultValue: "ゲイン・ゲイン上限・EQ・風切り音低減・タップ音ゲート・音声モード・バックグラウンド設定・選択マイクをJSONファイルに保存します。音声は含みません。スピーカーの許可と接続先の確認は復元しません。"))
+                Text(String(localized: "backup.help", defaultValue: "ゲイン・ゲイン上限・EQ・風切り音低減・タップ音ゲート・音声モード・バックグラウンド設定・選択マイク・画面録画の音声除外設定をJSONファイルに保存します。音声・動画は含みません。スピーカーの許可と接続先の確認は復元しません。"))
             }
             if let candidate {
                 Section(String(localized: "backup.loaded", defaultValue: "読み込んだ設定")) {
@@ -43,6 +43,8 @@ struct SettingsBackupView: View {
                         ? String(format: "%.1f ms", locale: .current, (candidate.tapGate?.duration ?? 0.012) * 1000) : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "background.title", defaultValue: "バックグラウンド"), value: candidate.backgroundEnabled ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
                     LabeledContent(String(localized: "audio.mode.title", defaultValue: "音声モード"), value: (candidate.audioMode ?? .automatic).title)
+                    LabeledContent(String(localized: "recording.exclude", defaultValue: "録画からモニター音を除外"), value: (candidate.screenRecording ?? .init()).excludesMonitorAudio
+                        ? String(localized: "common.on", defaultValue: "ON") : String(localized: "common.off", defaultValue: "OFF"))
                     if let manual = candidate.manualAudio {
                         LabeledContent(String(localized: "manual.title", defaultValue: "手動I/O設定"), value: manual.summary)
                     }

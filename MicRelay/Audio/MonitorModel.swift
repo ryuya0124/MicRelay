@@ -401,7 +401,7 @@ final class MonitorModel: ObservableObject {
 
     func settingsBackup() -> SettingsBackup {
         SettingsBackup(gain: gain, gainLimit: gainLimit, equalizer: equalizer,
-            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference, windNoise: windNoise, manualAudio: manualAudio, tapGate: tapGate)
+            backgroundEnabled: backgroundEnabled, selectedInput: selectedInput, audioMode: modePreference, windNoise: windNoise, manualAudio: manualAudio, tapGate: tapGate, screenRecording: .load())
     }
 
     func restoreSettings(_ backup: SettingsBackup) throws -> Bool {
@@ -413,6 +413,7 @@ final class MonitorModel: ObservableObject {
         equalizer = value.equalizer
         windNoise = value.windNoise ?? .init()
         tapGate = value.tapGate ?? .init()
+        (value.screenRecording ?? .init()).save()
         manualAudio = value.manualAudio ?? .init()
         manualAudio.save()
         backgroundEnabled = value.backgroundEnabled

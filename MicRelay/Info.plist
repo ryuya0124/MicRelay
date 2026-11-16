@@ -25,10 +25,15 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 ryuya</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。音声は保存・送信しません。</string>
+	<string>この端末のマイク音声を、イヤホン・HDMI機器などへリアルタイムに出力するために使用します。画面録画で音声を含める場合は動画にも保存します。開発者への送信はありません。</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>画面録画した動画を写真ライブラリへ保存するために使用します。写真の閲覧は行いません。</string>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>選択した画面と音声を動画として端末内に保存するために使用します。録画からモニター音を除外するか選択できます。</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>screen-capture</string>
 	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
