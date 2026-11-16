@@ -15,6 +15,8 @@ struct BufferTuner {
     private var lastProbe: TimeInterval?
     private var probeActualFrames: Double?
 
+    mutating func resetObservedFloor() { floorFrames = nil } // Keep retry backoff across a fresh comparison.
+
     mutating func didStart(now: TimeInterval, actualFrames: Double, minimumObservedFrames: Double? = nil) {
         floorFrames = min(floorFrames ?? actualFrames, minimumObservedFrames ?? actualFrames, actualFrames)
         if let previous = probeActualFrames, actualFrames >= previous - 0.5 { retryDelay = min(300, retryDelay * 2) }

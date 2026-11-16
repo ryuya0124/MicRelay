@@ -126,7 +126,14 @@ final class MonitorModel: ObservableObject {
     private var modeMeasurements: [ModeLatencyMeasurement] = []
     private var modeCache: [String: [ModeLatencyMeasurement]] = [:]
     private var bufferMeasurements: [BufferPreferenceMeasurement] = []
-    private var preferenceCache: [String: (measurement: BufferPreferenceMeasurement, floor: Double?, modes: [ModeLatencyMeasurement])] = [:]
+    private var preferenceCache = IOProfileCache()
+    private var probeStartedAt: TimeInterval = 0
+    private var probeAttempts = 0
+    private var lastProbeSeconds: TimeInterval = 0
+    private var lastProbeUsedCache = false
+    private var startRequestedAt: TimeInterval = 0
+    private var lastStartSeconds: TimeInterval = 0
+    private var detailedProbe = false
     private var verifiedPreference: BufferPreferenceMeasurement?
     private var verifiedPreferenceKey: String?
     private var needsForegroundProbe = false
@@ -136,6 +143,7 @@ final class MonitorModel: ObservableObject {
     private let spectrumAnalyzer = SpectrumAnalyzer()
     private var spectrumVisible = false
     private var diagnosticProcessingSettings = false
+    private var diagnosticMutedOutput = false
 
     func startDiagnosticIfRequested() {
         #if DEBUG
@@ -143,6 +151,7 @@ final class MonitorModel: ObservableObject {
         guard !didRunDiagnostic, arguments.contains("--validate-speaker") || arguments.contains("--validate-headphones") else { return }
         didRunDiagnostic = true
         diagnosticHeadphones = arguments.contains("--validate-headphones")
+        diagnosticMutedOutput = arguments.contains("--mute-output-for-validation")
         diagnosticAccessoryMic = arguments.contains("--validate-accessory-mic")
         diagnosticExclusiveAudio = arguments.contains("--exclusive-audio")
         diagnosticColdSession = arguments.contains("--cold-session")
@@ -542,13 +551,14 @@ final class MonitorModel: ObservableObject {
         }
     }
 
-    func start(resetTuning: Bool = true, reprobeMinimum: Bool = false) {
+    func start(resetTuning: Bool = true, reprobeMinimum: Bool = false, exhaustiveProbe: Bool = false) {
         guard !isStarting && !isRunning else { return }
+        startRequestedAt = ProcessInfo.processInfo.systemUptime
         let previousPreference = verifiedPreferenceKey == preferenceCacheKey ? verifiedPreference : nil
         if resetTuning {
             tuner = BufferTuner()
             requestedFrames = usesManualIO ? Double(manualAudio.frames) : (diagnosticFrameOverride ?? 1)
-            tuningNote = usesManualIO ? AudioModePreference.manual.title : String(localized: "latency.tuning.initial", defaultValue: "自動 · 接続先の最小バッファを使用")
+            tuningNote = usesManualIO ? AudioModePreference.manual.title : String(localized: "latency.tuning.initial", defaultValue: "自動 · 接続先に合わせて確認")
             renderedFrameOffset = 0; missedQuantumOffset = 0
             maximumInputPeak = 0; maximumOutputPeak = 0
             backgroundFrames = 0; backgroundSeconds = 0
@@ -581,7 +591,7 @@ final class MonitorModel: ObservableObject {
                 }
                 selectedModeLabel = monitoringMode == .measurement ? String(localized: "audio.mode.measurement", defaultValue: "測定") : String(localized: "audio.mode.standard", defaultValue: "標準")
                 if probeBuffers {
-                    try await chooseBufferPreference(token: token, useCache: !reprobeMinimum)
+                    try await chooseBufferPreference(token: token, useCache: !reprobeMinimum && !exhaustiveProbe, exhaustive: exhaustiveProbe)
                     selectedModeLabel = monitoringMode == .measurement ? String(localized: "audio.mode.measurement", defaultValue: "測定") : String(localized: "audio.mode.standard", defaultValue: "標準")
                 }
                 guard !inBackground || backgroundEnabled else { stop(); return }
@@ -629,11 +639,12 @@ final class MonitorModel: ObservableObject {
         applyEqualizer()
         applyWindNoise()
         applyTapGate()
-        audio.outputMuted = false
+        audio.outputMuted = diagnosticMutedOutput
         try audio.start()
     }
 
     private func didStartMonitoring(resetTuning: Bool) {
+        lastStartSeconds = ProcessInfo.processInfo.systemUptime - startRequestedAt
         configuring = false
         isStarting = false
         isRunning = true
@@ -767,7 +778,7 @@ final class MonitorModel: ObservableObject {
         [effectiveModePreference.rawValue, selectedInput,
          session.currentRoute.outputs.map { $0.uid + $0.portType.rawValue }.sorted().joined(separator: ","),
          diagnosticModeOverride?.rawValue ?? "", diagnosticSampleRateOverride.map { String($0) } ?? "",
-         String(diagnosticExclusiveAudio)].joined(separator: "|")
+         String(diagnosticExclusiveAudio), ProcessInfo.processInfo.operatingSystemVersionString].joined(separator: "|")
     }
 
     private var modeCacheKey: String {
@@ -782,6 +793,11 @@ final class MonitorModel: ObservableObject {
 
     private func measurePreference(mode: AVAudioSession.Mode, rate: Double, request: Double, token: Int, key: String) async throws -> BufferPreferenceMeasurement {
         guard token == generation, !Task.isCancelled, !inBackground else { throw CancellationError() }
+        probeAttempts += 1
+        let elapsed = Int(ProcessInfo.processInfo.systemUptime - probeStartedAt)
+        status = detailedProbe
+            ? String(localized: "latency.tuning.detailed_progress", defaultValue: "詳しく最適化中 · \(probeAttempts)件目 · \(elapsed)秒")
+            : String(localized: "latency.tuning.progress", defaultValue: "音声設定を確認中 · \(probeAttempts)件目 · \(elapsed)秒")
         audio.stop()
         try session.setActive(false)
         monitoringMode = mode; preferredHardwareSampleRate = rate; requestedFrames = request
@@ -815,8 +831,16 @@ final class MonitorModel: ObservableObject {
             processingLatency: audio.processingLatency?.doubleValue)
     }
 
-    private func chooseBufferPreference(token: Int, useCache: Bool) async throws {
-        status = String(localized: "latency.tuning.probing", defaultValue: "最小I/Oを確認中…")
+    func optimizeIOThoroughly() {
+        guard canStart, !isStarting, !usesManualIO else { return }
+        stop()
+        start(reprobeMinimum: true, exhaustiveProbe: true)
+    }
+
+    private func chooseBufferPreference(token: Int, useCache: Bool, exhaustive: Bool) async throws {
+        probeStartedAt = ProcessInfo.processInfo.systemUptime; probeAttempts = 0; detailedProbe = exhaustive; lastProbeUsedCache = false
+        defer { lastProbeSeconds = ProcessInfo.processInfo.systemUptime - probeStartedAt; detailedProbe = false }
+        status = String(localized: "latency.tuning.probing", defaultValue: "音声設定を確認中…")
         let key = preferenceCacheKey
         bufferMeasurements = []
         if useCache, let cached = preferenceCache[key] {
@@ -826,6 +850,7 @@ final class MonitorModel: ObservableObject {
                     request: cached.measurement.requestedFrames, token: token, key: key)
                 bufferMeasurements.append(observed)
                 if observed.reproduces(cached.measurement) {
+                    lastProbeUsedCache = true
                     finishPreference(observed, floor: cached.floor, modes: cached.modes, key: key)
                     return
                 }
@@ -834,7 +859,11 @@ final class MonitorModel: ObservableObject {
             catch { logger.info("Cached preference needs a fresh sweep") }
             audio.stop()
         }
-        preferenceCache.removeValue(forKey: key)
+        preferenceCache.remove(key)
+        if !exhaustive {
+            try await chooseStartupPreference(token: token, key: key)
+            return
+        }
         let automatic = effectiveModePreference == .automatic && diagnosticModeOverride == nil
         let modes = automatic ? [AVAudioSession.Mode.default, .measurement] : [monitoringMode]
         let rates = HardwareRateProbePlanner.requests(current: session.sampleRate, preferred: preferredHardwareSampleRate, fixed: diagnosticSampleRateOverride)
@@ -878,8 +907,53 @@ final class MonitorModel: ObservableObject {
                 }
             }
         }
-        let ranked = BufferPreferenceSelector.ranked(bufferMeasurements)
-        for candidate in ranked {
+        try await confirmPreference(token: token, key: key, modes: modes)
+    }
+
+    private func chooseStartupPreference(token: Int, key: String) async throws {
+        let modes = effectiveModePreference == .automatic && diagnosticModeOverride == nil
+            ? [AVAudioSession.Mode.default, .measurement] : [monitoringMode]
+        let rate = diagnosticSampleRateOverride ?? session.sampleRate
+        func hasStable() -> Bool { BufferPreferenceSelector.best(bufferMeasurements) != nil }
+        func withinBudget() -> Bool {
+            StartupIOProbe.canCompare(elapsed: ProcessInfo.processInfo.systemUptime - probeStartedAt, hasStable: hasStable())
+        }
+        func observe(_ mode: AVAudioSession.Mode, _ rate: Double, _ frames: Double) async throws {
+            do {
+                let observation = try await measurePreference(mode: mode, rate: rate, request: frames, token: token, key: key)
+                bufferMeasurements.append(observation)
+            } catch is CancellationError { throw CancellationError() }
+            catch MonitorError.routeChanged { throw MonitorError.routeChanged }
+            catch { logger.info("Startup preference unavailable") }
+            audio.stop()
+        }
+        initial: for frames in StartupIOProbe.frames {
+            for mode in modes {
+                guard withinBudget() else { break initial }
+                try await observe(mode, rate, frames)
+            }
+        }
+        if !hasStable() {
+            recovery: for frames in StartupIOProbe.recoveryFrames {
+                for mode in modes {
+                    try await observe(mode, rate, frames)
+                    if hasStable() { break recovery }
+                }
+            }
+        } else {
+            rates: for extraRate in StartupIOProbe.extraRates(current: rate, fixed: diagnosticSampleRateOverride) {
+                for mode in modes {
+                    guard withinBudget() else { break rates }
+                    let frames = BufferPreferenceSelector.best(bufferMeasurements.filter { $0.mode == mode.rawValue })?.requestedFrames ?? 16
+                    try await observe(mode, extraRate, frames)
+                }
+            }
+        }
+        try await confirmPreference(token: token, key: key, modes: modes, limit: 3)
+    }
+
+    private func confirmPreference(token: Int, key: String, modes: [AVAudioSession.Mode], limit: Int = .max) async throws {
+        for candidate in BufferPreferenceSelector.ranked(bufferMeasurements).prefix(limit) {
             do {
                 let confirmed = try await measurePreference(mode: AVAudioSession.Mode(rawValue: candidate.mode),
                     rate: candidate.requestedSampleRate ?? candidate.sampleRate,
@@ -909,9 +983,9 @@ final class MonitorModel: ObservableObject {
         minimumObservedSampleRate = observed.sampleRate
         minimumObservedFrames = floor
         modeMeasurements = modes
-        if cacheable { preferenceCache[key] = (observed, floor, modes) }
+        if cacheable { preferenceCache.put(.init(measurement: observed, floor: floor, modes: modes), for: key) }
         if effectiveModePreference == .automatic { modeCache[modeCacheKey] = modes }
-        tuner = BufferTuner() // An old frame-only floor must not undo the newly selected latency optimum.
+        tuner.resetObservedFloor() // Replace the old floor, while preserving failed-retry backoff.
         latencyReprobe.didProbe(now: ProcessInfo.processInfo.systemUptime)
         tuningNote = String(localized: "latency.tuning.selected", defaultValue: "自動 · 実コールバックを比較して\(String(format: "%.6g", locale: .current, requestedFrames))フレームを要求")
     }
@@ -1156,6 +1230,10 @@ final class MonitorModel: ObservableObject {
             "diagnosticExclusiveAudio": diagnosticExclusiveAudio, "diagnosticColdSession": diagnosticColdSession,
             "diagnosticRunID": diagnosticRunID,
             "diagnosticAutomaticAudio": diagnosticAutomaticAudio,
+            "diagnosticMutedOutput": diagnosticMutedOutput,
+            "probeAttempts": probeAttempts, "probeSeconds": lastProbeSeconds,
+            "probeUsedCache": lastProbeUsedCache,
+            "startSeconds": lastStartSeconds,
             "currentQuantum": audio.currentQuantum,
             "bufferCandidates": bufferMeasurements.map { ["requestedFrames": $0.requestedFrames,
                 "requestedSampleRate": $0.requestedSampleRate ?? 0,

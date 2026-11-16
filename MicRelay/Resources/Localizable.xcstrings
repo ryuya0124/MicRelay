@@ -1496,6 +1496,57 @@
         }
       }
     },
+    "latency.optimize": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optimize thoroughly"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳しく最適化"
+          }
+        }
+      }
+    },
+    "latency.optimize_help": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting normally uses a short check. Thorough optimization pauses audio and may take time, depending on the connection."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通常の開始は短い確認を行います。詳しい最適化中は音声が止まり、接続によって時間がかかります。"
+          }
+        }
+      }
+    },
+    "latency.optimize_start": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optimize thoroughly and start"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳しく最適化して開始"
+          }
+        }
+      }
+    },
     "latency.title": {
       "comment": "Latency UI or status text. Keep format placeholders and units intact.",
       "localizations": {
@@ -1530,36 +1581,70 @@
         }
       }
     },
+    "latency.tuning.detailed_progress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optimizing thoroughly · Probe %lld · %lld s"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "詳しく最適化中 · %lld件目 · %lld秒"
+          }
+        }
+      }
+    },
     "latency.tuning.initial": {
       "comment": "Latency UI or status text. Keep format placeholders and units intact.",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Automatic · Find the smallest buffer for this connection"
+            "value": "Automatic · Checking this connection"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "自動 · 接続先の最小バッファを使用"
+            "value": "自動 · 接続先に合わせて確認"
           }
         }
       }
     },
     "latency.tuning.probing": {
-      "comment": "Latency UI or status text. Keep format placeholders and units intact.",
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Checking the smallest I/O buffer…"
+            "value": "Checking audio settings…"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "最小I/Oを確認中…"
+            "value": "音声設定を確認中…"
+          }
+        }
+      }
+    },
+    "latency.tuning.progress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking audio settings · Probe %lld · %lld s"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音声設定を確認中 · %lld件目 · %lld秒"
           }
         }
       }

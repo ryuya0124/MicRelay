@@ -177,6 +177,11 @@ struct MonitorView: View {
                 LabeledContent(String(localized: "audio.sample_rate", defaultValue: "サンプルレート"), value: model.sampleRate > 0 ? String(format: "%.1f kHz", locale: Locale.current, model.sampleRate / 1000) : "—")
                 LabeledContent(String(localized: "audio.active_mode", defaultValue: "動作中のモード"), value: model.selectedModeLabel)
                 Text(model.tuningNote).font(.caption).foregroundStyle(.secondary)
+                Button(model.isRunning ? String(localized: "latency.optimize", defaultValue: "詳しく最適化")
+                    : String(localized: "latency.optimize_start", defaultValue: "詳しく最適化して開始")) { model.optimizeIOThoroughly() }
+                    .disabled(!model.canStart || model.isStarting || model.usesManualIO).accessibilityIdentifier("optimizeIO")
+                Text(String(localized: "latency.optimize_help", defaultValue: "通常の開始は短い確認を行います。詳しい最適化中は音声が止まり、接続によって時間がかかります。"))
+                    .font(.caption).foregroundStyle(.secondary)
                 DisclosureGroup(String(localized: "diagnostics.title", defaultValue: "動作診断"), isExpanded: $diagnosticsExpanded) {
                     diagnostic(String(localized: "diagnostics.processed_frames", defaultValue: "処理フレーム"), "\(model.frames)", "renderFrames")
                     diagnostic(String(localized: "diagnostics.input_peak", defaultValue: "入力ピーク"), "\(db(model.maximumInputPeak)) dBFS", "maximumInputPeak")
