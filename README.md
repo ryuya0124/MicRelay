@@ -79,6 +79,8 @@ Fastlaneのセットアップと、審査提出を行わないアップロード
 
 Debugビルドは停止時・バックグラウンド復帰時にアプリ内 `Documents/diagnostics.json` に数値診断を保存します。音声・波形サンプルは保存しません。検証結果と残る確認項目は [docs/VALIDATION.md](docs/VALIDATION.md) を参照してください。
 
+実マイクの検証中はDevice Hubの実機画面接続を終了してください。Appleの仕様により、実機をDevice Hubで操作している間はマイクを利用できず、入力が無音になることがあります（[Appleの説明](https://developer.apple.com/documentation/xcode/interacting-with-your-app-in-device-hub#Handle-camera-and-microphone-access-conflicts-on-physical-devices)）。画面操作の検証と実音の検証を分け、実音は画面接続を終了してから端末操作と数値診断で確認します。フレーム数が増え、音声エラーが0でも、実マイクの入力や聞こえる音を確認したことにはなりません。
+
 ## Appleの仕様
 
 - [I/Oバッファの希望値と実値](https://developer.apple.com/documentation/avfaudio/avaudiosession/preferrediobufferduration)
