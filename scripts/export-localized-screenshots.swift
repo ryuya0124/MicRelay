@@ -31,6 +31,16 @@ for record in records {
                 kCGImageSourceCreateThumbnailWithTransform: true,
                 kCGImageSourceThumbnailMaxPixelSize: max(rawWidth, rawHeight)
               ] as CFDictionary) else { fatalError("Cannot read capture") }
+        // Verify the actual rendered appearance, not just the requested launch argument.
+        let sample = CGContext(data: nil, width: 16, height: 16, bitsPerComponent: 8, bytesPerRow: 64,
+            space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue)!
+        sample.draw(image, in: CGRect(x: 0, y: 0, width: 16, height: 16))
+        let pixels = sample.data!.assumingMemoryBound(to: UInt8.self)
+        let dark = (0..<256).filter { index in
+            let offset = index * 4
+            return (Int(pixels[offset]) + Int(pixels[offset + 1]) + Int(pixels[offset + 2])) / 3 < 100
+        }.count
+        guard dark > 153 else { fatalError("Store capture is not predominantly dark: \(name)") }
         let width = device == "ipad" ? (image.width > image.height ? 2752 : 2064) : image.width
         let height = device == "ipad" ? (image.width > image.height ? 2064 : 2752) : image.height
         guard abs(Double(width) / Double(height) - Double(image.width) / Double(image.height)) < 0.001 else { fatalError("Capture aspect ratio does not match the store dimensions") }
@@ -47,4 +57,4 @@ for record in records {
         print("\(target.path): \(width)×\(height)")
     }
 }
-guard exported.count == 3 else { fatalError("Expected three store captures") }
+guard exported.count == 6 else { fatalError("Expected six store captures") }

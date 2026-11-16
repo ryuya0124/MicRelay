@@ -12,8 +12,11 @@ APP_IDENTIFIER = "net.ryuya-dev.MicRelay"
 PROJECT_ROOT = File.expand_path("..", __dir__)
 RELEASE_DIRECTORY = File.join(PROJECT_ROOT, "artifacts", "release")
 PROFILE_NAME = "MicRelay App Store"
-PROJECT_BUILD_NUMBER = YAML.safe_load_file(File.join(PROJECT_ROOT, "project.yml")).dig("targets", "MicRelay", "settings", "base", "CURRENT_PROJECT_VERSION").to_s
+PROJECT_RELEASE_CONFIG = YAML.safe_load_file(File.join(PROJECT_ROOT, "project.yml")).dig("targets", "MicRelay", "settings", "base")
+PROJECT_BUILD_NUMBER = PROJECT_RELEASE_CONFIG.fetch("CURRENT_PROJECT_VERSION").to_s
+PROJECT_MARKETING_VERSION = PROJECT_RELEASE_CONFIG.fetch("MARKETING_VERSION").to_s
 raise "Invalid project build number" unless PROJECT_BUILD_NUMBER.match?(/\A[0-9]+\z/)
+raise "Invalid marketing version" unless PROJECT_MARKETING_VERSION.match?(/\A\d+\.\d+\.\d+\z/)
 
 platform :ios do
   private_lane :connect_key do
@@ -122,7 +125,7 @@ platform :ios do
     report = {
       bundle_id: app.bundle_id, app_id: app.id, name: app.name,
       versions: versions.map { |v| { id: v.id, version: v.version_string, state: v.app_store_state } },
-      builds: builds.map { |b| { id: b.id, number: b.version, processing_state: b.processing_state } },
+      builds: builds.map { |b| { id: b.id, number: b.version, app_version: b.app_version, processing_state: b.processing_state } },
       review_submissions: reviews.map { |r| { id: r.id, state: r.state } }
     }
     FileUtils.mkdir_p(RELEASE_DIRECTORY)
@@ -147,10 +150,10 @@ platform :ios do
     required = [:contact_first_name, :contact_last_name, :contact_phone, :contact_email]
     UI.user_error!("Complete Beta App Review contact is required") unless required.all? { |field| !contact[field].to_s.empty? }
     contact[:demo_account_required] = false
-    contact[:notes] = "MicRelay monitors the microphone locally on the same iPhone/iPad. No account or server is required. Connect headphones or an HDMI device, allow Microphone, select a microphone, confirm an external output if requested, and tap Start. Without headphones or HDMI, explicitly enable the built-in speaker for testing; begin at a low system volume to avoid feedback. EQ has six adjustable bands and a hard bypass, including range-based band-stop and band-pass filters with lower/upper cutoff frequencies. Wind noise reduction is an independent, adjustable fourth-order low cut with no look-ahead buffer. Settings backup/restore uses local JSON files and accepts legacy version 1 files. Background audio is the app's core microphone monitoring function and mixes with other apps; interruptions and headphone disconnection are handled. No audio is recorded or uploaded."
+    contact[:notes] = File.read(File.join(PROJECT_ROOT, "store/review-notes.en.txt")).strip
     upload_to_testflight(
       api_key: key, app_identifier: APP_IDENTIFIER, apple_id: "6834848400",
-      app_version: "1.0.0", build_number: PROJECT_BUILD_NUMBER, app_platform: "ios", distribute_only: true,
+      app_version: PROJECT_MARKETING_VERSION, build_number: PROJECT_BUILD_NUMBER, app_platform: "ios", distribute_only: true,
       distribute_external: true, groups: ["main"], submit_beta_review: true,
       skip_submission: false, notify_external_testers: false,
       beta_app_review_info: contact,
@@ -163,9 +166,8 @@ platform :ios do
           privacy_policy_url: "https://github.com/ryuya0124/MicRelay/blob/main/#{docs}/PRIVACY.md"
         }]
       },
-      localized_build_info: {
-        "ja" => {whats_new: "指定した音域を減らす・その音域だけを聞く調整と、風切り音低減を追加しました。聞こえ方の調整、それぞれのON/OFF、設定の保存・復元をお試しください。"},
-        "en-US" => {whats_new: "Added controls to reduce a selected range of sounds or listen only to that range, plus wind noise reduction. Please try adjusting the sound, switching each feature on or off, and saving and restoring your settings."}
+      localized_build_info: Dir[File.join(PROJECT_ROOT, "store/metadata/*/release_notes.txt")].sort.to_h { |path|
+        [File.basename(File.dirname(path)), {whats_new: File.read(path).strip}]
       }
 
     )

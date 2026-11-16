@@ -99,6 +99,24 @@ bundle exec fastlane ios submit_store_review
 
 公開方法は `store/release-policy.json` を使用します。現在はユーザーの指示で `AFTER_APPROVAL`（承認後に自動公開）。`MANUAL` への変更にも対応します。メタデータ更新でも同じ設定を読み、自動公開の指定を手動に戻しません。プライバシー回答の公開はこのlaneでは行いません。Appleの公開確認に表示される、回答の正確性・ガイドラインと法令への適合・変更時の更新に対する同意は、実行時に別途確認します。
 
-## 次期ビルド7と審査中ビルド6
+## 次期ビルド7と審査中ビルド6（2026-11-15時点の履歴）
 
 ビルド7は自動サンプルレート探索と、ドロップダウンで選ぶ完全手動I/O設定の次期候補。2026-11-15の追加指示により、実装が完成してもApp Store・外部TestFlightで審査中のビルド6を取り下げない。ビルド7の署名・アップロードは、既存の審査対象・mainの割り当てを変更せずに行う。`upload_only` は審査提出・外部配布を行わない。`distribute_main`・`submit_store_review` は今回実行しない。ビルド6の承認後自動公開の設定は引き続き有効。
+
+## 1.1.0以降の更新
+
+2026-11-16にAPIで1.0.0の`READY_FOR_SALE`と旧レビューの`COMPLETE`を確認。その後のユーザーの明示指示で、1.1.0（ビルド15）をApp Store・外部TestFlightの両方へ提出する。公開済み1.0.0の取り下げは行わない。
+
+`fastlane/Fastfile`、メタデータ、画像、提出用スクリプトは`project.yml`の`MARKETING_VERSION`と`CURRENT_PROJECT_VERSION`を参照する。新バージョンは`bundle exec ruby scripts/store_metadata.rb create`で作成する。他の未公開バージョンがある場合は停止し、既存バージョンを勝手に改名しない。日英の`release_notes.txt`をApp Storeの「このバージョンの最新情報」とTestFlightの更新説明の両方に使う。
+
+```sh
+bundle exec ruby scripts/store_metadata.rb metadata ja
+bundle exec ruby scripts/store_metadata.rb metadata en-US
+bundle exec ruby scripts/store_metadata.rb review_notes
+```
+
+審査連絡先は従来の非公開JSON、操作案内は`store/review-notes.en.txt`を使う。録画・写真の権限と、Device Hubを使ったマイク検証の制約も説明する。
+
+撮影は日英・iPhone／iPad／Duoの6組、各6画面。Debug専用の`--store-capture`時だけSwiftUIでダーク表示を指定し、書き出し時も実画像の明度を検査する。通常起動・Release版の外観は変更しない。iPadは横向きで、画像の向きメタデータを反映してPNGへ正規化する。各組でメイン・EQ・ゲイン・録画・手動設定・タップ音ゲートを撮影する。周波数グラフやレイテンシーの架空の値は作らない。
+
+署名・アップロードは前述のlaneを使用する。処理済みのビルドを`attach`で新バージョンへ選択してから、App Store審査と`main`への外部TestFlight審査をそれぞれ行う。ヘッダー／検索結果画像はAsset Libraryにある承認済み画像も再利用できる。提出前に日英の説明・更新内容、各組6枚のチェックサムと順序、処理・登録完了を読み戻して検証する。

@@ -1,0 +1,28 @@
+Version 1.1.0 improves monitoring, adds more control over tap sounds, and introduces screen recording.
+
+EASIER MONITORING
+• Improved automatic tuning to find stable settings with less audio delay for your connected equipment.
+• Reduced startup checks and reuse settings already verified for a connection to help monitoring start sooner.
+• Reduced waveform display overhead and improved background operation and automatic adjustments.
+• If monitoring cannot start, the app now explains why and lets you confirm your output or choose the built-in speaker from the same prompt.
+
+FULLY MANUAL MODE
+• Choose audio settings from lists.
+• Check whether your requested settings actually work and compare them with the settings in use. Unsupported settings show an explanation and revert to your previous setup.
+
+EQUALIZER AND SOUND ADJUSTMENT
+• Reduced frequency graph display overhead to make it easier to compare sound before and after your adjustments.
+• Combine the new tap gate with EQ adjustments that reduce a selected range of sounds or let you hear only that range.
+
+TAP GATE
+• Pass audio for a short, adjustable time after a sound starts.
+• Adjust how long sound passes and how strongly the gate reacts. New attacks can retrigger the gate during rapid repeated taps.
+• Combine it with the equalizer and wind noise reduction, and choose whether detection uses sound before or after those adjustments.
+
+SCREEN RECORDING — iOS AND iPadOS 27 OR LATER
+• Hear monitor audio through headphones while leaving it out of your video. Exclusion is on by default; turn it off to include monitor audio.
+• Recordings are saved to Photos. After saving succeeds, the app automatically removes its own copy.
+• If saving fails, keep the video in the app to retry, share, or delete only the app copy. See how much storage the remaining videos use.
+
+SETTINGS BACKUP
+• Back up and restore manual audio settings, the tap gate, and recording audio exclusion along with your other settings. Earlier backups remain supported.

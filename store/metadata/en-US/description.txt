@@ -9,12 +9,18 @@ Set the monitoring volume and choose your own maximum for the volume slider.
 Use the equalizer to adjust bass, midrange, and treble, or turn down sounds at a particular pitch. You can reduce a selected range of sounds or listen only to that range. Watch a graph of sound levels across different pitches as you make adjustments.
 Adjust wind noise reduction to soften low wind rumble. Switch the equalizer and wind noise reduction on or off independently.
 
+FOCUS ON TAP SOUNDS
+Use the tap gate to pass sound for a short, adjustable time after an attack. Adjust its response and combine it with EQ and wind noise reduction.
+
+ADJUST FOR YOUR CONNECTION
+Automatic mode tunes settings for your connected equipment. Fully manual mode lets you select detailed audio settings from lists and checks whether they work. Unsupported settings show an explanation and revert to your previous setup.
+
 LISTEN WHILE USING OTHER APPS
 Keep monitoring with the screen locked or while using a game or another app.
 
 SAVE AND RESTORE SETTINGS
 Your volume and sound settings are kept when you reopen the app. Save your settings to a file and restore them together whenever you need them.
 
-On iOS and iPadOS 27 or later, record your screen while choosing whether to include or exclude monitor audio from the video. Videos are saved on your device for you to share or export. Audio and video are not sent to the developer.
+On iOS and iPadOS 27 or later, record your screen while choosing whether to include or exclude monitor audio from the video. Videos are saved to Photos, then their app copies are automatically removed. If saving fails, keep the app copy to retry, share, or delete. Audio and video are not sent to the developer.
 
 The time it takes to hear sound and the microphones you can choose depend on your device and connected equipment. Monitoring may be interrupted when another app uses the microphone. When using the speaker, start at a low volume to avoid feedback. Stronger wind noise reduction also reduces the bass in your voice.

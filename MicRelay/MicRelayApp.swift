@@ -12,6 +12,9 @@ struct MicRelayApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack { MonitorView(model: monitor, recorder: recorder) }
+                #if DEBUG
+                .preferredColorScheme(ProcessInfo.processInfo.arguments.contains("--store-capture") ? .dark : nil)
+                #endif
                 .task { monitor.startDiagnosticIfRequested() }
                 .onChange(of: scenePhase) { _, phase in monitor.sceneChanged(phase) }
         }

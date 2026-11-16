@@ -9,6 +9,7 @@ require 'spaceship'
 require 'dotenv'
 require 'net/http'
 require 'json'
+require 'yaml'
 ROOT = File.expand_path('..', __dir__)
 Dotenv.load(File.join(ROOT, '.env'))
 $stdout.sync = true
@@ -30,7 +31,8 @@ def request(method, path, body = nil)
 end
 
 app = Spaceship::ConnectAPI::App.find('net.ryuya-dev.MicRelay')
-version = app.get_app_store_versions.find { |v| v.version_string == '1.0.0' && v.app_store_state == 'PREPARE_FOR_SUBMISSION' } or abort 'Editable draft missing'
+marketing_version = YAML.safe_load_file(File.join(ROOT, 'project.yml')).dig('targets', 'MicRelay', 'settings', 'base', 'MARKETING_VERSION').to_s
+version = app.get_app_store_versions.find { |v| v.version_string == marketing_version && v.app_store_state == 'PREPARE_FOR_SUBMISSION' } or abort 'Editable draft missing'
 localization = version.get_app_store_version_localizations.find { |l| l.locale == LOCALE } or abort 'Localization missing; register metadata first'
 library = request('get', "apps/#{app.id}/assetLibrary")['data']['id']
 reference = request('get', 'appAssetLibraryRefData')['data'][0]['attributes']
@@ -48,12 +50,12 @@ unless image
 end
 30.times do
   state = image['attributes']['state']
-  break if state == 'PREPARE_FOR_SUBMISSION'
+  break if ['PREPARE_FOR_SUBMISSION', 'APPROVED'].include?(state)
   abort "Header failed: #{image['attributes']['stateDetails']}" if state == 'FAILED'
   sleep 2
   image = request('get', "appAssetLibraryImages/#{image['id']}")['data']
 end
-abort 'Header is still processing; rerun to finish placement' unless image['attributes']['state'] == 'PREPARE_FOR_SUBMISSION'
+abort 'Header is still processing; rerun to finish placement' unless ['PREPARE_FOR_SUBMISSION', 'APPROVED'].include?(image['attributes']['state'])
 spec = reference['imageSpecs'].find { |s| s['specId'] == image['attributes']['specId'] }
 abort 'Unexpected header specification' unless spec && spec['compatiblePlacementTypes'].include?(PLACEMENT_TYPE)
 placements = request('get', "appStoreVersionLocalizations/#{localization.id}/placements?filter[placementType]=#{PLACEMENT_TYPE}")['data']

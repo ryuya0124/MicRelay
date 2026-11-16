@@ -28,6 +28,7 @@ localizations=version.get_app_store_version_localizations
 %w(ja en-US).each do |locale|
  l=localizations.find{|x|x.locale==locale} or abort "Missing #{locale} metadata"
  abort "Description differs from source for #{locale}" unless l.description.strip==File.read(File.join(ROOT,'store/metadata',locale,'description.txt')).strip
+ abort "Release notes differ from source for #{locale}" unless l.whats_new.to_s.strip==File.read(File.join(ROOT,'store/metadata',locale,'release_notes.txt')).strip
  {'iphone'=>'APP_IPHONE_61','ipad'=>'APP_IPAD_PRO_3GEN_129','duo'=>'APP_IPHONE_DUO'}.each do |device,type|
   set=l.get_app_screenshot_sets.find{|s|s.screenshot_display_type==type} or abort "Missing #{locale}/#{device} screenshots"
   images=set.app_screenshots || []

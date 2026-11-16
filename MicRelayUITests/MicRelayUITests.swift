@@ -561,12 +561,20 @@ final class MicRelayUITests: XCTestCase {
         defer { device.orientation = previousOrientation }
         device.orientation = UIDevice.current.userInterfaceIdiom == .pad ? .landscapeLeft : .portrait
         let app = XCUIApplication()
-        for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer"]), ("store-03-gain", ["--show-gain-settings"])] {
+        for (name, extra) in [("store-01-monitor", [String]()), ("store-02-equalizer", ["--show-equalizer"]), ("store-03-gain", ["--show-gain-settings"]), ("store-04-recording", ["--show-screen-recording"]), ("store-05-manual", ["--show-manual-io"]), ("store-06-tap-gate", ["--show-equalizer", "--validate-tap-gate"])] {
             // Capture the real, stopped app in a consistent appearance; never synthesize audio values.
             app.launchArguments = ["-AppleLanguages", "(\(language))", "-AppleLocale", locale,
                 "-AppleInterfaceStyle", "Dark", "--store-capture"] + extra
             app.launch()
             XCTAssertTrue(app.navigationBars.firstMatch.waitForExistence(timeout: 10))
+            if name == "store-06-tap-gate" {
+                let gate = app.switches["tapGateToggle"]
+                XCTAssertTrue(gate.waitForExistence(timeout: 5))
+                revealEqualizerControl(gate, app: app)
+                if gate.value as? String == "0" { gate.coordinate(withNormalizedOffset: CGVector(dx: 0.95, dy: 0.5)).tap() }
+                revealEqualizerControl(app.buttons["tapGateDetectionSource"], app: app)
+                XCTAssertEqual(gate.value as? String, "1")
+            }
             let capture = XCUIScreen.main.screenshot()
             let image = capture.image
             // UIImage drawing applies imageOrientation before PNG encoding strips that metadata.
